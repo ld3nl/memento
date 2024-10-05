@@ -1,20 +1,12 @@
 {
     "$schema": "https://openapi.vercel.sh/vercel.json",
-    "builds": [
+    "buildCommand": "npm run build && npm run build-storybook",
+    "rewrites": [
       {
-        "src": "next.config.js",
-        "use": "@vercel/next"
-      },
-      {
-        "src": "storybook-static/**",
-        "use": "@vercel/static"
+        "source": "/_storybook/:path*",
+        "destination": "/storybook-static/:path*"
       }
     ],
-    "routes": [
-      {
-        "src": "/_storybook/(.*)",
-        "dest": "/storybook-static/$1"
-      }
-    ]
+    "outputDirectory": "storybook-static"
   }
   
