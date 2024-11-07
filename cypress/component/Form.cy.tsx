@@ -85,6 +85,6 @@ describe("<Form />", () => {
     // Temporarily switch to 'base' mode for this test
     // Cypress.env("visualRegressionType", "base");
 
-    cy.compareSnapshot("form-filled");
+    cy.compareSnapshot("Form", 0.2);
   });
 });

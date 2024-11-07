@@ -1,6 +1,7 @@
 import React from "react";
 import { WeekProps } from "../lib/types";
 
+// Week component to display a single week with conditional styling
 const Week = ({ weekIndex, isFilled }: WeekProps) => {
   return (
     <div

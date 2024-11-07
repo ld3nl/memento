@@ -9,7 +9,7 @@
     "start": "next start",
     "lint": "next lint",
     "cypress:open": "cypress open",
-    "test": "next start & cypress run --component ",
+    "test": "next start & cypress run --component",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },

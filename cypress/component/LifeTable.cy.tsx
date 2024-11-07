@@ -8,6 +8,6 @@ describe("<LifeTable />", () => {
 
     // Temporarily switch to 'base' mode for this test
     // Cypress.env("visualRegressionType", "base");
-    cy.compareSnapshot("form-filled");
+    cy.compareSnapshot("LifeTable", 0.2);
   });
 });

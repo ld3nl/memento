@@ -1,10 +1,9 @@
-"use client"
+"use client";
 
 import YearGrid from "./YearGrid";
 import { DecadeGridProps } from "../lib/types";
-import { memo, useMemo } from 'react';
-import {  useTransition } from 'react';
-
+import { memo, useMemo } from "react";
+import { useTransition } from "react";
 
 // Suggestions for using React 19 and Next.js 15:
 // 1. Use memo to optimize rendering performance
@@ -18,41 +17,37 @@ import {  useTransition } from 'react';
 // 9. Implement error boundaries using the new ErrorBoundary component
 // 10. Use the new parallel routing feature for complex UI states if applicable
 
-const DecadeGrid = memo(({
-  decadeLength,
-  weeks,
-  yeasAlive,
-  yearIndex,
-  weeksFromLastBday,
-}: DecadeGridProps) => {
-  const [isPending, startTransition] = useTransition();
+// DecadeGrid component to display a grid of years for a decade
+const DecadeGrid = memo(
+  ({
+    decadeLength,
+    weeks,
+    yeasAlive,
+    yearIndex,
+    weeksFromLastBday,
+  }: DecadeGridProps) => {
+    const [isPending, startTransition] = useTransition();
 
-  const decadeYears = useMemo(() => {
-    return Array.from({ length: decadeLength }, (_, decadeIndex) => {
-      const currentDecadeYear = decadeIndex + 1 + yearIndex * decadeLength;
-      return (
-        <YearGrid
-          key={`decade-${decadeIndex}`}
-          weeks={weeks}
-          yeasAlive={yeasAlive}
-          currentDecadeYear={currentDecadeYear}
-          weeksFromLastBday={weeksFromLastBday}
-        />
-      );
-    });
-  }, [decadeLength, weeks, yeasAlive, yearIndex, weeksFromLastBday]);
+    // Memoize the decade years to avoid unnecessary re-renders
+    const decadeYears = useMemo(() => {
+      return Array.from({ length: decadeLength }, (_, decadeIndex) => {
+        const currentDecadeYear = decadeIndex + 1 + yearIndex * decadeLength;
+        return (
+          <YearGrid
+            key={`decade-${decadeIndex}`}
+            weeks={weeks}
+            yeasAlive={yeasAlive}
+            currentDecadeYear={currentDecadeYear}
+            weeksFromLastBday={weeksFromLastBday}
+          />
+        );
+      });
+    }, [decadeLength, weeks, yeasAlive, yearIndex, weeksFromLastBday]);
 
-  return (
-    <>
-      {isPending ? (
-        <div>Loading...</div>
-      ) : (
-        decadeYears
-      )}
-    </>
-  );
-});
+    return <>{isPending ? <div>Loading...</div> : decadeYears}</>;
+  }
+);
 
-DecadeGrid.displayName = 'DecadeGrid';
+DecadeGrid.displayName = "DecadeGrid";
 
 export default DecadeGrid;

@@ -23,7 +23,6 @@ import "./commands";
 
 // import { mount } from "cypress/react";
 import { mount } from "cypress/react18";
-import { MemoryRouterProps } from "react-router-dom";
 
 import { addCompareSnapshotCommand } from "cypress-visual-regression/dist/command";
 

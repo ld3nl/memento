@@ -35,3 +35,9 @@
 //     }
 //   }
 // }
+
+import { addCompareSnapshotCommand } from "cypress-visual-regression/dist/command";
+
+addCompareSnapshotCommand({
+  capture: "fullPage", // or any other capture mode you need
+});

@@ -1,5 +1,5 @@
 import { LabeledInputProps } from "../lib/types";
-import { memo, useId } from 'react';
+import { memo, useId } from "react";
 
 // Suggestions for using React 19 and Next.js 15:
 // 1. Use memo to optimize rendering performance
@@ -13,6 +13,7 @@ import { memo, useId } from 'react';
 // 9. Use the new parallel routing feature for complex UI states if applicable
 // 10. Consider using the useFormStatus hook for better form UX if this is part of a form
 
+// LabeledInput component to display a labeled input field
 const LabeledInput: React.FC<LabeledInputProps> = ({
   labelString,
   inputId,
@@ -41,6 +42,6 @@ const LabeledInput: React.FC<LabeledInputProps> = ({
   </div>
 );
 
-LabeledInput.displayName = 'LabeledInput';
+LabeledInput.displayName = "LabeledInput";
 
 export default LabeledInput;
