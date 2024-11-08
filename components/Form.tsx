@@ -1,62 +1,18 @@
 "use client";
 // import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { parse, intervalToDuration } from "date-fns";
+
+import { generateUrl, yeasAlive } from "../lib/common";
+
 import LabeledInput from "./LabeledInput";
 
-// Suggestions for using React 19 and Next.js 15:
-// 1. Use the new useFormState hook for form state management
-// 2. Implement Server Actions for form submissions
-// 3. Utilize the useOptimistic hook for optimistic UI updates
-// 4. Use the new useFormStatus hook for better form UX
-// 5. Implement Suspense boundaries for improved loading states
-// 6. Take advantage of the new streaming SSR capabilities
-// 7. Use the improved Image component for better image optimization
-// 8. Leverage the new app directory structure for better organization
-// 9. Implement parallel routing for more complex UI states
-// 10. Use the new error.js file for custom error handling
-
 const Form = () => {
-  // const router = useRouter();
   const [name, setName] = useState("");
   const [date, setDate] = useState(null);
 
-  const calculateFullAge = (dob) => {
-    const birthDate = parse(dob, "yyyy-MM-dd", new Date());
-    const { years, months, days } = intervalToDuration({
-      start: birthDate,
-      end: new Date(),
-    });
-    return { years, months, days };
-  };
-
-  const yeasAlive = (dob) => {
-    (!dob || dob === "") && "Enter valid date";
-
-    const { years, months, days } = calculateFullAge(dob);
-
-    return `${years} years, ${months} months, ${days} days`;
-  };
-
-  const generateUrl = (date, name) => {
-    return `/table${date ? `/${date.split("-").join("/")}` : ""}${
-      name ? `?name=${encodeURIComponent(name)}` : ""
-    }`;
-  };
-  // const handleClick = (e) => {
-  //   e.preventDefault();
-
-  //   // Construct the URL string manually to avoid type errors
-  //   const url = `/table${date ? `/${date.split("-").join("/")}` : ""}${
-  //     name ? `?name=${encodeURIComponent(name)}` : ""
-  //   }`;
-
-  // router.push(url);
-  // };
-
   return (
     <form
-      className="w-full max-w-md"
+      className="w-full max-w-md m-auto"
       data-cy={"bday-form"}
       action={`${generateUrl(date, name)}`}
     >
@@ -137,46 +93,3 @@ const Form = () => {
 };
 
 export default Form;
-
-// Additional detailed suggestions for using React 19 and Next.js 15:
-// 1. Implement Server Actions:
-//    - Create a server action for form submission in a separate file (e.g., actions.js)
-//    - Use the 'use server' directive at the top of the file
-//    - Replace the handleClick function with a server action
-//
-// 2. Use the useFormState hook:
-//    - Import useFormState from 'react-dom'
-//    - Replace useState for form state management
-//    - This will provide better integration with server actions
-//
-// 3. Implement the useFormStatus hook:
-//    - Import useFormStatus from 'react-dom'
-//    - Use it to show loading states during form submission
-//
-// 4. Utilize Suspense boundaries:
-//    - Wrap dynamic content in Suspense components
-//    - Provide fallback UI for loading states
-//
-// 5. Implement parallel routing:
-//    - Create a more complex UI with multiple simultaneous pages
-//    - Use the new folder structure (@folder) for parallel routes
-//
-// 6. Leverage the new app directory structure:
-//    - Move this component to app/components/Form.tsx
-//    - Create a separate route handler in app/api/form/route.ts
-//
-// 7. Implement error handling:
-//    - Create an error.js file in the same directory as your page
-//    - Provide custom error UI and logic
-//
-// 8. Use the new Image component:
-//    - If you need to display images, use the optimized Next.js Image component
-//    - Import from 'next/image'
-//
-// 9. Implement streaming SSR:
-//    - Use React.lazy() for component-level code splitting
-//    - Implement <Suspense> boundaries around lazy-loaded components
-//
-// 10. Optimize with React Server Components:
-//     - Convert non-interactive parts of your form to Server Components
-//     - This can improve performance and reduce client-side JavaScript
