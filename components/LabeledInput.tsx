@@ -1,5 +1,7 @@
 import { LabeledInputProps } from "../lib/types";
+import { memo, useId } from "react";
 
+// LabeledInput component to display a labeled input field
 const LabeledInput: React.FC<LabeledInputProps> = ({
   labelString,
   inputId,
@@ -27,5 +29,7 @@ const LabeledInput: React.FC<LabeledInputProps> = ({
     </div>
   </div>
 );
+
+LabeledInput.displayName = "LabeledInput";
 
 export default LabeledInput;

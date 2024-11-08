@@ -7,6 +7,23 @@ import DecadeGrid from "./DecadeGrid";
 
 import { LifeTableProps } from "../lib/types";
 
+// Suggestions for using React 19 and Next.js 15:
+// 1. Use the new 'use' hook for data fetching in Server Components
+// 2. Implement Server Components for improved performance
+// 3. Utilize Suspense boundaries for better loading states
+// 4. Take advantage of automatic code splitting and lazy loading
+// 5. Use the new app directory structure for better organization
+// 6. Implement parallel routing for more complex UI states
+// 7. Use the new error.js file for custom error handling
+// 8. Leverage the improved TypeScript support
+// 9. Utilize the new Image component for optimized images if needed
+// 10. Implement streaming SSR for improved performance
+// 11. Use React Server Components for data fetching and rendering
+// 12. Implement the new useFormState hook for form state management
+// 13. Use the useOptimistic hook for optimistic UI updates
+// 14. Implement Server Actions for form submissions
+// 15. Use the new useFormStatus hook for better form UX
+
 const LifeTable = ({ dob }: LifeTableProps) => {
   const today = new Date();
   const lastYear = subDays(today, 365).getFullYear();

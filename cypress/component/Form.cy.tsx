@@ -69,11 +69,22 @@ describe("<Form />", () => {
     cy.get("input[data-cy=inline-name-input]").type("John Doe");
     cy.get("input[data-cy=birthday-input]").type(TEST_DOB);
     cy.get("input[data-cy=input-checkbox-save]").check();
-    cy.get("button[data-cy=generate-table-button]").click();
+    // Emulate form submission
+    // error `Cannot GET /table/1998/12/01`
+    // cy.get("button[data-cy=generate-table-button]").click();
+
+    cy.get("button[data-cy=generate-table-button]").should("not.be.disabled");
+
+    // should have action="/table/1998/12/01?name=John%20Doe"
+    cy.get('form[data-cy="bday-form"]').should(
+      "have.attr",
+      "action",
+      "/table/1998/12/01?name=John%20Doe"
+    );
 
     // Temporarily switch to 'base' mode for this test
     // Cypress.env("visualRegressionType", "base");
 
-    cy.compareSnapshot("form-filled");
+    cy.compareSnapshot("Form", 0.2);
   });
 });

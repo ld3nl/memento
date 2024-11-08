@@ -1,4 +1,5 @@
-import type { Config } from "tailwindcss";
+// import type { Config } from "tailwindcss";
+import type { Config } from "./node_modules/tailwindcss/dist/lib.d.mts";
 
 const config: Config = {
   content: [

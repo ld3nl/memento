@@ -23,7 +23,11 @@ import "./commands";
 
 // import { mount } from "cypress/react";
 import { mount } from "cypress/react18";
+
 import { addCompareSnapshotCommand } from "cypress-visual-regression/dist/command";
+
+// Import MountReactComponentOptions
+import { MountReactComponentOptions, MountReturn } from "cypress/react";
 
 // Augment the Cypress namespace to include type definitions for
 // your custom command.
@@ -32,7 +36,15 @@ import { addCompareSnapshotCommand } from "cypress-visual-regression/dist/comman
 declare global {
   namespace Cypress {
     interface Chainable {
-      mount: typeof mount;
+      /**
+       * Mounts a React node
+       * @param component React Node to mount
+       * @param options Additional options to pass into mount
+       */
+      mount(
+        component: React.ReactNode,
+        options?: Partial<MountReactComponentOptions>
+      ): Cypress.Chainable<MountReturn>;
     }
   }
 }
