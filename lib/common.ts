@@ -1,6 +1,6 @@
 import { parse, intervalToDuration } from "date-fns";
 
-export const calculateFullAge = (dob, format) => {
+export const calculateFullAge = (dob, format = "yyyy-MM-dd") => {
   const birthDate = parse(dob, format ? format : "yyyy-MM-dd", new Date());
   const { years, months, days } = intervalToDuration({
     start: birthDate,

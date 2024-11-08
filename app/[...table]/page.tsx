@@ -6,7 +6,7 @@ import LifeTable from "../../components/LifeTable";
 
 // Define the structure for your route params
 interface Props {
-  params: { table: string };
+  params: Promise<{ table: string }>;
 }
 
 export async function generateMetadata(
@@ -16,7 +16,6 @@ export async function generateMetadata(
   // Extract the birth date from params
   const awaitedParams = await params;
   const urlDateParam = awaitedParams?.table.slice(1);
-  const birthDate = new Date(urlDateParam);
 
   const { years, months, days } = calculateFullAge(
     urlDateParam.toString(),
