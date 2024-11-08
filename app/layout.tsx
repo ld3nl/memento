@@ -119,6 +119,9 @@ export const metadata = {
     ],
   },
   manifest: "/manifest.json",
+  verification: {
+    google: "v2sHI7uXGFwijEqESYGy_2yrSbDW6lzLolCzZUl-ttw",
+  },
 };
 
 type RootLayoutProps = {
