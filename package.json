@@ -17,6 +17,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@next/third-parties": "^15.0.3",
     "@tailwindcss/postcss": "4.0.0-alpha.26",
     "babel-plugin-react-compiler": "0.0.0-experimental-b4db8c3-20241001",
     "cypress-visual-regression": "^5.2.2",

@@ -1,4 +1,5 @@
 import "../styles/globals.css";
+import { GoogleTagManager } from "@next/third-parties/google";
 
 export const metadata = {
   title: "Memento Mori Online Table Generator - Calculate Your Life in Weeks",
@@ -119,6 +120,9 @@ export const metadata = {
     ],
   },
   manifest: "/manifest.json",
+  verification: {
+    google: "v2sHI7uXGFwijEqESYGy_2yrSbDW6lzLolCzZUl-ttw",
+  },
 };
 
 type RootLayoutProps = {
@@ -130,6 +134,8 @@ export default async function RootLayout({ children }: RootLayoutProps) {
     <html lang="en">
       <body className="bg-white dark:bg-black flex min-h-screen">
         {children}
+        {/* <GoogleAnalytics gaId="G-XXXXXXXXXX" /> */}
+        <GoogleTagManager gtmId="G-CYT1S2EC6W" />
       </body>
     </html>
   );
