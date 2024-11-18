@@ -20,6 +20,12 @@ const DecadeGrid = memo(
     const decadeYears = useMemo(() => {
       return Array.from({ length: decadeLength }, (_, decadeIndex) => {
         const currentDecadeYear = decadeIndex + 1 + yearIndex * decadeLength;
+
+        // const isFilled =
+        //   yeasAlive >= currentDecadeYear ||
+        //   (yeasAlive === currentDecadeYear && weeksFromLastBday >= 52);
+
+        // console.log("isFilled", isFilled);
         return (
           <YearGrid
             key={`decade-${decadeIndex}`}
