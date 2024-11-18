@@ -4,6 +4,10 @@ const nextConfig = {
       compilationMode: "annotation",
     },
   },
+  // Configure image domains to avoid invalid src prop error
+  images: {
+    domains: ["utfs.io"],
+  },
   async rewrites() {
     return [
       {

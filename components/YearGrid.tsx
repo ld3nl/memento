@@ -1,3 +1,5 @@
+"use client";
+
 import Week from "./Week";
 import { YearGridProps } from "../lib/types";
 

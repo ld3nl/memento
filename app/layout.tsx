@@ -1,5 +1,14 @@
 import "../styles/globals.css";
 import { GoogleTagManager } from "@next/third-parties/google";
+import type { Viewport } from "next";
+
+// Define viewport settings for responsive design
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1.0,
+  maximumScale: 5.0,
+  userScalable: false,
+};
 
 export const metadata = {
   title: "Memento Mori Online Table Generator - Calculate Your Life in Weeks",

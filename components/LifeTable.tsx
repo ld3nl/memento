@@ -1,7 +1,10 @@
+"use client";
 import {
   differenceInCalendarISOWeekYears,
   differenceInCalendarISOWeeks,
   subDays,
+  getDate,
+  getMonth,
 } from "date-fns";
 import DecadeGrid from "./DecadeGrid";
 
@@ -26,14 +29,16 @@ import { LifeTableProps } from "../lib/types";
 
 const LifeTable = ({ dob }: LifeTableProps) => {
   const today = new Date();
-  const lastYear = subDays(today, 365).getFullYear();
+  const lastYear = subDays(today, 365).getFullYear() + 1;
+
+  const dobDate = new Date(dob);
 
   const weeksFromLastBday = differenceInCalendarISOWeeks(
     new Date(),
-    new Date(lastYear, 12, 17)
+    new Date(lastYear, getMonth(dobDate), getDate(dobDate))
   );
 
-  const yeasAlive = differenceInCalendarISOWeekYears(today, new Date(dob)) - 1;
+  const yeasAlive = differenceInCalendarISOWeekYears(today, dobDate) - 1;
 
   // loop 52 weeks
   const weeks = Array.from({ length: 52 }, (_, i) => i + 1);
