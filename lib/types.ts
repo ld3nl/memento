@@ -35,6 +35,7 @@ export type YearGridProps = {
 };
 
 export type WeekProps = {
+  className?: string;
   weekIndex: number;
   isFilled: boolean;
   yearsAlive?: string;

@@ -52,10 +52,26 @@ const TablePage = async ({ params }) => {
   const birthDate = new Date(awaitedParams?.table.slice(1));
 
   return (
-    <div className="p-2 m-auto">
+    <div className="group p-2 m-auto">
       <h1 className="text-3xl text-black dark:text-purple-500 text-center mb-4 font-stretch-95%">
         Memento Mori
       </h1>
+      <div className="grid gap-y-2 mb-4">
+        <div className="grid grid-cols-52 w-[52rem] mx-auto justify-end">
+          <div className="col-end-53 col-span-1">
+            <input
+              type="checkbox"
+              id="customCheckbox"
+              className="peer hidden"
+            />
+            <label
+              htmlFor="customCheckbox"
+              className="ms-auto relative cursor-pointer flex size-2 border border-black dark:border-purple-500 dark:peer-checked:bg-white dark:peer-checked:border-white peer-checked:bg-black peer-checked:border-black"
+            ></label>
+          </div>
+        </div>
+      </div>
+
       <LifeTable dob={birthDate} />
     </div>
   );
