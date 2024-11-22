@@ -56,7 +56,7 @@ const TablePage = async ({ params }) => {
       <h1 className="text-3xl text-black dark:text-purple-500 text-center mb-4 font-stretch-95%">
         Memento Mori
       </h1>
-      <div className="grid gap-y-2 mb-4">
+      {/* <div className="grid gap-y-2 mb-4">
         <div className="grid grid-cols-52 w-[52rem] mx-auto justify-end">
           <div className="col-end-53 col-span-1">
             <input
@@ -70,7 +70,7 @@ const TablePage = async ({ params }) => {
             ></label>
           </div>
         </div>
-      </div>
+      </div> */}
 
       <LifeTable dob={birthDate} />
     </div>
