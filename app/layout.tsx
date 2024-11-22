@@ -142,7 +142,7 @@ type RootLayoutProps = {
 export default async function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en">
-      <body className="bg-white dark:bg-black flex min-h-screen">
+      <body className="bg-white dark:bg-black flex-col min-h-screen">
         {children}
         {/* <GoogleAnalytics gaId="G-XXXXXXXXXX" /> */}
         <Analytics />
