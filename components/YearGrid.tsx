@@ -6,7 +6,7 @@ import { YearGridProps } from "../lib/types";
 // YearGrid component to display a grid of weeks for a year
 const YearGrid = ({
   weeks,
-  yeasAlive,
+  yearsAlive,
   currentDecadeYear,
   weeksFromLastBday,
 }: YearGridProps) => {
@@ -15,12 +15,20 @@ const YearGrid = ({
       {weeks.map((weekIndex) => {
         // Determine if the week should be filled based on the years alive and weeks from the last birthday
         const isFilled =
-          yeasAlive >= currentDecadeYear ||
-          (yeasAlive + 1 === currentDecadeYear &&
+          yearsAlive >= currentDecadeYear ||
+          (yearsAlive + 1 === currentDecadeYear &&
             weeksFromLastBday >= weekIndex);
 
+        // console.log("currentDecadeYear", currentDecadeYear);
         return (
-          <Week key={weekIndex} weekIndex={weekIndex} isFilled={isFilled} />
+          <Week
+            key={weekIndex}
+            weekIndex={weekIndex}
+            isFilled={isFilled}
+            {...(weekIndex === 52
+              ? { yearsAlive: `${currentDecadeYear} yo` }
+              : {})}
+          />
         );
       })}
     </div>

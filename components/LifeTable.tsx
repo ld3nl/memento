@@ -94,7 +94,7 @@ const LifeTable = ({ dob }: LifeTableProps) => {
           <DecadeGrid
             decadeLength={decadeLength}
             weeks={weeks}
-            yeasAlive={yearsAlive}
+            yearsAlive={yearsAlive}
             yearIndex={yearIndex}
             weeksFromLastBday={weeksFromBirthday}
           />

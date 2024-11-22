@@ -4,7 +4,7 @@ import DecadeGrid from "../../components/DecadeGrid";
 describe("DecadeGrid Component", () => {
   const decadeLength = 10;
   const weeks = Array.from({ length: 52 }, (_, i) => i + 1);
-  const yeasAlive = 10;
+  const yearsAlive = 10;
   const yearIndex = 1;
   const weeksFromLastBday = 10;
 
@@ -13,7 +13,7 @@ describe("DecadeGrid Component", () => {
       <DecadeGrid
         decadeLength={decadeLength}
         weeks={weeks}
-        yeasAlive={yeasAlive}
+        yearsAlive={yearsAlive}
         yearIndex={yearIndex}
         weeksFromLastBday={weeksFromLastBday}
       />

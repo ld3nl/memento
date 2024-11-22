@@ -3,7 +3,7 @@ import YearGrid from "../../components/YearGrid";
 
 describe("YearGrid Component", () => {
   const weeks = Array.from({ length: 52 }, (_, i) => i + 1);
-  const yeasAlive = 30;
+  const yearsAlive = 30;
   const currentDecadeYear = 31;
   const weeksFromLastBday = 10;
 
@@ -11,7 +11,7 @@ describe("YearGrid Component", () => {
     cy.mount(
       <YearGrid
         weeks={weeks}
-        yeasAlive={yeasAlive}
+        yearsAlive={yearsAlive}
         currentDecadeYear={currentDecadeYear}
         weeksFromLastBday={weeksFromLastBday}
       />
@@ -25,7 +25,7 @@ describe("YearGrid Component", () => {
     cy.mount(
       <YearGrid
         weeks={weeks}
-        yeasAlive={yeasAlive}
+        yearsAlive={yearsAlive}
         currentDecadeYear={currentDecadeYear}
         weeksFromLastBday={weeksFromLastBday}
       />

@@ -10,7 +10,7 @@ const DecadeGrid = memo(
   ({
     decadeLength,
     weeks,
-    yeasAlive,
+    yearsAlive,
     yearIndex,
     weeksFromLastBday,
   }: DecadeGridProps) => {
@@ -22,21 +22,21 @@ const DecadeGrid = memo(
         const currentDecadeYear = decadeIndex + 1 + yearIndex * decadeLength;
 
         // const isFilled =
-        //   yeasAlive >= currentDecadeYear ||
-        //   (yeasAlive === currentDecadeYear && weeksFromLastBday >= 52);
+        //   yearsAlive >= currentDecadeYear ||
+        //   (yearsAlive === currentDecadeYear && weeksFromLastBday >= 52);
 
         // console.log("isFilled", isFilled);
         return (
           <YearGrid
             key={`decade-${decadeIndex}`}
             weeks={weeks}
-            yeasAlive={yeasAlive}
+            yearsAlive={yearsAlive}
             currentDecadeYear={currentDecadeYear}
             weeksFromLastBday={weeksFromLastBday}
           />
         );
       });
-    }, [decadeLength, weeks, yeasAlive, yearIndex, weeksFromLastBday]);
+    }, [decadeLength, weeks, yearsAlive, yearIndex, weeksFromLastBday]);
 
     return <>{isPending ? <div>Loading...</div> : decadeYears}</>;
   }

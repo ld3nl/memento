@@ -11,7 +11,7 @@
 export type LabeledInputProps = {
   labelString: string;
   inputId: string;
-  inputType: 'text' | 'number' | 'date' | 'email'; // Use literal types for more precise typing
+  inputType: "text" | "number" | "date" | "email"; // Use literal types for more precise typing
   inputProps?: Record<string, unknown>; // Use Record type instead of 'any' for better type safety
 };
 
@@ -22,14 +22,14 @@ export type LifeTableProps = {
 export type DecadeGridProps = {
   decadeLength: number;
   weeks: readonly number[]; // Use readonly for immutable arrays
-  yeasAlive: number;
+  yearsAlive: number;
   yearIndex: number;
   weeksFromLastBday: number;
 };
 
 export type YearGridProps = {
   weeks: readonly number[]; // Use readonly for immutable arrays
-  yeasAlive: number;
+  yearsAlive: number;
   currentDecadeYear: number;
   weeksFromLastBday: number;
 };
@@ -37,18 +37,29 @@ export type YearGridProps = {
 export type WeekProps = {
   weekIndex: number;
   isFilled: boolean;
+  yearsAlive?: string;
 };
 
 // Example of using const assertions and satisfies operator
-export const WEEK_DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] as const;
-export type WeekDay = typeof WEEK_DAYS[number];
+export const WEEK_DAYS = [
+  "Mon",
+  "Tue",
+  "Wed",
+  "Thu",
+  "Fri",
+  "Sat",
+  "Sun",
+] as const;
+export type WeekDay = (typeof WEEK_DAYS)[number];
 
 // Example of using template literal types
 export type DateString = `${number}-${number}-${number}`;
 
 // Example of using 'in' operator narrowing
-export function isYearGridProps(props: DecadeGridProps | YearGridProps): props is YearGridProps {
-  return 'currentDecadeYear' in props;
+export function isYearGridProps(
+  props: DecadeGridProps | YearGridProps
+): props is YearGridProps {
+  return "currentDecadeYear" in props;
 }
 
 // Example of using mapped type 'as' clauses

@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 
-import { generateUrl, yeasAlive } from "../lib/common";
+import { generateUrl, yearsAlive } from "../lib/common";
 
 import LabeledInput from "./LabeledInput";
 
@@ -70,7 +70,7 @@ const Form = () => {
             </div>
 
             <div className="md:w-2/3 dark:text-white" data-cy={`age`}>
-              {date && `${yeasAlive(date)} young?`}
+              {date && `${yearsAlive(date)} young?`}
             </div>
           </div>
           <div className="md:flex md:items-center mb-6">
