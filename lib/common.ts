@@ -9,8 +9,12 @@ export const calculateFullAge = (dob, format = "yyyy-MM-dd") => {
   return { years, months, days };
 };
 
-export const yearsAlive = (dob) => {
-  (!dob || dob === "") && "Enter valid date";
+export const get_years_alive = (dob) => {
+  // Validate date of birth
+  if (!dob || dob === "") {
+    console.error("Enter valid date");
+    return;
+  }
 
   const { years, months, days } = calculateFullAge(dob);
 

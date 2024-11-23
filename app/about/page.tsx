@@ -34,8 +34,8 @@ const Page = () => {
         <p className="mb-6">
           Welcome to the Daily Stoic Memento Mori Calendar, a unique digital
           companion designed to intertwine the timeless wisdom of Stoicism with
-          the poignant reminder of our mortality. Here, each day isn't just
-          another date on the calendar; it's an opportunity to live with
+          the poignant reminder of our mortality. Here, each day isn&apos;t just
+          another date on the calendar; it&apos;s an opportunity to live with
           intention, virtue, and resilience.
         </p>
 
@@ -44,12 +44,12 @@ const Page = () => {
         </h2>
 
         <p className="mb-6">
-          We've poured our hearts into crafting this calendar, ensuring every
-          pixel reflects the tranquility of nature's finest moments—like the
-          quiet beauty of a sunrise or the reflective calm of a sunset over the
-          ocean. With its soothing color schemes and natural imagery, this
-          calendar isn't just a tool; it's a sanctuary for your daily
-          reflections.
+          We&apos;ve poured our hearts into crafting this calendar, ensuring
+          every pixel reflects the tranquility of nature&apos;s finest
+          moments—like the quiet beauty of a sunrise or the reflective calm of a
+          sunset over the ocean. With its soothing color schemes and natural
+          imagery, this calendar isn&apos;t just a tool; it&apos;s a sanctuary
+          for your daily reflections.
         </p>
 
         <p className="mb-4">
@@ -63,10 +63,10 @@ const Page = () => {
             end your day.
           </li>
           <li>
-            <strong>Seamless Experience:</strong> Whether you're on your phone
-            or desktop, the interface is intuitive, making Stoic wisdom easily
-            accessible. Dive into quotes, ponder over reflections, all within a
-            beautifully crafted digital space.
+            <strong>Seamless Experience:</strong> Whether you&apos;re on your
+            phone or desktop, the interface is intuitive, making Stoic wisdom
+            easily accessible. Dive into quotes, ponder over reflections, all
+            within a beautifully crafted digital space.
           </li>
         </ul>
 
@@ -76,12 +76,12 @@ const Page = () => {
           </h2>
 
           <p className="mb-6">
-            Stoicism isn't just philosophy; it's a way of life that has inspired
-            giants like Steve Jobs and Leo Tolstoy. Through our calendar, you'll
-            journey with the teachings of Marcus Aurelius, Seneca, and
-            Epictetus. Their words, brought to you daily, serve as a bridge
-            between ancient wisdom and contemporary living, helping you navigate
-            life's challenges with grace.
+            Stoicism isn&apos;t just philosophy; it&apos;s a way of life that
+            has inspired giants like Steve Jobs and Leo Tolstoy. Through our
+            calendar, you&apos;ll journey with the teachings of Marcus Aurelius,
+            Seneca, and Epictetus. Their words, brought to you daily, serve as a
+            bridge between ancient wisdom and contemporary living, helping you
+            navigate life&apos;s challenges with grace.
           </p>
         </section>
 
@@ -103,11 +103,11 @@ const Page = () => {
           <p className="mb-6">
             The concept for this calendar was sparked during contemplative walks
             in nature, where the fleeting beauty of life becomes starkly
-            apparent. It's crafted for those who seek to live with more
-            intention, to remember life's brevity, and to make each day count.
-            This calendar isn't just a reminder to live; it's an invitation to
-            grow, to reflect, and to embrace the essence of Stoicism and Memento
-            Mori.
+            apparent. It&apos;s crafted for those who seek to live with more
+            intention, to remember life&apos;s brevity, and to make each day
+            count. This calendar isn&apos;t just a reminder to live; it&apos;s
+            an invitation to grow, to reflect, and to embrace the essence of
+            Stoicism and Memento Mori.
           </p>
 
           <Image

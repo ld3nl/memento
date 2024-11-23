@@ -3,8 +3,6 @@ import { WeekProps } from "../lib/types";
 
 // Week component to display a single week with conditional styling
 const Week = ({ weekIndex, isFilled, yearsAlive, className }: WeekProps) => {
-  const firstIndexOfFirstDecade = [1];
-
   return (
     <div
       className={[

@@ -1,4 +1,4 @@
-import { Metadata, ResolvingMetadata } from "next";
+import { Metadata } from "next";
 
 import { calculateFullAge } from "../../lib/common";
 
@@ -9,18 +9,12 @@ interface Props {
   params: Promise<{ table: string }>;
 }
 
-export async function generateMetadata(
-  { params }: Props,
-  parent: ResolvingMetadata
-): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // Extract the birth date from params
   const awaitedParams = await params;
   const urlDateParam = awaitedParams?.table.slice(1);
 
-  const { years, months, days } = calculateFullAge(
-    urlDateParam.toString(),
-    "yyyy,MM,dd"
-  );
+  const { years } = calculateFullAge(urlDateParam.toString(), "yyyy,MM,dd");
 
   const age = years;
   const potentialYearsLeft = Math.max(80 - years, 0); // Assuming 80 as life expectancy
