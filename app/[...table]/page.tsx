@@ -47,7 +47,7 @@ const TablePage = async ({ params }) => {
 
   return (
     <div className="group p-2 m-auto">
-      <h1 className="text-3xl text-black dark:text-purple-500 text-center mb-4 font-stretch-95%">
+      <h1 className="font-serif leading-8 font-semibold tracking-wide text-2xl mb-8 text-black dark:text-purple-500 text-center">
         Memento Mori
       </h1>
       {/* <div className="grid gap-y-2 mb-4">

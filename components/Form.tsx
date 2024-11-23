@@ -30,8 +30,7 @@ const Form = () => {
         >
           <div className="md:flex md:items-center mb-6">
             <div className="md:w-1/3"></div>
-
-            <h1 className="md:w-2/3 block text-gray-500 font-bold lg:text-left mb-1 md:mb-0 pr-4 text-3xl sm:text-center">
+            <h1 className="font-serif md:w-2/3  text-black dark:text-purple-500 font-semibold lg:text-left mb-8 md:mb-0 pr-4  text-2xl sm:text-center">
               Memento mori form {name && `for ${name}`}
             </h1>
           </div>

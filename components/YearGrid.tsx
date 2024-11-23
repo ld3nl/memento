@@ -25,8 +25,9 @@ const YearGrid = ({
             key={weekIndex}
             weekIndex={weekIndex}
             isFilled={isFilled}
-            {...(weekIndex === 52
-              ? { yearsAlive: `${currentDecadeYear} yo` }
+            {...(weekIndex === 52 &&
+            (currentDecadeYear % 5 === 0 || currentDecadeYear === 1)
+              ? { yearsAlive: `${currentDecadeYear}` }
               : {})}
           />
         );
