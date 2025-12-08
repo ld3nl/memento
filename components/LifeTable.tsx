@@ -6,9 +6,8 @@ import {
   getMonth,
   isValid,
 } from "date-fns";
+import type { LifeTableProps } from "../lib/types";
 import DecadeGrid from "./DecadeGrid";
-
-import { LifeTableProps } from "../lib/types";
 
 const TODAY = new Date();
 
@@ -87,8 +86,8 @@ const LifeTable = ({ dob }: LifeTableProps) => {
     <>
       {Array.from({ length: yearsInLifetime }, (_, yearIndex) => (
         <div
-          key={`year-${yearIndex}`}
-          className="grid gap-y-2 mb-4"
+          key={yearIndex}
+          className="mb-4 grid gap-y-2"
           data-cy={"life-table"}
         >
           <DecadeGrid

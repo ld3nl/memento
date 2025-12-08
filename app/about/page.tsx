@@ -1,6 +1,7 @@
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import BackButton from "../../components/BackButton";
 
 // Add metadata for SEO
 export const metadata: Metadata = {
@@ -12,22 +13,24 @@ export const metadata: Metadata = {
 
 const Page = () => {
   return (
-    <main
-      id="main-content"
-      aria-label="About page content"
-      className="dark:text-purple-500 text-base/7 leading-relaxed max-w-prose mx-auto px-4 py-8 text-justify"
-    >
+    <>
+      <BackButton />
+      <main
+        id="main-content"
+        aria-label="About page content"
+        className="mx-auto max-w-prose px-4 py-8 text-justify text-base/7 leading-relaxed dark:text-purple-500"
+      >
       <article itemScope itemType="http://schema.org/Article">
         <Image
           src="https://utfs.io/f/vfxFGWyJBql9tjBcWhLA6EWr7SI90xRVulwdUhnPDQs8kcH3"
           alt="A human skull is centrally placed, adorned with a wreath of red, pink, and white flowers, surrounded by green foliage. A white bird, possibly a dove or egret, stands to the left among the flowers. The background is dark, framed by a decorative border, enhancing the contrast with the vibrant flowers."
           width={730}
           height={548}
-          className="rounded-lg mb-6"
+          className="mb-6 rounded-lg"
           priority={false}
         />
 
-        <h1 className="font-serif leading-8 font-semibold tracking-wide text-2xl mb-8">
+        <h1 className="mb-8 font-serif text-2xl leading-8 font-semibold tracking-wide">
           About Daily Stoic Memento Mori Calendar
         </h1>
 
@@ -39,7 +42,7 @@ const Page = () => {
           intention, virtue, and resilience.
         </p>
 
-        <h2 className="font-serif font-semibold tracking-wide text-xl mt-10 mb-4">
+        <h2 className="mt-10 mb-4 font-serif text-xl font-semibold tracking-wide">
           Thoughtful Design
         </h2>
 
@@ -56,7 +59,7 @@ const Page = () => {
           Our design philosophy embraces both form and function:
         </p>
 
-        <ul className="space-y-4 list-disc pl-6 mb-6">
+        <ul className="mb-6 list-disc space-y-4 pl-6">
           <li>
             <strong>Aesthetically Pleasing:</strong> Inspired by the peace found
             in nature, the visual design helps to calm your mind as you start or
@@ -71,7 +74,7 @@ const Page = () => {
         </ul>
 
         <section aria-label="Stoicism and Memento Mori">
-          <h2 className="font-serif font-semibold tracking-wide text-xl mt-10 mb-4">
+          <h2 className="mt-10 mb-4 font-serif text-xl font-semibold tracking-wide">
             Stoicism and Memento Mori
           </h2>
 
@@ -86,12 +89,12 @@ const Page = () => {
         </section>
 
         <section aria-label="Inspiration and Purpose">
-          <h2 className="font-serif font-semibold tracking-wide text-xl mt-10 mb-4">
+          <h2 className="mt-10 mb-4 font-serif text-xl font-semibold tracking-wide">
             Inspiration and Purpose
           </h2>
 
           <Image
-            className="rounded-lg mb-6 ms-6 size-50 float-right"
+            className="float-right ms-6 mb-6 size-50 rounded-lg"
             src={
               "https://utfs.io/f/vfxFGWyJBql9iPL0zzmHfGMqUKyTLPZcjQwxsDBOXp4J2bCo"
             }
@@ -99,7 +102,7 @@ const Page = () => {
             height={1192}
             alt="A serene forest scene with tall trees and sunlight filtering through the canopy, creating a warm glow and dappled light effect on lush green foliage."
             priority={false}
-          ></Image>
+          />
           <p className="mb-6">
             The concept for this calendar was sparked during contemplative walks
             in nature, where the fleeting beauty of life becomes starkly
@@ -116,10 +119,10 @@ const Page = () => {
             }
             width={730}
             height={548}
-            className="rounded-lg mb-6 me-6 size-50 float-left"
+            className="float-left me-6 mb-6 size-50 rounded-lg"
             alt="A serene beach scene with the sun setting or rising over the ocean, casting a warm glow on the waves and the sandy shore. The sky is filled with orange, pink, and blue hues with scattered clouds, and a silhouette of hills on the left side."
             priority={false}
-          ></Image>
+          />
           <p>
             In our fast-paced world, where moments often slip by unnoticed, the
             Daily Stoic Memento Mori Calendar stands as your personal guide to
@@ -133,16 +136,8 @@ const Page = () => {
         <meta itemProp="datePublished" content={new Date().toISOString()} />
         <meta itemProp="author" content="Daily Stoic Memento Mori Team" />
       </article>
-
-      <div className="mt-8 text-center">
-        <Link
-          href="/"
-          className="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
-        >
-          Return to Calendar
-        </Link>
-      </div>
     </main>
+    </>
   );
 };
 

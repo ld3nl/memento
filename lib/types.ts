@@ -58,7 +58,7 @@ export type DateString = `${number}-${number}-${number}`;
 
 // Example of using 'in' operator narrowing
 export function isYearGridProps(
-  props: DecadeGridProps | YearGridProps
+  props: DecadeGridProps | YearGridProps,
 ): props is YearGridProps {
   return "currentDecadeYear" in props;
 }

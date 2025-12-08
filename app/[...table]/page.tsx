@@ -1,8 +1,7 @@
-import { Metadata } from "next";
-
-import { calculateFullAge } from "../../lib/common";
-
+import type { Metadata } from "next";
 import LifeTable from "../../components/LifeTable";
+import BackButton from "../../components/BackButton";
+import { calculateFullAge } from "../../lib/common";
 
 // Define the structure for your route params
 interface Props {
@@ -46,8 +45,9 @@ const TablePage = async ({ params }) => {
   const birthDate = new Date(awaitedParams?.table.slice(1));
 
   return (
-    <div className="group p-2 m-auto">
-      <h1 className="font-serif leading-8 font-semibold tracking-wide text-2xl mb-8 text-black dark:text-purple-500 text-center">
+    <div className="group m-auto p-2">
+      <BackButton />
+      <h1 className="mb-8 text-center font-serif text-2xl leading-8 font-semibold tracking-wide text-black dark:text-purple-500">
         Memento Mori
       </h1>
       {/* <div className="grid gap-y-2 mb-4">

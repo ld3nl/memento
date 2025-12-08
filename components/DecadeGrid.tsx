@@ -1,9 +1,8 @@
 "use client";
 
+import { memo, useMemo, useTransition } from "react";
+import type { DecadeGridProps } from "../lib/types";
 import YearGrid from "./YearGrid";
-import { DecadeGridProps } from "../lib/types";
-import { memo, useMemo } from "react";
-import { useTransition } from "react";
 
 // DecadeGrid component to display a grid of years for a decade
 const DecadeGrid = memo(
@@ -28,7 +27,7 @@ const DecadeGrid = memo(
         // console.log("isFilled", isFilled);
         return (
           <YearGrid
-            key={`decade-${decadeIndex}`}
+            key={currentDecadeYear}
             weeks={weeks}
             yearsAlive={yearsAlive}
             currentDecadeYear={currentDecadeYear}
@@ -39,7 +38,7 @@ const DecadeGrid = memo(
     }, [decadeLength, weeks, yearsAlive, yearIndex, weeksFromLastBday]);
 
     return <>{isPending ? <div>Loading...</div> : decadeYears}</>;
-  }
+  },
 );
 
 DecadeGrid.displayName = "DecadeGrid";

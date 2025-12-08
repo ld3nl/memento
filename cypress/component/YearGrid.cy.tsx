@@ -14,7 +14,7 @@ describe("YearGrid Component", () => {
         yearsAlive={yearsAlive}
         currentDecadeYear={currentDecadeYear}
         weeksFromLastBday={weeksFromLastBday}
-      />
+      />,
     );
 
     // Check if the grid has 52 weeks
@@ -28,7 +28,7 @@ describe("YearGrid Component", () => {
         yearsAlive={yearsAlive}
         currentDecadeYear={currentDecadeYear}
         weeksFromLastBday={weeksFromLastBday}
-      />
+      />,
     );
 
     // Check if the correct weeks are filled

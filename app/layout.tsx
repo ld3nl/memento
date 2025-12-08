@@ -1,7 +1,7 @@
 import "../styles/globals.css";
 import { GoogleTagManager } from "@next/third-parties/google";
-import type { Viewport } from "next";
 import { Analytics } from "@vercel/analytics/react";
+import type { Viewport } from "next";
 
 // Define viewport settings for responsive design
 export const viewport: Viewport = {
@@ -142,7 +142,7 @@ type RootLayoutProps = {
 export default async function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en">
-      <body className="bg-white dark:bg-black flex-col min-h-screen">
+      <body className="min-h-screen flex-col bg-white dark:bg-black">
         {children}
         {/* <GoogleAnalytics gaId="G-XXXXXXXXXX" /> */}
         <Analytics />

@@ -1,7 +1,7 @@
 "use client";
 
+import type { YearGridProps } from "../lib/types";
 import Week from "./Week";
-import { YearGridProps } from "../lib/types";
 
 // YearGrid component to display a grid of weeks for a year
 const YearGrid = ({
@@ -11,7 +11,7 @@ const YearGrid = ({
   weeksFromLastBday,
 }: YearGridProps) => {
   return (
-    <div className={`grid grid-cols-52 w-[52rem] mx-auto`}>
+    <div className={"mx-auto grid w-[52rem] grid-cols-52"}>
       {weeks.map((weekIndex) => {
         // Determine if the week should be filled based on the years alive and weeks from the last birthday
         const isFilled =

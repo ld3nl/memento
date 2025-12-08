@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 
 import { generateUrl, getYearsAlive } from "../lib/common";
+import { cn } from "../lib/utils";
 
 import LabeledInput from "./LabeledInput";
 
@@ -13,7 +14,7 @@ const Form = () => {
 
   return (
     <>
-      <section className="w-full max-w-md m-auto sm:px-4 md:px-md-0">
+      <section className="md:px-md-0 m-auto w-full max-w-md sm:px-4">
         <header>
           <Image
             src="https://utfs.io/f/vfxFGWyJBql9xCI1QO2QPvwdGrZoHIKXJqsfUxy6C9SDnN7b"
@@ -28,9 +29,9 @@ const Form = () => {
           data-cy={"bday-form"}
           action={`${generateUrl(date, name)}`}
         >
-          <div className="md:flex md:items-center mb-6">
-            <div className="md:w-1/3"></div>
-            <h1 className="font-serif md:w-2/3  text-black dark:text-purple-500 font-semibold lg:text-left mb-8 md:mb-0 pr-4  text-2xl sm:text-center">
+          <div className="mb-6 md:flex md:items-center">
+            <div className="md:w-1/3" />
+            <h1 className="mb-8 pr-4 font-serif text-2xl font-semibold text-black sm:text-center md:mb-0 md:w-2/3 lg:text-left dark:text-purple-500">
               Memento mori form {name && `for ${name}`}
             </h1>
           </div>
@@ -57,43 +58,47 @@ const Form = () => {
               },
             }}
           />
-          <div className="md:flex md:items-center mb-6">
+          <div className="mb-6 md:flex md:items-center">
             <div className="md:w-1/3">
               <span
-                className={`block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4 transition-all ${
-                  !date && "opacity-0"
-                }`}
+                className={cn(
+                  "mb-1 block pr-4 font-bold text-gray-500 transition-all md:mb-0 md:text-right",
+                  { "opacity-0": !date },
+                )}
               >
                 Are you:
               </span>
             </div>
 
-            <div className="md:w-2/3 dark:text-white" data-cy={`age`}>
+            <div className="md:w-2/3 dark:text-white" data-cy={"age"}>
               {date && `${getYearsAlive(date)} young?`}
             </div>
           </div>
-          <div className="md:flex md:items-center mb-6">
-            <div className="md:w-1/3"></div>
-            <label className="md:w-2/3 block text-gray-500 font-bold">
+          <div className="mb-6 md:flex md:items-center">
+            <div className="md:w-1/3" />
+            <label className="block font-bold text-gray-500 md:w-2/3">
               <input
                 className="mr-2 leading-tight"
                 type="checkbox"
-                data-cy={`input-checkbox-save`}
+                data-cy={"input-checkbox-save"}
               />
               <span className="text-sm">Save</span>
             </label>
           </div>
           <div className="md:flex md:items-center">
-            <div className="md:w-1/3"></div>
+            <div className="md:w-1/3" />
             <div className="md:w-2/3">
               <button
-                className={`shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded ${
-                  !date &&
-                  "cursor-not-allowed focus:outline-none disabled:opacity-75"
-                }`}
+                className={cn(
+                  "focus:shadow-outline rounded bg-purple-500 px-4 py-2 font-bold text-white shadow hover:bg-purple-400 focus:outline-none",
+                  {
+                    "cursor-not-allowed focus:outline-none disabled:opacity-75":
+                      !date,
+                  },
+                )}
                 type="submit"
                 disabled={!date}
-                data-cy={`generate-table-button`}
+                data-cy={"generate-table-button"}
               >
                 Generate Table
               </button>

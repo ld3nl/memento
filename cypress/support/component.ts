@@ -21,13 +21,11 @@ import "./commands";
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
 
+// Import MountReactComponentOptions
+import type { MountReactComponentOptions, MountReturn } from "cypress/react";
 // import { mount } from "cypress/react";
 import { mount } from "cypress/react18";
-
 import { addCompareSnapshotCommand } from "cypress-visual-regression/dist/command";
-
-// Import MountReactComponentOptions
-import { MountReactComponentOptions, MountReturn } from "cypress/react";
 
 // Augment the Cypress namespace to include type definitions for
 // your custom command.
@@ -43,7 +41,7 @@ declare global {
        */
       mount(
         component: React.ReactNode,
-        options?: Partial<MountReactComponentOptions>
+        options?: Partial<MountReactComponentOptions>,
       ): Cypress.Chainable<MountReturn>;
     }
   }

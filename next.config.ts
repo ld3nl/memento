@@ -1,12 +1,15 @@
 const nextConfig = {
-  experimental: {
-    reactCompiler: {
-      compilationMode: "annotation",
-    },
+  reactCompiler: {
+    compilationMode: "annotation",
   },
   // Configure image domains to avoid invalid src prop error
   images: {
-    domains: ["utfs.io"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "utfs.io",
+      },
+    ],
   },
   async rewrites() {
     return [

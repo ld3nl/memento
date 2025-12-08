@@ -79,7 +79,7 @@ describe("<Form />", () => {
     cy.get('form[data-cy="bday-form"]').should(
       "have.attr",
       "action",
-      "/table/1998/12/01?name=John%20Doe"
+      "/table/1998/12/01?name=John%20Doe",
     );
 
     // Temporarily switch to 'base' mode for this test

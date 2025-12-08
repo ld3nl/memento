@@ -8,7 +8,7 @@ const Page = () => {
       <div className="my-3 text-center">
         <Link
           href="/about"
-          className=" text-black dark:text-purple-500 underline text-sm"
+          className="text-sm text-black underline dark:text-purple-500"
         >
           About this Calendar
         </Link>

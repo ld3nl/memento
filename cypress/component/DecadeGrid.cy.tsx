@@ -16,7 +16,7 @@ describe("DecadeGrid Component", () => {
         yearsAlive={yearsAlive}
         yearIndex={yearIndex}
         weeksFromLastBday={weeksFromLastBday}
-      />
+      />,
     );
 
     // Check if the grid has the correct number of years

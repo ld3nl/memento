@@ -12,7 +12,7 @@ describe("LabeledInput Component", () => {
         labelString={labelString}
         inputId={inputId}
         inputType={inputType}
-      />
+      />,
     );
 
     // Check if the label is rendered correctly
