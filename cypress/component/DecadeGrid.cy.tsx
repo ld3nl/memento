@@ -7,6 +7,7 @@ describe("DecadeGrid Component", () => {
     yearsAlive: 25,
     yearIndex: 0,
     weeksFromLastBday: 10,
+    daysIntoCurrentWeek: 3,
   };
 
   it("renders the correct number of year grids based on decadeLength", () => {

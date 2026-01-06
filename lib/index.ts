@@ -3,7 +3,7 @@
  */
 
 // Legacy exports (for backward compatibility)
-export * from "./common";
+// export * from "./common";
 export * from "./constants";
 // Specialized utilities
 export * from "./date-utils";

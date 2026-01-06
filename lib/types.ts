@@ -25,6 +25,7 @@ export type DecadeGridProps = {
   yearsAlive: number;
   yearIndex: number;
   weeksFromLastBday: number;
+  daysIntoCurrentWeek: number; // 1-7 representing day within current week
 };
 
 export type YearGridProps = {
@@ -32,6 +33,7 @@ export type YearGridProps = {
   yearsAlive: number;
   currentDecadeYear: number;
   weeksFromLastBday: number;
+  daysIntoCurrentWeek: number; // 1-7 representing day within current week
 };
 
 export type WeekProps = {
@@ -39,18 +41,12 @@ export type WeekProps = {
   weekIndex: number;
   isFilled: boolean;
   yearsAlive?: string;
+  isCurrentWeek?: boolean;
+  currentDayOfWeek?: number; // 1-7 representing day within the week
 };
 
 // Example of using const assertions and satisfies operator
-export const WEEK_DAYS = [
-  "Mon",
-  "Tue",
-  "Wed",
-  "Thu",
-  "Fri",
-  "Sat",
-  "Sun",
-] as const;
+import { WEEK_DAYS } from "./constants";
 export type WeekDay = (typeof WEEK_DAYS)[number];
 
 // Example of using template literal types

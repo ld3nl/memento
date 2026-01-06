@@ -3,10 +3,10 @@
 import {
   calculateWeeksFromLastBirthday,
   calculateYearsAlive,
+  getDaysIntoCurrentWeek,
 } from "../lib/date-utils";
 import {
   generateDecadeConfig,
-  generateWeekIndices,
 } from "../lib/life-table-utils";
 import type { LifeTableProps } from "../lib/types";
 import { isValidDate } from "../lib/validation";
@@ -27,9 +27,10 @@ const LifeTable = ({ dob }: LifeTableProps) => {
   // Calculate years alive and weeks from birthday using utilities
   const yearsAlive = calculateYearsAlive(dob);
   const weeksFromBirthday = calculateWeeksFromLastBirthday(dob);
+  const daysIntoCurrentWeek = getDaysIntoCurrentWeek(dob);
 
   // Return null if calculations failed
-  if (yearsAlive === null || weeksFromBirthday === null) {
+  if (yearsAlive === null || weeksFromBirthday === null || daysIntoCurrentWeek === null) {
     console.error("Failed to calculate age data");
     return null;
   }
@@ -47,6 +48,7 @@ const LifeTable = ({ dob }: LifeTableProps) => {
           yearsAlive={yearsAlive}
           yearIndex={yearIndex}
           weeksFromLastBday={weeksFromBirthday}
+          daysIntoCurrentWeek={daysIntoCurrentWeek}
         />
       ))}
     </div>

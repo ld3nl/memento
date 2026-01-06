@@ -6,6 +6,7 @@ describe("YearGrid Component", () => {
     yearsAlive: 30,
     currentDecadeYear: 31,
     weeksFromLastBday: 10,
+    daysIntoCurrentWeek: 3,
   };
 
   it("renders a grid with 52 weeks", () => {

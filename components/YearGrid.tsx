@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  isCurrentWeek as isCurrentWeekFn,
   shouldShowYearLabel,
   shouldWeekBeFilled,
 } from "../lib/life-table-utils";
@@ -13,12 +14,21 @@ const YearGrid = ({
   yearsAlive,
   currentDecadeYear,
   weeksFromLastBday,
+  daysIntoCurrentWeek,
 }: YearGridProps) => {
   return (
     <div data-cy="year-grid" className={"mx-auto grid w-208 grid-cols-52"}>
       {weeks.map((weekIndex) => {
         // Determine if the week should be filled using utility function
         const isFilled = shouldWeekBeFilled(
+          yearsAlive,
+          currentDecadeYear,
+          weekIndex,
+          weeksFromLastBday,
+        );
+
+        // Determine if this is the current week (actively being lived)
+        const isCurrentWeek = isCurrentWeekFn(
           yearsAlive,
           currentDecadeYear,
           weekIndex,
@@ -33,6 +43,8 @@ const YearGrid = ({
             key={weekIndex}
             weekIndex={weekIndex}
             isFilled={isFilled}
+            isCurrentWeek={isCurrentWeek}
+            currentDayOfWeek={isCurrentWeek ? daysIntoCurrentWeek : undefined}
             {...(showYearLabel ? { yearsAlive: `${currentDecadeYear}` } : {})}
           />
         );

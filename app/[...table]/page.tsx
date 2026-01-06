@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const urlDateParam = awaitedParams?.table.slice(1);
 
   const ageData = calculateFullAge(urlDateParam.toString(), "yyyy,MM,dd");
-  
+
   // Handle invalid date
   if (!ageData) {
     return {
@@ -76,7 +76,6 @@ const TablePage = async ({ params }) => {
       </div> */}
 
       <LifeTable dob={birthDate} />
-
     </div>
   );
 };

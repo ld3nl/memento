@@ -87,3 +87,46 @@ export const calculateWeeksFromLastBirthday = (
 
   return Math.max(0, weekDiff);
 };
+
+/**
+ * Gets the current day of the week (1-7, where 1 = Monday, 7 = Sunday)
+ * This is used for styling the current week box with partial fill
+ */
+export const getCurrentDayOfWeek = (): number => {
+  const today = new Date();
+  const dayIndex = today.getDay(); // 0 = Sunday, 1 = Monday, etc.
+  // Convert to 1-7 where 1 = Monday, 7 = Sunday
+  return dayIndex === 0 ? 7 : dayIndex;
+};
+
+/**
+ * Calculates days passed in the current week since the last birthday
+ * Returns a value 1-7 representing which day of the current week we're in
+ * This allows for partial week fill visualization in the life table
+ */
+export const getDaysIntoCurrentWeek = (dob: string | Date): number | null => {
+  const dobDate = parseAndValidateDate(dob);
+  if (!dobDate) return null;
+
+  const today = new Date();
+  const currentYear = today.getFullYear();
+  const birthMonth = getMonth(dobDate);
+  const birthDay = getDate(dobDate);
+
+  // Create this year's birthday
+  let lastBirthday = new Date(currentYear, birthMonth, birthDay);
+
+  // If birthday hasn't occurred this year, use last year's
+  if (lastBirthday > today) {
+    lastBirthday = new Date(currentYear - 1, birthMonth, birthDay);
+  }
+
+  // Calculate total days since last birthday
+  const diffTime = today.getTime() - lastBirthday.getTime();
+  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+  // Get position within the current week (1-7)
+  const daysIntoWeek = (diffDays % 7) + 1;
+
+  return daysIntoWeek;
+};

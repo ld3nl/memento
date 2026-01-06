@@ -20,6 +20,22 @@ export const shouldWeekBeFilled = (
 };
 
 /**
+ * Determines if a week is the current week (actively being lived)
+ * This is the first unfilled week after all filled weeks
+ */
+export const isCurrentWeek = (
+  yearsAlive: number,
+  currentDecadeYear: number,
+  weekIndex: number,
+  weeksFromLastBday: number,
+): boolean => {
+  // Current week is in the current year (yearsAlive + 1) and is the next week after weeksFromLastBday
+  return (
+    yearsAlive + 1 === currentDecadeYear && weeksFromLastBday + 1 === weekIndex
+  );
+};
+
+/**
  * Generates an array of week indices
  */
 export const generateWeekIndices = (

@@ -13,6 +13,7 @@ const DecadeGrid = memo(
     yearsAlive,
     yearIndex,
     weeksFromLastBday,
+    daysIntoCurrentWeek,
   }: DecadeGridProps) => {
     const [isPending] = useTransition();
 
@@ -32,10 +33,11 @@ const DecadeGrid = memo(
             yearsAlive={yearsAlive}
             currentDecadeYear={currentDecadeYear}
             weeksFromLastBday={weeksFromLastBday}
+            daysIntoCurrentWeek={daysIntoCurrentWeek}
           />
         );
       });
-    }, [decadeLength, weeks, yearsAlive, yearIndex, weeksFromLastBday]);
+    }, [decadeLength, weeks, yearsAlive, yearIndex, weeksFromLastBday, daysIntoCurrentWeek]);
 
     return (
       <div data-cy="decade-grid" className="flex flex-col gap-2">

@@ -28,10 +28,7 @@ const nextConfig: NextConfig = {
     if (dev && !isServer) {
       config.watchOptions = {
         ...config.watchOptions,
-        ignored: [
-          "**/cypress/snapshots/**",
-          "**/cypress/screenshots/**",
-        ],
+        ignored: ["**/cypress/snapshots/**", "**/cypress/screenshots/**"],
       };
     }
     return config;
