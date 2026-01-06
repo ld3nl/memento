@@ -20,7 +20,7 @@ const Week = ({
     <div
       className={cn(
         "after:pointer-events-none",
-        "after:absolute after:top-0 after:left-full after:ms-4 after:-mt-1 after:text-xs after:leading-none after:content-[attr(title)]",
+        "after:absolute after:top-0 after:left-full after:ms-4 after:text-[8px]/1 after:leading-none after:content-[attr(title)]",
         "relative size-2 border border-black dark:border-purple-500 dark:text-purple-500",
         {
           "bg-black dark:bg-purple-500": isFilled && !isCurrentWeek,

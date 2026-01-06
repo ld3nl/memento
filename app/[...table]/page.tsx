@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import BackButton from "../../components/BackButton";
 import LifeTable from "../../components/LifeTable";
 import { KofiButton } from "../../components/KofiButton";
-import { calculateFullAge } from "../../lib/common";
+import { calculateFullAge } from "../../lib/date-utils";
+import { isValidDate } from "../../lib/validation";
 
 // Define the structure for your route params
 interface Props {
@@ -52,6 +54,10 @@ const TablePage = async ({ params }) => {
   // Await params before using its properties to avoid errors
   const awaitedParams = await params;
   const birthDate = new Date(awaitedParams?.table.slice(1));
+
+  if (!isValidDate(birthDate)) {
+    notFound();
+  }
 
   return (
     <div className="group m-auto p-2">
