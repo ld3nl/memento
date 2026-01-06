@@ -1,12 +1,13 @@
-import type { FieldApi } from "@tanstack/react-form-nextjs";
+import { createFormHookContexts } from "@tanstack/react-form-nextjs";
 import { cn } from "../../../lib/utils";
+
+// Import the field context (same one used in Form.tsx)
+const { useFieldContext } = createFormHookContexts();
 
 interface LabeledInputProps {
   labelString: string;
   inputId: string;
   inputType?: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  field: FieldApi<any, any, any, any>;
   placeholder?: string;
 }
 
@@ -14,9 +15,9 @@ const LabeledInput = ({
   labelString,
   inputId,
   inputType = "text",
-  field,
   placeholder,
 }: LabeledInputProps) => {
+  const field = useFieldContext<string>();
   return (
     <div className="mb-6 md:flex md:items-center">
       <div className="md:w-1/3">

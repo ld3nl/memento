@@ -1,7 +1,10 @@
 "use client";
 "use no memo";
 
-import { useForm } from "@tanstack/react-form";
+import {
+  createFormHook,
+  createFormHookContexts,
+} from "@tanstack/react-form-nextjs";
 import { useEffect, useState } from "react";
 
 import Image from "next/image";
@@ -13,11 +16,52 @@ import { cn } from "../../lib/utils";
 import LabeledInput from "./fields/LabeledInput";
 import { formSchema } from "./schema";
 
+// Create form contexts and hooks
+export const { fieldContext, formContext, useFieldContext, useFormContext } =
+  createFormHookContexts();
+
+// Create SubmitButton component using useFormContext
+function SubmitButton() {
+  const form = useFormContext();
+  return (
+    <form.Subscribe selector={(state) => [state.canSubmit, state.isSubmitting]}>
+      {([canSubmit, isSubmitting]) => (
+        <button
+          className={cn(
+            "focus:shadow-outline rounded bg-purple-500 px-4 py-2 font-bold text-white shadow transition-all hover:bg-purple-400 focus:outline-none",
+            {
+              "cursor-not-allowed bg-slate-400 hover:bg-slate-400 focus:outline-none disabled:opacity-75":
+                !canSubmit,
+            },
+          )}
+          type="submit"
+          disabled={!canSubmit}
+          data-cy={"generate-table-button"}
+        >
+          {isSubmitting ? "Generating..." : "Generate Table"}
+        </button>
+      )}
+    </form.Subscribe>
+  );
+}
+
+// Create the app form hook with pre-configured components
+const { useAppForm } = createFormHook({
+  fieldContext,
+  formContext,
+  fieldComponents: {
+    LabeledInput,
+  },
+  formComponents: {
+    SubmitButton,
+  },
+});
+
 const Form = () => {
   const router = useRouter();
   const [saveData, setSaveData] = useState(false);
 
-  const form = useForm({
+  const form = useAppForm({
     defaultValues: {
       name: "",
       date: "",
@@ -104,8 +148,9 @@ const Form = () => {
           form.handleSubmit();
         }}
       >
-        <form.Field name="name">
-          {(field) => (
+        <form.AppField
+          name="name"
+          children={(field) => (
             <>
               <div className="mb-6 md:flex md:items-center">
                 <div className="md:w-1/3" />
@@ -115,23 +160,22 @@ const Form = () => {
                 </h1>
               </div>
 
-              <LabeledInput
+              <field.LabeledInput
                 labelString="Name"
                 inputId="inline-name"
-                field={field}
               />
             </>
           )}
-        </form.Field>
+        />
 
-        <form.Field name="date">
-          {(field) => (
+        <form.AppField
+          name="date"
+          children={(field) => (
             <>
-              <LabeledInput
+              <field.LabeledInput
                 labelString="Birthday"
                 inputId="birthday"
                 inputType="date"
-                field={field}
               />
               <div className="mb-6 md:flex md:items-center">
                 <div className="md:w-1/3">
@@ -153,7 +197,7 @@ const Form = () => {
               </div>
             </>
           )}
-        </form.Field>
+        />
 
         <div className="mb-6 md:flex md:items-center">
           <div className="md:w-1/3" />
@@ -193,29 +237,14 @@ const Form = () => {
           </label>
         </div>
 
-        <div className="md:flex md:items-center">
-          <div className="md:w-1/3" />
-          <div className="md:w-2/3">
-            <form.Subscribe selector={(state) => [state.canSubmit, state.isSubmitting]}>
-              {([canSubmit, isSubmitting]) => (
-                <button
-                  className={cn(
-                    "focus:shadow-outline rounded bg-purple-500 px-4 py-2 font-bold text-white shadow transition-all hover:bg-purple-400 focus:outline-none",
-                    {
-                      "cursor-not-allowed bg-slate-400 hover:bg-slate-400 focus:outline-none disabled:opacity-75":
-                        !canSubmit,
-                    },
-                  )}
-                  type="submit"
-                  disabled={!canSubmit}
-                  data-cy={"generate-table-button"}
-                >
-                  {isSubmitting ? "Generating..." : "Generate Table"}
-                </button>
-              )}
-            </form.Subscribe>
+        <form.AppForm>
+          <div className="md:flex md:items-center">
+            <div className="md:w-1/3" />
+            <div className="md:w-2/3">
+              <form.SubmitButton />
+            </div>
           </div>
-        </div>
+        </form.AppForm>
       </form>
     </section>
   );
