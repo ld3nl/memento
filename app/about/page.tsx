@@ -133,25 +133,6 @@ const Page = () => {
             </p>
           </section>
 
-          <section
-            aria-label="Support the Project"
-            className="mt-12 text-center"
-          >
-            <h2 className="mb-6 font-serif text-xl font-semibold tracking-wide">
-              Support This Project
-            </h2>
-            <p className="mb-6">
-              If this tool has helped you reflect on life and live more
-              intentionally, consider supporting its development. Your
-              contribution helps keep this resource free and accessible to
-              everyone seeking mindful living.
-            </p>
-            <KofiButton size="large" className="mb-4" />
-            <p className="text-sm text-gray-600 dark:text-gray-400">
-              Every contribution, no matter how small, makes a difference
-            </p>
-          </section>
-
           <meta itemProp="datePublished" content={new Date().toISOString()} />
           <meta itemProp="author" content="Daily Stoic Memento Mori Team" />
         </article>
