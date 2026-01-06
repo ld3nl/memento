@@ -9,7 +9,7 @@ const BackButton = ({ href = "/", className = "" }: BackButtonProps) => {
   return (
     <Link
       href={href}
-      className={`fixed top-4 left-4 z-50 hidden md:flex items-center justify-center w-10 h-10 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-full shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 border border-gray-200 dark:border-gray-700 ${className}`}
+      className={`fixed top-4 left-4 z-50 hidden h-10 w-10 items-center justify-center rounded-full border border-gray-200 bg-white/80 shadow-lg backdrop-blur-sm transition-all duration-200 hover:scale-105 hover:shadow-xl md:flex dark:border-gray-700 dark:bg-gray-800/80 ${className}`}
       aria-label="Go back"
     >
       <svg
@@ -23,6 +23,7 @@ const BackButton = ({ href = "/", className = "" }: BackButtonProps) => {
         strokeLinejoin="round"
         className="text-gray-700 dark:text-gray-300"
       >
+        <title>Go back</title>
         <path d="M19 12H5" />
         <path d="M12 19l-7-7 7-7" />
       </svg>

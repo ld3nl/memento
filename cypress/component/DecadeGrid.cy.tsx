@@ -1,27 +1,39 @@
-import React from "react";
 import DecadeGrid from "../../components/DecadeGrid";
 
 describe("DecadeGrid Component", () => {
-  const decadeLength = 10;
-  const weeks = Array.from({ length: 52 }, (_, i) => i + 1);
-  const yearsAlive = 10;
-  const yearIndex = 1;
-  const weeksFromLastBday = 10;
+  const defaultProps = {
+    decadeLength: 10,
+    weeks: Array.from({ length: 52 }, (_, i) => i + 1),
+    yearsAlive: 25,
+    yearIndex: 0,
+    weeksFromLastBday: 10,
+  };
 
-  it("renders correctly", () => {
-    cy.mount(
-      <DecadeGrid
-        decadeLength={decadeLength}
-        weeks={weeks}
-        yearsAlive={yearsAlive}
-        yearIndex={yearIndex}
-        weeksFromLastBday={weeksFromLastBday}
-      />,
-    );
+  it("renders the correct number of year grids based on decadeLength", () => {
+    cy.mount(<DecadeGrid {...defaultProps} />);
 
-    // Check if the grid has the correct number of years
-    cy.get(".bg-black").should("have.length", decadeLength);
+    cy.get("[data-cy=decade-grid]")
+      .should("exist")
+      .find("[data-cy=year-grid]")
+      .should("have.length", defaultProps.decadeLength);
+  });
 
+  it("renders 52 weeks per year grid", () => {
+    cy.mount(<DecadeGrid {...defaultProps} decadeLength={1} />);
+
+    cy.get("[data-cy=year-grid]").first().children().should("have.length", 52);
+  });
+
+  it("renders correct number of year grids for partial decades", () => {
+    cy.mount(<DecadeGrid {...defaultProps} decadeLength={3} />);
+
+    cy.get("[data-cy=year-grid]").should("have.length", 3);
+  });
+
+  it("matches visual snapshot", () => {
+    cy.mount(<DecadeGrid {...defaultProps} decadeLength={5} />);
+
+    cy.get("[data-cy=decade-grid]").should("be.visible");
     cy.compareSnapshot("DecadeGrid", 0.2);
   });
 });

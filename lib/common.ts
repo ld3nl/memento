@@ -1,28 +1,36 @@
-import { intervalToDuration, parse } from "date-fns";
+/**
+ * Common utilities - maintained for backward compatibility
+ * @deprecated Use specific utility modules instead
+ */
 
-export const calculateFullAge = (dob, format = "yyyy-MM-dd") => {
-  const birthDate = parse(dob, format ? format : "yyyy-MM-dd", new Date());
-  const { years, months, days } = intervalToDuration({
-    start: birthDate,
-    end: new Date(),
-  });
-  return { years, months, days };
+import {
+  calculateFullAge as _calculateFullAge,
+  getFormattedAge,
+} from "./date-utils";
+import { generateLifeTableUrl } from "./url-utils";
+
+/**
+ * @deprecated Use calculateFullAge from date-utils instead
+ */
+export const calculateFullAge = (dob: string | Date, format = "yyyy-MM-dd") => {
+  return _calculateFullAge(dob, format);
 };
 
-export const getYearsAlive = (dob) => {
-  // Validate date of birth
+/**
+ * @deprecated Use getFormattedAge from date-utils instead
+ */
+export const getYearsAlive = (dob: string | Date) => {
   if (!dob || dob === "") {
     console.error("Enter valid date");
     return;
   }
 
-  const { years, months, days } = calculateFullAge(dob);
-
-  return `${years} years, ${months} months, ${days} days`;
+  return getFormattedAge(dob);
 };
 
-export const generateUrl = (date, name) => {
-  return `/table${date ? `/${date.split("-").join("/")}` : ""}${
-    name ? `?name=${encodeURIComponent(name)}` : ""
-  }`;
+/**
+ * @deprecated Use generateLifeTableUrl from url-utils instead
+ */
+export const generateUrl = (date: string | null, name?: string) => {
+  return generateLifeTableUrl(date, name);
 };

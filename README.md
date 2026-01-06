@@ -1,76 +1,67 @@
-# Memento Mori - Life in Weeks Visualizer
+# Memento Mori
 
-A modern web application that helps visualize your life in weeks, built with Next.js and React. This tool creates a visual representation of your life timeline, helping you maintain perspective and make the most of your time.
+A web application that visualizes your life in weeks, helping you maintain perspective and make the most of your time.
 
 ## Features
 
 - 📅 Interactive life calendar visualization
 - 🌓 Dark/Light mode support
 - 📱 Responsive design
-- 🚀 Server-side rendering
 - 🎯 Week-by-week life progress tracking
+
+## Quick Start
+
+```bash
+# Clone and install
+git clone https://github.com/ld3nl/memento.git
+cd memento
+bun install
+
+# Start development server
+bun dev
+```
+
+Visit [http://localhost:3000](http://localhost:3000) to get started.
+
+## Development
+
+```bash
+# Run tests
+bun test
+
+# Run tests with coverage
+bun test:coverage
+
+# Lint and format
+bun run check:fix
+
+# Build for production
+bun run build
+```
 
 ## Tech Stack
 
-- Next.js
-- React
-- TypeScript
-- Tailwind CSS
-- date-fns
-- Server Components
-
-## Getting Started
-
-### Prerequisites
-
-- Node.js 18.x or later
-- npm or yarn
-
-### Installation
-
-```bash
-# Clone the repository
-git clone https://github.com/ld3nl/memento.git
-
-# Navigate to project directory
-cd memento
-
-# Install dependencies
-npm install
-
-# Start development server
-npm run dev
-```
-
-The application will be available at [http://localhost:3000](http://localhost:3000)
-
-## Usage
-
-1. Visit the homepage
-2. Enter your birth date
-3. (Optional) Enter your name
-4. Click "Generate Table" to view your life visualization
+- Next.js 16 + React 19 + TypeScript
+- Tailwind CSS for styling
+- Jest for testing
+- date-fns for date utilities
 
 ## Contributing
 
 1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+2. Create a feature branch: `git checkout -b feature/amazing-feature`
+3. Make your changes and add tests
+4. Run `bun run check:fix` to lint and format
+5. Commit your changes: `git commit -m 'Add amazing feature'`
+6. Push to the branch: `git push origin feature/amazing-feature`
+7. Open a Pull Request
+
+## Support
+
+If this project has helped you reflect on life and live more intentionally, consider supporting its development:
+
+<a href='https://ko-fi.com/P5P81RSX2O' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://storage.ko-fi.com/cdn/kofi4.png?v=6' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## Acknowledgments
-
-- Inspired by the concept of Memento Mori
-- Built with modern web technologies
-- Supported by the open-source community
-
-## Contact
-
-Your Name - [@ld3nl](https://github.com/ld3nl)
-
-Project Link: [https://github.com/ld3nl/memento](https://github.com/ld3nl/memento)
+MIT License

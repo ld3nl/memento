@@ -1,5 +1,2 @@
-import { addCompareSnapshotCommand } from "cypress-visual-regression/dist/command";
-
-addCompareSnapshotCommand({
-  overwrite: true, // Make sure old images are overwritten
-});
+// Import shared commands (includes visual regression setup)
+import "./commands";

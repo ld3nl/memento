@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import LifeTable from "../../components/LifeTable";
 import BackButton from "../../components/BackButton";
+import LifeTable from "../../components/LifeTable";
+import { KofiButton } from "../../components/KofiButton";
 import { calculateFullAge } from "../../lib/common";
 
 // Define the structure for your route params
@@ -13,10 +14,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const awaitedParams = await params;
   const urlDateParam = awaitedParams?.table.slice(1);
 
-  const { years } = calculateFullAge(urlDateParam.toString(), "yyyy,MM,dd");
+  const ageData = calculateFullAge(urlDateParam.toString(), "yyyy,MM,dd");
+  
+  // Handle invalid date
+  if (!ageData) {
+    return {
+      title: "Your Life in Weeks - Memento Mori",
+      description: "Visualize your life in weeks with Memento Mori.",
+    };
+  }
 
-  const age = years;
-  const potentialYearsLeft = Math.max(80 - years, 0); // Assuming 80 as life expectancy
+  const age = ageData.years;
+  const potentialYearsLeft = Math.max(80 - age, 0); // Assuming 80 as life expectancy
 
   return {
     title: `Your Life in Weeks - Age ${age} - Memento Mori`,
@@ -51,7 +60,7 @@ const TablePage = async ({ params }) => {
         Memento Mori
       </h1>
       {/* <div className="grid gap-y-2 mb-4">
-        <div className="grid grid-cols-52 w-[52rem] mx-auto justify-end">
+        <div className="grid grid-cols-52 w-208 mx-auto justify-end">
           <div className="col-end-53 col-span-1">
             <input
               type="checkbox"
@@ -67,6 +76,7 @@ const TablePage = async ({ params }) => {
       </div> */}
 
       <LifeTable dob={birthDate} />
+
     </div>
   );
 };

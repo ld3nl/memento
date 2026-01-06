@@ -2,16 +2,21 @@ import { defineConfig } from "cypress";
 import { configureVisualRegression } from "cypress-visual-regression";
 
 export default defineConfig({
+  // Shared visual regression config
+  env: {
+    visualRegressionType: "regression",
+    visualRegressionBaseDirectory: "cypress/snapshots/base",
+    visualRegressionDiffDirectory: "cypress/snapshots/diff",
+    visualRegressionGenerateDiff: "always",
+  },
+  screenshotsFolder: "./cypress/snapshots/actual",
+
   e2e: {
-    env: {
-      visualRegressionType: "base", // Use 'base' to create source of truth
-      // visualRegressionType: "regression", // Use 'regression' for comparison
-      visualRegressionBaseDirectory: "cypress/snapshots/base", // Path to base images
-      visualRegressionDiffDirectory: "cypress/snapshots/diff", // Path to diff images
-      visualRegressionGenerateDiff: "always",
+    baseUrl: "http://localhost:3000",
+    specPattern: "cypress/e2e/**/*.cy.{js,jsx,ts,tsx}",
+    setupNodeEvents(on, _config) {
+      configureVisualRegression(on);
     },
-    screenshotsFolder: "./cypress/snapshots/actual", // Fo
-    setupNodeEvents(on, config) {},
   },
 
   component: {
@@ -19,15 +24,10 @@ export default defineConfig({
       framework: "next",
       bundler: "webpack",
     },
-    env: {
-      // visualRegressionType: "base", // Use 'base' to create source of truth
-      visualRegressionType: "regression", // Use 'regression' for comparison
-      visualRegressionBaseDirectory: "cypress/snapshots/base", // Path to base images
-      visualRegressionDiffDirectory: "cypress/snapshots/diff", // Path to diff images
-      visualRegressionGenerateDiff: "always",
-    },
-    screenshotsFolder: "./cypress/snapshots/actual", // Fo
-    setupNodeEvents(on, config) {
+    // Cypress 14+ compiles specs just-in-time for better performance
+    justInTimeCompile: true,
+    specPattern: "cypress/component/**/*.cy.{js,jsx,ts,tsx}",
+    setupNodeEvents(on, _config) {
       configureVisualRegression(on);
     },
   },

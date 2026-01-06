@@ -1,6 +1,7 @@
 "use client";
 
 import { memo, useMemo, useTransition } from "react";
+import { calculateDecadeYear } from "../lib/life-table-utils";
 import type { DecadeGridProps } from "../lib/types";
 import YearGrid from "./YearGrid";
 
@@ -18,13 +19,12 @@ const DecadeGrid = memo(
     // Memoize the decade years to avoid unnecessary re-renders
     const decadeYears = useMemo(() => {
       return Array.from({ length: decadeLength }, (_, decadeIndex) => {
-        const currentDecadeYear = decadeIndex + 1 + yearIndex * decadeLength;
+        const currentDecadeYear = calculateDecadeYear(
+          decadeIndex,
+          yearIndex,
+          decadeLength,
+        );
 
-        // const isFilled =
-        //   yearsAlive >= currentDecadeYear ||
-        //   (yearsAlive === currentDecadeYear && weeksFromLastBday >= 52);
-
-        // console.log("isFilled", isFilled);
         return (
           <YearGrid
             key={currentDecadeYear}
@@ -37,7 +37,11 @@ const DecadeGrid = memo(
       });
     }, [decadeLength, weeks, yearsAlive, yearIndex, weeksFromLastBday]);
 
-    return <>{isPending ? <div>Loading...</div> : decadeYears}</>;
+    return (
+      <div data-cy="decade-grid" className="flex flex-col gap-2">
+        {isPending ? <div>Loading...</div> : decadeYears}
+      </div>
+    );
   },
 );
 

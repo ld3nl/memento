@@ -7,8 +7,8 @@ const Week = ({ weekIndex, isFilled, yearsAlive, className }: WeekProps) => {
   return (
     <div
       className={cn(
-        "after:transition-all after:transition-discrete after:delay-100 after:duration-300",
-        "after:absolute after:top-0 after:left-full after:ms-4 after:flex after:w-20 after:text-xs after:leading-2 after:content-[attr(title)]",
+        "after:pointer-events-none",
+        "after:absolute after:top-0 after:left-full after:ms-4 after:-mt-1  after:text-xs after:leading-none after:content-[attr(title)]",
         "relative size-2 border border-black dark:border-purple-500 dark:text-purple-500",
         {
           "bg-black dark:bg-purple-500": isFilled,
@@ -16,7 +16,6 @@ const Week = ({ weekIndex, isFilled, yearsAlive, className }: WeekProps) => {
         },
         className,
       )}
-      // title={`${yearsAlive}`}
       {...(yearsAlive ? { title: `${yearsAlive}` } : {})}
     />
   );

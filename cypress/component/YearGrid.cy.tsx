@@ -1,37 +1,43 @@
-import React from "react";
 import YearGrid from "../../components/YearGrid";
 
 describe("YearGrid Component", () => {
-  const weeks = Array.from({ length: 52 }, (_, i) => i + 1);
-  const yearsAlive = 30;
-  const currentDecadeYear = 31;
-  const weeksFromLastBday = 10;
+  const defaultProps = {
+    weeks: Array.from({ length: 52 }, (_, i) => i + 1),
+    yearsAlive: 30,
+    currentDecadeYear: 31,
+    weeksFromLastBday: 10,
+  };
 
-  it("renders correctly", () => {
-    cy.mount(
-      <YearGrid
-        weeks={weeks}
-        yearsAlive={yearsAlive}
-        currentDecadeYear={currentDecadeYear}
-        weeksFromLastBday={weeksFromLastBday}
-      />,
-    );
+  it("renders a grid with 52 weeks", () => {
+    cy.mount(<YearGrid {...defaultProps} />);
 
-    // Check if the grid has 52 weeks
-    cy.get(".grid-cols-52").children().should("have.length", 52);
+    cy.get("[data-cy=year-grid]")
+      .should("exist")
+      .children()
+      .should("have.length", 52);
   });
 
-  it("fills the correct weeks", () => {
+  it("fills the correct number of weeks based on weeksFromLastBday", () => {
+    cy.mount(<YearGrid {...defaultProps} />);
+
+    cy.get("[data-cy=year-grid]")
+      .find(".bg-black")
+      .should("have.length", defaultProps.weeksFromLastBday);
+  });
+
+  it("fills all weeks when currentDecadeYear is less than yearsAlive", () => {
     cy.mount(
-      <YearGrid
-        weeks={weeks}
-        yearsAlive={yearsAlive}
-        currentDecadeYear={currentDecadeYear}
-        weeksFromLastBday={weeksFromLastBday}
-      />,
+      <YearGrid {...defaultProps} currentDecadeYear={25} yearsAlive={30} />,
     );
 
-    // Check if the correct weeks are filled
-    cy.get(".bg-black").should("have.length", weeksFromLastBday);
+    cy.get("[data-cy=year-grid]").find(".bg-black").should("have.length", 52);
+  });
+
+  it("fills no weeks when currentDecadeYear is greater than yearsAlive", () => {
+    cy.mount(
+      <YearGrid {...defaultProps} currentDecadeYear={35} yearsAlive={30} />,
+    );
+
+    cy.get("[data-cy=year-grid]").find(".bg-black").should("have.length", 0);
   });
 });

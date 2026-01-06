@@ -1,6 +1,3 @@
-// Import React to ensure the file is treated as a module
-import React from "react";
-
 const LoadingPage = () => {
   return (
     <div className="m-auto flex h-screen items-center justify-center">

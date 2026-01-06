@@ -1,5 +1,9 @@
 "use client";
 
+import {
+  shouldShowYearLabel,
+  shouldWeekBeFilled,
+} from "../lib/life-table-utils";
 import type { YearGridProps } from "../lib/types";
 import Week from "./Week";
 
@@ -11,24 +15,25 @@ const YearGrid = ({
   weeksFromLastBday,
 }: YearGridProps) => {
   return (
-    <div className={"mx-auto grid w-[52rem] grid-cols-52"}>
+    <div data-cy="year-grid" className={"mx-auto grid w-208 grid-cols-52"}>
       {weeks.map((weekIndex) => {
-        // Determine if the week should be filled based on the years alive and weeks from the last birthday
-        const isFilled =
-          yearsAlive >= currentDecadeYear ||
-          (yearsAlive + 1 === currentDecadeYear &&
-            weeksFromLastBday >= weekIndex);
+        // Determine if the week should be filled using utility function
+        const isFilled = shouldWeekBeFilled(
+          yearsAlive,
+          currentDecadeYear,
+          weekIndex,
+          weeksFromLastBday,
+        );
 
-        // console.log("currentDecadeYear", currentDecadeYear);
+        // Determine if year label should be shown using utility function
+        const showYearLabel = shouldShowYearLabel(currentDecadeYear, weekIndex);
+
         return (
           <Week
             key={weekIndex}
             weekIndex={weekIndex}
             isFilled={isFilled}
-            {...(weekIndex === 52 &&
-            (currentDecadeYear % 5 === 0 || currentDecadeYear === 1)
-              ? { yearsAlive: `${currentDecadeYear}` }
-              : {})}
+            {...(showYearLabel ? { yearsAlive: `${currentDecadeYear}` } : {})}
           />
         );
       })}
