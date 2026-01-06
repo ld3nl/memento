@@ -4,7 +4,7 @@ import { KofiButton } from "./KofiButton";
 
 export const Footer = () => {
   return (
-    <footer className="mt-auto py-8 text-center">
+    <footer className="mt-auto py-8 text-center print:hidden">
       <div className="mb-4">
         <KofiButton size="small" />
       </div>
