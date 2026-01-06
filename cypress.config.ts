@@ -23,6 +23,13 @@ export default defineConfig({
     devServer: {
       framework: "next",
       bundler: "webpack",
+      webpackConfig: {
+        resolve: {
+          alias: {
+            "next/navigation": "next-router-mock",
+          },
+        },
+      },
     },
     // Cypress 14+ compiles specs just-in-time for better performance
     justInTimeCompile: true,

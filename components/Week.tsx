@@ -12,9 +12,10 @@ const Week = ({
   currentDayOfWeek,
 }: WeekProps) => {
   // Calculate fill percentage for current week (1 day = ~14.3%, 7 days = 100%)
-  const fillPercentage = isCurrentWeek && currentDayOfWeek
-    ? Math.round((currentDayOfWeek / 7) * 100)
-    : 0;
+  const fillPercentage =
+    isCurrentWeek && currentDayOfWeek
+      ? Math.round((currentDayOfWeek / 7) * 100)
+      : 0;
 
   return (
     <div
@@ -28,7 +29,7 @@ const Week = ({
           "bg-linear-gradient-to-r from-black to-transparent": isCurrentWeek,
         },
         // Current week styling
-        isCurrentWeek && "overflow-hidden current-week",
+        isCurrentWeek && "current-week overflow-hidden",
         className,
       )}
       {...(yearsAlive ? { title: `${yearsAlive}` } : {})}
@@ -39,7 +40,7 @@ const Week = ({
       {/* Inner fill div for current week partial progress */}
       {isCurrentWeek && currentDayOfWeek && (
         <div
-          className="absolute inset-0 bg-black dark:bg-purple-500 origin-left"
+          className="absolute inset-0 origin-left bg-black dark:bg-purple-500"
           style={{
             width: `${fillPercentage}%`,
           }}

@@ -5,9 +5,7 @@ import {
   calculateYearsAlive,
   getDaysIntoCurrentWeek,
 } from "../lib/date-utils";
-import {
-  generateDecadeConfig,
-} from "../lib/life-table-utils";
+import { generateDecadeConfig } from "../lib/life-table-utils";
 import type { LifeTableProps } from "../lib/types";
 import { isValidDate } from "../lib/validation";
 import DecadeGrid from "./DecadeGrid";
@@ -30,7 +28,11 @@ const LifeTable = ({ dob }: LifeTableProps) => {
   const daysIntoCurrentWeek = getDaysIntoCurrentWeek(dob);
 
   // Return null if calculations failed
-  if (yearsAlive === null || weeksFromBirthday === null || daysIntoCurrentWeek === null) {
+  if (
+    yearsAlive === null ||
+    weeksFromBirthday === null ||
+    daysIntoCurrentWeek === null
+  ) {
     console.error("Failed to calculate age data");
     return null;
   }

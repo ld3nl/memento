@@ -37,7 +37,14 @@ const DecadeGrid = memo(
           />
         );
       });
-    }, [decadeLength, weeks, yearsAlive, yearIndex, weeksFromLastBday, daysIntoCurrentWeek]);
+    }, [
+      decadeLength,
+      weeks,
+      yearsAlive,
+      yearIndex,
+      weeksFromLastBday,
+      daysIntoCurrentWeek,
+    ]);
 
     return (
       <div data-cy="decade-grid" className="flex flex-col gap-2">
