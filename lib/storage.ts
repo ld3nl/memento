@@ -2,20 +2,20 @@
  * Storage utilities using localforage with localStorage fallback
  */
 
-import localforage from 'localforage';
+import localforage from "localforage";
 
 // Configure localforage
 localforage.config({
-  name: 'MementoMori',
-  storeName: 'formData',
+  name: "MementoMori",
+  storeName: "formData",
   version: 1.0,
-  description: 'Storage for Memento Mori form data'
+  description: "Storage for Memento Mori form data",
 });
 
 // Storage keys
 export const STORAGE_KEYS = {
-  FORM_DATA: 'formData',
-  USER_PREFERENCES: 'userPreferences'
+  FORM_DATA: "formData",
+  USER_PREFERENCES: "userPreferences",
 } as const;
 
 // Type definitions
@@ -26,7 +26,7 @@ export interface FormData {
 }
 
 export interface UserPreferences {
-  theme?: 'light' | 'dark';
+  theme?: "light" | "dark";
   // Add other preferences as needed
 }
 
@@ -42,7 +42,7 @@ export class StorageManager {
       await localforage.setItem(key, value);
     } catch (error) {
       // Fallback to localStorage
-      console.warn('localforage failed, falling back to localStorage:', error);
+      console.warn("localforage failed, falling back to localStorage:", error);
       localStorage.setItem(key, JSON.stringify(value));
     }
   }
@@ -56,12 +56,12 @@ export class StorageManager {
       return value;
     } catch (error) {
       // Fallback to localStorage
-      console.warn('localforage failed, falling back to localStorage:', error);
+      console.warn("localforage failed, falling back to localStorage:", error);
       try {
         const item = localStorage.getItem(key);
         return item ? JSON.parse(item) : null;
       } catch (parseError) {
-        console.error('Failed to parse localStorage item:', parseError);
+        console.error("Failed to parse localStorage item:", parseError);
         return null;
       }
     }
@@ -75,7 +75,7 @@ export class StorageManager {
       await localforage.removeItem(key);
     } catch (error) {
       // Fallback to localStorage
-      console.warn('localforage failed, falling back to localStorage:', error);
+      console.warn("localforage failed, falling back to localStorage:", error);
       localStorage.removeItem(key);
     }
   }
@@ -88,7 +88,7 @@ export class StorageManager {
       await localforage.clear();
     } catch (error) {
       // Fallback to localStorage
-      console.warn('localforage failed, falling back to localStorage:', error);
+      console.warn("localforage failed, falling back to localStorage:", error);
       localStorage.clear();
     }
   }
@@ -101,7 +101,7 @@ export class StorageManager {
       return await localforage.keys();
     } catch (error) {
       // Fallback to localStorage
-      console.warn('localforage failed, falling back to localStorage:', error);
+      console.warn("localforage failed, falling back to localStorage:", error);
       const keys: string[] = [];
       for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i);
@@ -153,7 +153,9 @@ export class PreferencesStorage {
    * Load user preferences
    */
   static async loadPreferences(): Promise<UserPreferences | null> {
-    return await StorageManager.getItem<UserPreferences>(STORAGE_KEYS.USER_PREFERENCES);
+    return await StorageManager.getItem<UserPreferences>(
+      STORAGE_KEYS.USER_PREFERENCES,
+    );
   }
 
   /**

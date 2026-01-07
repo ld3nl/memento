@@ -160,10 +160,7 @@ const Form = () => {
                 </h1>
               </div>
 
-              <field.LabeledInput
-                labelString="Name"
-                inputId="inline-name"
-              />
+              <field.LabeledInput labelString="Name" inputId="inline-name" />
             </>
           )}
         />
@@ -177,24 +174,19 @@ const Form = () => {
                 inputId="birthday"
                 inputType="date"
               />
-              <div className="mb-6 md:flex md:items-center">
-                <div className="md:w-1/3">
-                  <span
-                    className={cn(
-                      "mb-1 block pr-4 font-bold text-gray-500 transition-all md:mb-0 md:text-right",
-                      { "opacity-0": !field.state.value },
-                    )}
-                  >
-                    You are:
-                  </span>
-                </div>
+              {field.state.value && !field.state.meta.errors.length && (
+                <div className="mb-6 md:flex md:items-center transition-discrete duration-500 starting:translate-y-2 starting:opacity-0">
+                  <div className="md:w-1/3">
+                    <span className="mb-1 block pr-4 font-bold text-gray-500 transition-all md:mb-0 md:text-right">
+                      You are:
+                    </span>
+                  </div>
 
-                <div className="md:w-2/3 dark:text-white" data-cy={"age"}>
-                  {field.state.value &&
-                    !field.state.meta.errors.length &&
-                    `${getFormattedAge(field.state.value)} of life experience! Make every week count! 🌟`}
+                  <div className="md:w-2/3 dark:text-white" data-cy={"age"}>
+                    {`${getFormattedAge(field.state.value)} of life experience! Make every week count! 🌟`}
+                  </div>
                 </div>
-              </div>
+              )}
             </>
           )}
         />

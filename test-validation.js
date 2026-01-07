@@ -1,4 +1,4 @@
-const { z } = require('zod');
+const { z } = require("zod");
 
 const formSchema = z.object({
   name: z.string().optional(),
@@ -37,23 +37,35 @@ const formSchema = z.object({
 });
 
 // Test empty field
-console.log('Testing empty field:');
-const result1 = formSchema.safeParse({ name: '', date: '' });
-console.log('Errors:', result1.error?.issues.map(issue => issue.message));
+console.log("Testing empty field:");
+const result1 = formSchema.safeParse({ name: "", date: "" });
+console.log(
+  "Errors:",
+  result1.error?.issues.map((issue) => issue.message),
+);
 
 // Test invalid format
-console.log('\nTesting invalid format:');
-const result2 = formSchema.safeParse({ name: '', date: 'invalid-date' });
-console.log('Errors:', result2.error?.issues.map(issue => issue.message));
+console.log("\nTesting invalid format:");
+const result2 = formSchema.safeParse({ name: "", date: "invalid-date" });
+console.log(
+  "Errors:",
+  result2.error?.issues.map((issue) => issue.message),
+);
 
 // Test future date
-console.log('\nTesting future date:');
+console.log("\nTesting future date:");
 const futureDate = new Date();
 futureDate.setFullYear(futureDate.getFullYear() + 1);
-const result3 = formSchema.safeParse({ name: '', date: futureDate.toISOString().split('T')[0] });
-console.log('Errors:', result3.error?.issues.map(issue => issue.message));
+const result3 = formSchema.safeParse({
+  name: "",
+  date: futureDate.toISOString().split("T")[0],
+});
+console.log(
+  "Errors:",
+  result3.error?.issues.map((issue) => issue.message),
+);
 
 // Test valid date
-console.log('\nTesting valid date:');
-const result4 = formSchema.safeParse({ name: '', date: '1990-01-01' });
-console.log('Success:', result4.success);
+console.log("\nTesting valid date:");
+const result4 = formSchema.safeParse({ name: "", date: "1990-01-01" });
+console.log("Success:", result4.success);

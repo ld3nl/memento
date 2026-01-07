@@ -16,6 +16,14 @@ const config: Config = {
     "<rootDir>/lib/**/__tests__/**/*.{js,jsx,ts,tsx}",
   ],
 
+  // Use separate tsconfig for tests
+  preset: "ts-jest",
+  globals: {
+    "ts-jest": {
+      tsconfig: "tsconfig.test.json",
+    },
+  },
+
   // Coverage settings
   collectCoverageFrom: [
     "lib/**/*.{js,ts,jsx,tsx}",

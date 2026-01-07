@@ -147,32 +147,32 @@ describe("Week Calculations - Comprehensive DOB Tests", () => {
     });
 
     describe("End-to-End Week Calculation Scenarios", () => {
-            it("correctly calculates for a person born on Jan 1, 1990 on June 15, 2024", () => {
-                jest.setSystemTime(new Date("2024-06-15T12:00:00Z"));
+      it("correctly calculates for a person born on Jan 1, 1990 on June 15, 2024", () => {
+        jest.setSystemTime(new Date("2024-06-15T12:00:00Z"));
 
-                const dob = "1990-01-01";
-                const yearsAlive = calculateYearsAlive(dob);
-                const weeksFromBday = calculateWeeksFromLastBirthday(dob);
+        const dob = "1990-01-01";
+        const yearsAlive = calculateYearsAlive(dob);
+        const weeksFromBday = calculateWeeksFromLastBirthday(dob);
 
-                // differenceInCalendarISOWeekYears returns 34, minus 1 = 33 completed years
-                // (Jan 1, 1990 falls in ISO week year 1989, June 15, 2024 falls in ISO week year 2024)
-                expect(yearsAlive).toBe(33);
-                // differenceInCalendarWeeks uses Sunday as week start
-                expect(weeksFromBday).toBeGreaterThanOrEqual(23);
-                expect(weeksFromBday).toBeLessThanOrEqual(24);
-            });
+        // differenceInCalendarISOWeekYears returns 34, minus 1 = 33 completed years
+        // (Jan 1, 1990 falls in ISO week year 1989, June 15, 2024 falls in ISO week year 2024)
+        expect(yearsAlive).toBe(33);
+        // differenceInCalendarWeeks uses Sunday as week start
+        expect(weeksFromBday).toBeGreaterThanOrEqual(23);
+        expect(weeksFromBday).toBeLessThanOrEqual(24);
+      });
 
-            it("correctly calculates for a person born on Dec 31, 1985 on Jan 2, 2024", () => {
-                jest.setSystemTime(new Date("2024-01-02T12:00:00Z"));
+      it("correctly calculates for a person born on Dec 31, 1985 on Jan 2, 2024", () => {
+        jest.setSystemTime(new Date("2024-01-02T12:00:00Z"));
 
-                const dob = "1985-12-31";
-                const yearsAlive = calculateYearsAlive(dob);
-                const weeksFromBday = calculateWeeksFromLastBirthday(dob);
+        const dob = "1985-12-31";
+        const yearsAlive = calculateYearsAlive(dob);
+        const weeksFromBday = calculateWeeksFromLastBirthday(dob);
 
-                expect(yearsAlive).toBe(37); // 38 years old, minus 1 = 37 completed years
-                // From Dec 31, 2023 to Jan 2, 2024 is only 2 days, so 0 complete weeks
-                expect(weeksFromBday).toBe(0);
-            });
+        expect(yearsAlive).toBe(37); // 38 years old, minus 1 = 37 completed years
+        // From Dec 31, 2023 to Jan 2, 2024 is only 2 days, so 0 complete weeks
+        expect(weeksFromBday).toBe(0);
+      });
 
       it("correctly calculates for someone turning 30 today", () => {
         jest.setSystemTime(new Date("2024-06-15T12:00:00Z"));
