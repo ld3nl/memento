@@ -30,7 +30,8 @@ export const formSchema = z.object({
     if (date > today) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: "⏰ Hold up! Time travel isn't invented yet. Your birth date can't be in the future! 🕰️",
+        message:
+          "⏰ Hold up! Time travel isn't invented yet. Your birth date can't be in the future! 🕰️",
       });
       return;
     }

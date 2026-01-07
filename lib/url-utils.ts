@@ -3,13 +3,14 @@
  */
 
 /**
- * Generates a URL for the life table page
+ * Generates a URL for the life table or burst view page
  */
 export const generateLifeTableUrl = (
   date: string | null,
   name?: string,
+  view: "table" | "burst" = "table",
 ): string => {
-  const basePath = "/table";
+  const basePath = `/${view}`;
 
   // Handle date path segment
   const datePath = date ? `/${date.split("-").join("/")}` : "";

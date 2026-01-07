@@ -1,0 +1,11 @@
+export const CONFIG = {
+  BOX_SIZE: 8, // px
+  BOX_GAP_RATIO: 0.75, // Gap relative to box size
+  ANIMATION_DURATION_MS: 750,
+  STAGGER_DELAY_RING_MS: 50,
+  STAGGER_DELAY_INDEX_MS: 5,
+  BORDER_THICKNESS: 0.1, // 10% of UV space
+  MIN_SCALE: 0.4,
+  MAX_SCALE: 1.0,
+  WEEKS_PER_YEAR: 52,
+};

@@ -1,1 +1,5 @@
-{"extends": "./tsconfig.json", "compilerOptions": {"types": ["jest", "@types/jest"]}, "include": ["**/*.test.ts", "**/*.test.tsx", "jest.setup.ts"]}
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": { "types": ["jest", "@types/jest"] },
+  "include": ["**/*.test.ts", "**/*.test.tsx", "jest.setup.ts"]
+}

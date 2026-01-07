@@ -130,7 +130,7 @@ const Form = () => {
   }, [form.state.values, saveData, form]);
 
   return (
-    <section className="md:px-md-0 m-auto w-full max-w-lg sm:px-4">
+    <section className="md:px-md-0 m-auto max-w-sm sm:px-4 md:max-w-lg">
       <header>
         <Image
           src="https://utfs.io/f/vfxFGWyJBql9xCI1QO2QPvwdGrZoHIKXJqsfUxy6C9SDnN7b"
@@ -175,7 +175,7 @@ const Form = () => {
                 inputType="date"
               />
               {field.state.value && !field.state.meta.errors.length && (
-                <div className="mb-6 md:flex md:items-center transition-discrete duration-500 starting:translate-y-2 starting:opacity-0">
+                <div className="mb-6 transition-discrete duration-500 md:flex md:items-center starting:translate-y-2 starting:opacity-0">
                   <div className="md:w-1/3">
                     <span className="mb-1 block pr-4 font-bold text-gray-500 transition-all md:mb-0 md:text-right">
                       You are:
