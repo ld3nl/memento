@@ -16,6 +16,9 @@ type SceneContentProps = {
   boxSize: number;
 };
 
+const HOVER_SCALE = 2.0;
+const HOVER_LERP_SPEED = 0.15;
+
 export const SceneContent = ({
   items,
   maxDelay,
@@ -26,8 +29,15 @@ export const SceneContent = ({
 }: SceneContentProps) => {
   const meshRef = React.useRef<THREE.InstancedMesh>(null);
   const materialRef = React.useRef<THREE.ShaderMaterial>(null);
-  const { clock, invalidate, size, camera } = useThree();
+  const { clock, invalidate, camera } = useThree();
   const [animationFinished, setAnimationFinished] = React.useState(false);
+
+  // Track hovered item for zoom effect
+  const hoveredIndexRef = React.useRef<number | null>(null);
+  // Track current scale for each item (for smooth lerping)
+  const itemScalesRef = React.useRef<Float32Array>(
+    new Float32Array(items.length).fill(1),
+  );
 
   // Track mouse position in world coordinates
   const mouseWorldRef = React.useRef<THREE.Vector2>(
@@ -41,6 +51,9 @@ export const SceneContent = ({
     if (!meshRef.current) return;
     const mesh = meshRef.current;
     const count = items.length;
+
+    // Reset hover scales array
+    itemScalesRef.current = new Float32Array(count).fill(1);
 
     // Attributes
     const aFilled = new Float32Array(count);
@@ -135,8 +148,7 @@ export const SceneContent = ({
 
     if (reduceMotion) {
       if (!animationFinished) setAnimationFinished(true);
-      invalidate(); // For pulse and color wave
-      return;
+      // Still need to update for hover effect
     }
 
     const isAnimationComplete =
@@ -149,11 +161,26 @@ export const SceneContent = ({
     const magneticRadius = CONFIG.MAGNETIC_RADIUS;
     const magneticFalloff = CONFIG.MAGNETIC_FALLOFF;
 
+    const hoveredIdx = hoveredIndexRef.current;
     let activeUpdate = false;
 
     for (let i = 0; i < items.length; i++) {
       const item = items[i];
       const start = item.delayMs;
+
+      // Calculate target hover scale
+      const targetHoverScale = i === hoveredIdx ? HOVER_SCALE : 1.0;
+      // Lerp current scale towards target
+      const currentHoverScale = itemScalesRef.current[i];
+      const newHoverScale =
+        currentHoverScale +
+        (targetHoverScale - currentHoverScale) * HOVER_LERP_SPEED;
+      itemScalesRef.current[i] = newHoverScale;
+
+      // Check if still animating hover
+      if (Math.abs(newHoverScale - targetHoverScale) > 0.01) {
+        activeUpdate = true;
+      }
 
       // Base target position
       let targetX = item.tx;
@@ -178,11 +205,11 @@ export const SceneContent = ({
         }
       }
 
-      if (isAnimationComplete) {
-        // Animation done, just apply magnetic effect
+      if (reduceMotion || isAnimationComplete) {
+        // Animation done, apply hover scale and magnetic effect
         dummy.position.set(targetX, targetY, 0);
         dummy.rotation.set(0, 0, item.rotation);
-        dummy.scale.set(1, 1, 1);
+        dummy.scale.set(newHoverScale, newHoverScale, 1);
         dummy.updateMatrix();
         mesh.setMatrixAt(i, dummy.matrix);
         continue;
@@ -204,8 +231,9 @@ export const SceneContent = ({
       const t = easeOutCubic(tLinear);
 
       // Interpolate with magnetic effect applied to target
-      const currentScale =
+      const baseScale =
         CONFIG.MIN_SCALE + (CONFIG.MAX_SCALE - CONFIG.MIN_SCALE) * t;
+      const currentScale = baseScale * newHoverScale;
       const currentTx = targetX * t;
       const currentTy = targetY * t;
 
@@ -219,7 +247,7 @@ export const SceneContent = ({
       if (tLinear < 1.0) activeUpdate = true;
     }
 
-    if (activeUpdate || !isAnimationComplete) {
+    if (activeUpdate || !isAnimationComplete || !reduceMotion) {
       mesh.instanceMatrix.needsUpdate = true;
       invalidate();
     }
@@ -231,19 +259,28 @@ export const SceneContent = ({
       const instanceId = e.instanceId;
       if (instanceId !== undefined && items[instanceId]) {
         const item = items[instanceId];
+        hoveredIndexRef.current = instanceId;
+        const status = item.isCurrentWeek
+          ? " (Current)"
+          : item.isFilled
+            ? " (Lived)"
+            : "";
         setTooltip({
           x: e.clientX,
           y: e.clientY,
-          text: `Year ${item.yearIndex + 1}, Week ${item.weekIndex}${
-            item.isCurrentWeek ? " (Current)" : ""
-          }`,
+          text: `Age ${item.yearIndex}, Week ${item.weekIndex}${status}`,
         });
+        invalidate(); // Trigger re-render for hover effect
       }
     },
-    [items, setTooltip],
+    [items, setTooltip, invalidate],
   );
 
-  const onLeave = React.useCallback(() => setTooltip(null), [setTooltip]);
+  const onLeave = React.useCallback(() => {
+    hoveredIndexRef.current = null;
+    setTooltip(null);
+    invalidate(); // Trigger re-render for hover effect
+  }, [setTooltip, invalidate]);
 
   const shaderMaterial = React.useMemo(
     () =>

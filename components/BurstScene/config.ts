@@ -37,8 +37,8 @@ export const CONFIG = {
   DEFAULT_ITEM_SIZE_REM: 0.5,
   DEFAULT_ITEM_SPACING_REM: 0.5,
   // Color wave animation
-  COLOR_WAVE_SPEED: 0.0005, // How fast colors propagate (lower = slower)
-  COLOR_WAVE_OFFSET: 0.002, // Offset per item index for wave effect
+  COLOR_WAVE_SPEED: 0, // Disabled - set to 0.0005 to enable
+  COLOR_WAVE_OFFSET: 0, // Disabled - set to 0.002 to enable
   // Magnetic mouse interaction
   MAGNETIC_FORCE: 15, // Maximum displacement in pixels
   MAGNETIC_RADIUS: 150, // Radius of influence in pixels

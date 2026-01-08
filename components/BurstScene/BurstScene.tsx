@@ -9,8 +9,13 @@ import {
 import { generateDecadeConfig } from "../../lib/life-table-utils";
 import { isValidDate } from "../../lib/validation";
 
-import { CONFIG, getItemSizePx, getItemSpacingPx } from "./config";
-import { BurstSceneProps, ItemShape, TooltipData } from "./BurstScene.types";
+import {
+  CONFIG,
+  REFERENCE_VIEWPORT_WIDTH,
+  getItemSizePx,
+  getItemSpacingPx,
+} from "./config";
+import { BurstSceneProps, TooltipData } from "./BurstScene.types";
 
 import { computeBurstItems } from "./utils/layout";
 import { useElementSize } from "./hooks/useElementSize";
@@ -29,24 +34,29 @@ export function BurstScene({
   const reduceMotion = usePrefersReducedMotion();
   const [tooltip, setTooltip] = React.useState<TooltipData | null>(null);
 
-  // Validate Input
-  if (!dob || !isValidDate(dob)) {
-    console.warn("BurstScene: Invalid Date Provided");
-    return null;
-  }
+  // Track viewport width for dynamic sizing (SSR-safe)
+  const [viewportWidth, setViewportWidth] = React.useState(
+    REFERENCE_VIEWPORT_WIDTH,
+  );
 
-  // Calculate dynamic size and spacing based on viewport width
-  // Using window.innerWidth for viewport-based scaling
-  const viewportWidth =
-    typeof window !== "undefined" ? window.innerWidth : 1440;
+  React.useEffect(() => {
+    const updateWidth = () => setViewportWidth(window.innerWidth);
+    updateWidth();
+    window.addEventListener("resize", updateWidth);
+    return () => window.removeEventListener("resize", updateWidth);
+  }, []);
+
   const itemSizePx = getItemSizePx(viewportWidth, itemSizeRem);
   const itemSpacingPx = getItemSpacingPx(viewportWidth, itemSpacingRem);
+
+  // Check validity for rendering, but don't return early before hooks
+  const isValid = dob && isValidDate(dob);
 
   // Memoized Data Generation
   // Re-calculate when size changes
   const layout = React.useMemo(() => {
-    // If size is 0, don't compute yet
-    if (size.w === 0 || size.h === 0) return null;
+    // If invalid or size is 0, don't compute yet
+    if (!isValid || size.w === 0 || size.h === 0) return null;
 
     const yearsAlive = calculateYearsAlive(dob);
     const weeksFromBirthday = calculateWeeksFromLastBirthday(dob);
@@ -72,7 +82,13 @@ export function BurstScene({
     });
 
     return result;
-  }, [dob, totalWeeks, size.w, size.h, itemSizePx, itemSpacingPx]);
+  }, [isValid, dob, totalWeeks, size.w, size.h, itemSizePx, itemSpacingPx]);
+
+  // Early return after all hooks
+  if (!isValid) {
+    console.warn("BurstScene: Invalid Date Provided");
+    return null;
+  }
 
   return (
     <div
