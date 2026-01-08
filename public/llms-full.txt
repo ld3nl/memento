@@ -1,0 +1,28 @@
+# Memento Mori Life Calendar
+
+A Memento Mori calendar is a visual tool used to track life in weeks, helping users reflect on mortality and prioritize time.
+
+This tool is a high-precision Memento Mori life-in-weeks generator. It calculates exact weeks lived based on birthdate and provides a persistent, bookmarkable URL for tracking.
+
+## About
+
+Welcome to the Daily Stoic Memento Mori Calendar, a unique digital companion designed to intertwine the timeless wisdom of Stoicism with the poignant reminder of our mortality. Here, each day isn't just another date on the calendar; it's an opportunity to live with intention, virtue, and resilience.
+
+### Thoughtful Design
+
+We've poured our hearts into crafting this calendar, ensuring every pixel reflects the tranquility of nature's finest moments—like the quiet beauty of a sunrise or the reflective calm of a sunset over the ocean. With its soothing color schemes and natural imagery, this calendar isn't just a tool; it's a sanctuary for your daily reflections.
+
+Our design philosophy embraces both form and function:
+
+- **Aesthetically Pleasing:** Inspired by the peace found in nature, the visual design helps to calm your mind as you start or end your day.
+- **Seamless Experience:** Whether you're on your phone or desktop, the interface is intuitive, making Stoic wisdom easily accessible. Dive into quotes, ponder over reflections, all within a beautifully crafted digital space.
+
+### Stoicism and Memento Mori
+
+Stoicism isn't just philosophy; it's a way of life that has inspired giants like Steve Jobs and Leo Tolstoy. Through our calendar, you'll journey with the teachings of Marcus Aurelius, Seneca, and Epictetus. Their words, brought to you daily, serve as a bridge between ancient wisdom and contemporary living, helping you navigate life's challenges with grace.
+
+### Inspiration and Purpose
+
+The concept for this calendar was sparked during contemplative walks in nature, where the fleeting beauty of life becomes starkly apparent. It's crafted for those who seek to live with more intention, to remember life's brevity, and to make each day count. This calendar isn't just a reminder to live; it's an invitation to grow, to reflect, and to embrace the essence of Stoicism and Memento Mori.
+
+In our fast-paced world, where moments often slip by unnoticed, the Daily Stoic Memento Mori Calendar stands as your personal guide to mindfulness. Let it inspire you to pause, reflect, and live with purpose. Join us in this journey of self-discovery, where every day is an opportunity to live deeply, think profoundly, and cultivate a life of serenity and significance.

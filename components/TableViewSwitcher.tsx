@@ -43,7 +43,12 @@ export function TableViewSwitcher({
       {currentView === "table" ? (
         <LifeTable dob={dob} />
       ) : (
-        <BurstScene dob={dob} />
+        <BurstScene
+          dob={dob}
+          shape="circle"
+          itemSizeRem={0.25} // Larger items
+          itemSpacingRem={0.1} // More spacing
+        />
       )}
     </div>
   );

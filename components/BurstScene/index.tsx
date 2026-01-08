@@ -9,14 +9,21 @@ import {
 import { generateDecadeConfig } from "../../lib/life-table-utils";
 import { isValidDate } from "../../lib/validation";
 
-import { CONFIG } from "./config";
-import { BurstSceneProps, TooltipData } from "./types";
+import { CONFIG, getItemSizePx, getItemSpacingPx } from "./config";
+import { BurstSceneProps, ItemShape, TooltipData } from "./types";
+export type { ItemShape, BurstSceneProps };
 import { computeBurstItems } from "./utils/layout";
 import { useElementSize } from "./hooks/useElementSize";
 import { usePrefersReducedMotion } from "./hooks/usePrefersReducedMotion";
 import { SceneContent } from "./SceneContent";
 
-export function BurstScene({ dob, totalWeeks }: BurstSceneProps) {
+export function BurstScene({
+  dob,
+  totalWeeks,
+  shape = "square",
+  itemSizeRem = CONFIG.DEFAULT_ITEM_SIZE_REM,
+  itemSpacingRem = CONFIG.DEFAULT_ITEM_SPACING_REM,
+}: BurstSceneProps) {
   // Use container size instead of viewport
   const { ref: containerRef, size } = useElementSize<HTMLDivElement>();
   const reduceMotion = usePrefersReducedMotion();
@@ -27,6 +34,13 @@ export function BurstScene({ dob, totalWeeks }: BurstSceneProps) {
     console.warn("BurstScene: Invalid Date Provided");
     return null;
   }
+
+  // Calculate dynamic size and spacing based on viewport width
+  // Using window.innerWidth for viewport-based scaling
+  const viewportWidth =
+    typeof window !== "undefined" ? window.innerWidth : 1440;
+  const itemSizePx = getItemSizePx(viewportWidth, itemSizeRem);
+  const itemSpacingPx = getItemSpacingPx(viewportWidth, itemSpacingRem);
 
   // Memoized Data Generation
   // Re-calculate when size changes
@@ -51,13 +65,14 @@ export function BurstScene({ dob, totalWeeks }: BurstSceneProps) {
     const result = computeBurstItems({
       totalWeeks: effectiveTotalWeeks,
       maxRadius,
-      boxPx: CONFIG.BOX_SIZE,
+      boxPx: itemSizePx,
+      spacingPx: itemSpacingPx,
       yearsAlive,
       weeksFromLastBday: weeksFromBirthday,
     });
 
     return result;
-  }, [dob, totalWeeks, size.w, size.h]);
+  }, [dob, totalWeeks, size.w, size.h, itemSizePx, itemSpacingPx]);
 
   return (
     <div
@@ -79,6 +94,8 @@ export function BurstScene({ dob, totalWeeks }: BurstSceneProps) {
             maxDelay={layout.maxDelay}
             reduceMotion={reduceMotion}
             setTooltip={setTooltip}
+            shape={shape}
+            boxSize={itemSizePx}
           />
         </Canvas>
       )}

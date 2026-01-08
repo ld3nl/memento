@@ -18,16 +18,15 @@ function findStepPx({
   count,
   boxPx,
   maxRadius,
+  spacingPx,
 }: {
   count: number;
   boxPx: number;
   maxRadius: number;
+  spacingPx: number;
 }) {
-  // Use diag of box + padding to ensure no overlaps even if axis aligned,
-  // or just use boxPx + pad if we rotate them radially.
-  // The critic pointed out PAD was ignored.
-  const pad = Math.max(2, boxPx * CONFIG.BOX_GAP_RATIO);
-  const effectiveSize = boxPx + pad;
+  // Use spacing parameter for gap between items
+  const effectiveSize = boxPx + spacingPx;
 
   const minStep = Math.max(1, effectiveSize);
   const minCap = totalCapacity(minStep, maxRadius);
@@ -65,12 +64,14 @@ export function computeBurstItems({
   totalWeeks,
   maxRadius,
   boxPx,
+  spacingPx,
   yearsAlive,
   weeksFromLastBday,
 }: {
   totalWeeks: number;
   maxRadius: number;
   boxPx: number;
+  spacingPx: number;
   yearsAlive: number;
   weeksFromLastBday: number;
 }): LayoutResult {
@@ -78,6 +79,7 @@ export function computeBurstItems({
     count: totalWeeks,
     boxPx,
     maxRadius: Math.max(0, maxRadius),
+    spacingPx,
   });
 
   const items: BurstItem[] = [];

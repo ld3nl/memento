@@ -2,7 +2,7 @@ import * as React from "react";
 import * as THREE from "three";
 import { useFrame, useThree } from "@react-three/fiber";
 import { CONFIG } from "./config";
-import { BurstItem, TooltipData } from "./types";
+import { BurstItem, ItemShape, TooltipData } from "./types";
 import { vertexShader } from "./shaders/vertex";
 import { fragmentShader } from "./shaders/fragment";
 import { easeOutCubic } from "./utils/math";
@@ -12,6 +12,8 @@ type SceneContentProps = {
   maxDelay: number;
   reduceMotion: boolean;
   setTooltip: (t: TooltipData | null) => void;
+  shape: ItemShape;
+  boxSize: number;
 };
 
 export const SceneContent = ({
@@ -19,11 +21,20 @@ export const SceneContent = ({
   maxDelay,
   reduceMotion,
   setTooltip,
+  shape,
+  boxSize,
 }: SceneContentProps) => {
   const meshRef = React.useRef<THREE.InstancedMesh>(null);
   const materialRef = React.useRef<THREE.ShaderMaterial>(null);
-  const { clock, invalidate } = useThree();
+  const { clock, invalidate, size, camera } = useThree();
   const [animationFinished, setAnimationFinished] = React.useState(false);
+
+  // Track mouse position in world coordinates
+  const mouseWorldRef = React.useRef<THREE.Vector2>(
+    new THREE.Vector2(9999, 9999),
+  );
+  const raycaster = React.useMemo(() => new THREE.Raycaster(), []);
+  const mouseNDC = React.useMemo(() => new THREE.Vector2(), []);
 
   // 1. Initialize Geometry Attributes (Run once per item set)
   React.useLayoutEffect(() => {
@@ -34,6 +45,7 @@ export const SceneContent = ({
     // Attributes
     const aFilled = new Float32Array(count);
     const aCurrent = new Float32Array(count);
+    const aIndex = new Float32Array(count);
     const colors = new Float32Array(count * 3);
     const tempColor = new THREE.Color();
 
@@ -42,6 +54,7 @@ export const SceneContent = ({
     items.forEach((item, i) => {
       aFilled[i] = item.isFilled ? 1.0 : 0.0;
       aCurrent[i] = item.isCurrentWeek ? 1.0 : 0.0;
+      aIndex[i] = i; // Store index for color wave
       tempColor.set(item.color);
       colors[i * 3] = tempColor.r;
       colors[i * 3 + 1] = tempColor.g;
@@ -55,10 +68,7 @@ export const SceneContent = ({
         dummy.updateMatrix();
         mesh.setMatrixAt(i, dummy.matrix);
       } else {
-        dummy.position.set(0, 0, 0); // Start at center? Or start at target pos with 0 scale?
-        // Let's start at center with 0 scale to "burst" out
-        // Actually, logic below animates Tx/Ty.
-        // So initialize at 0,0,0 scale 0
+        dummy.position.set(0, 0, 0);
         dummy.scale.set(0, 0, 1);
         dummy.updateMatrix();
         mesh.setMatrixAt(i, dummy.matrix);
@@ -74,6 +84,10 @@ export const SceneContent = ({
       new THREE.InstancedBufferAttribute(aCurrent, 1),
     );
     mesh.geometry.setAttribute(
+      "aIndex",
+      new THREE.InstancedBufferAttribute(aIndex, 1),
+    );
+    mesh.geometry.setAttribute(
       "instanceColor",
       new THREE.InstancedBufferAttribute(colors, 3),
     );
@@ -85,15 +99,6 @@ export const SceneContent = ({
 
     // Force initial frame
     invalidate();
-
-    // Reset clock for new animation?
-    // Usually better to track start time relative to clock
-    // But since we use clock.elapsedTime in loop, we rely on "absolute" time for delta
-    // We should track a local start time or use absolute time - let's stick to simple elapsed check with offset.
-    // However, if items change, we want to re-trigger animation.
-    // The current logic simply uses `time` vs `item.delayMs`.
-    // If we re-mount, clock might not reset.
-    // Proper way: Store a startTime ref.
   }, [items, reduceMotion, invalidate]);
 
   const startTimeRef = React.useRef(0);
@@ -102,66 +107,47 @@ export const SceneContent = ({
   }, [items, clock]);
 
   // 2. Animation Loop (CPU Side)
-  // This ensures perfect sync between Visuals and Physics (Raycasting)
   const dummy = React.useMemo(() => new THREE.Object3D(), []);
 
-  useFrame(() => {
+  useFrame(({ pointer }) => {
     const mesh = meshRef.current;
     const mat = materialRef.current;
     if (!mesh || !mat) return;
 
+    // Update mouse world position for magnetic effect
+    mouseNDC.set(pointer.x, pointer.y);
+    raycaster.setFromCamera(mouseNDC, camera);
+    // Get intersection with z=0 plane
+    const plane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
+    const intersection = new THREE.Vector3();
+    raycaster.ray.intersectPlane(plane, intersection);
+    if (intersection) {
+      mouseWorldRef.current.set(intersection.x, intersection.y);
+    }
+
     const globalTime = clock.elapsedTime * 1000;
-    const time = globalTime - startTimeRef.current; // Time since mount of this set
+    const time = globalTime - startTimeRef.current;
 
-    // Update shader time for pulsing effect
+    // Update shader time and color wave uniforms
     mat.uniforms.uTime.value = globalTime;
-
-    // Always invalidate if we have pulsing (current week) property?
-    // Or only when animation running?
-    // Pulse needs constant frame updates to look smooth.
-    // If we want to save battery, we might disable pulse or limit fps.
-    // For now, if animation finished, we can throttle or stop invalidating if the pulse isn't critical.
-    // However, the critique mentioned continuous rendering.
-    // Pulse is a visual effect. If we want it, we must render.
-    // Let's compromise: Render pulse, but optimizing matrix updates is key.
+    mat.uniforms.uColorWaveSpeed.value = CONFIG.COLOR_WAVE_SPEED;
+    mat.uniforms.uColorWaveOffset.value = CONFIG.COLOR_WAVE_OFFSET;
 
     if (reduceMotion) {
       if (!animationFinished) setAnimationFinished(true);
-      invalidate(); // For pulse
+      invalidate(); // For pulse and color wave
       return;
     }
 
     const isAnimationComplete =
       time > maxDelay + CONFIG.ANIMATION_DURATION_MS + 200;
 
-    if (isAnimationComplete) {
-      if (!animationFinished) {
-        setAnimationFinished(true);
-        // Final update to ensure everything is in place
-        // (Handled by the logic below naturally as t=1)
-      }
-      // Continue rendering for Pulse effect (invalidate)
-      // but SKIP matrix calculations
-      invalidate();
-      return;
-    }
-
-    // Direct Buffer Access for Performance (avoid 4000 setMatrixAt calls overhead)
-    // Actually, simple setMatrixAt with dummy object is cleaner to read and handle rotation
-    // Optimizing with direct array access for rotation + translation is math heavy here.
-    // Let's use the dummy object approach but optimized?
-    // No, creating objects is slow.
-    // Let's use direct array access if we can, or just optimized matrix composition.
-    // With Rotation, Scale, Position...
-    // Matrix:
-    // [ sx*cos  -sy*sin  0  tx ]
-    // [ sx*sin   sy*cos  0  ty ]
-    // ...
-    // Since we have rotation, "Direct Buffer Access" gets complex.
-    // We will stick to `dummy.updateMatrix()` + `mesh.setMatrixAt` for Safety/Correctness first,
-    // unless performance is absolutely killed.
-    // Actually, `setMatrixAt` updates the array locally. It's fine. The overhead is creating the object.
-    // reuse `dummy` object.
+    // Magnetic effect parameters
+    const mouseX = mouseWorldRef.current.x;
+    const mouseY = mouseWorldRef.current.y;
+    const magneticForce = CONFIG.MAGNETIC_FORCE;
+    const magneticRadius = CONFIG.MAGNETIC_RADIUS;
+    const magneticFalloff = CONFIG.MAGNETIC_FALLOFF;
 
     let activeUpdate = false;
 
@@ -169,10 +155,41 @@ export const SceneContent = ({
       const item = items[i];
       const start = item.delayMs;
 
+      // Base target position
+      let targetX = item.tx;
+      let targetY = -item.ty;
+
+      // Apply magnetic effect only to filled items
+      if (item.isFilled && (isAnimationComplete || time >= start)) {
+        const dx = mouseX - targetX;
+        const dy = mouseY - targetY;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        if (dist < magneticRadius && dist > 0) {
+          // Calculate attraction force with falloff
+          const normalizedDist = dist / magneticRadius;
+          const force =
+            Math.pow(1 - normalizedDist, magneticFalloff) * magneticForce;
+
+          // Move towards mouse
+          targetX += (dx / dist) * force;
+          targetY += (dy / dist) * force;
+          activeUpdate = true;
+        }
+      }
+
+      if (isAnimationComplete) {
+        // Animation done, just apply magnetic effect
+        dummy.position.set(targetX, targetY, 0);
+        dummy.rotation.set(0, 0, item.rotation);
+        dummy.scale.set(1, 1, 1);
+        dummy.updateMatrix();
+        mesh.setMatrixAt(i, dummy.matrix);
+        continue;
+      }
+
       if (time < start) {
         // Keep at zero scale
-        // Only need to set if not already set (optimization?)
-        // But we re-write every frame during anim.
         dummy.position.set(0, 0, 0);
         dummy.scale.set(0, 0, 1);
         dummy.updateMatrix();
@@ -186,11 +203,11 @@ export const SceneContent = ({
       );
       const t = easeOutCubic(tLinear);
 
-      // Interpolate
+      // Interpolate with magnetic effect applied to target
       const currentScale =
         CONFIG.MIN_SCALE + (CONFIG.MAX_SCALE - CONFIG.MIN_SCALE) * t;
-      const currentTx = item.tx * t;
-      const currentTy = -item.ty * t;
+      const currentTx = targetX * t;
+      const currentTy = targetY * t;
 
       dummy.position.set(currentTx, currentTy, 0);
       dummy.rotation.set(0, 0, item.rotation);
@@ -204,14 +221,13 @@ export const SceneContent = ({
 
     if (activeUpdate || !isAnimationComplete) {
       mesh.instanceMatrix.needsUpdate = true;
-      invalidate(); // Request simple frame
+      invalidate();
     }
   });
 
   // 3. Interactions
   const onMove = React.useCallback(
     (e: any) => {
-      // Throttle?
       const instanceId = e.instanceId;
       if (instanceId !== undefined && items[instanceId]) {
         const item = items[instanceId];
@@ -237,20 +253,23 @@ export const SceneContent = ({
         uniforms: {
           uTime: { value: 0 },
           uBorderThickness: { value: CONFIG.BORDER_THICKNESS },
+          uIsCircle: { value: shape === "circle" ? 1.0 : 0.0 },
+          uColorWaveSpeed: { value: CONFIG.COLOR_WAVE_SPEED },
+          uColorWaveOffset: { value: CONFIG.COLOR_WAVE_OFFSET },
         },
         transparent: true,
       }),
-    [],
+    [shape],
   );
 
   return (
     <instancedMesh
       ref={meshRef}
-      args={[undefined, undefined, items.length]} // Geometry will be set below
+      args={[undefined, undefined, items.length]}
       onPointerMove={onMove}
       onPointerOut={onLeave}
     >
-      <planeGeometry args={[CONFIG.BOX_SIZE, CONFIG.BOX_SIZE]} />
+      <planeGeometry args={[boxSize, boxSize]} />
       <primitive object={shaderMaterial} ref={materialRef} attach="material" />
     </instancedMesh>
   );

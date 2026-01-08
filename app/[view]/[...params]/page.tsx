@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import BackButton from "../../../components/BackButton";
-import TableViewSwitcher from "../../../components/TableViewSwitcher";
+import LifeTable from "../../../components/LifeTable";
+import BurstScene from "../../../components/BurstScene";
 import { calculateFullAge } from "../../../lib/date-utils";
 import { isValidDate } from "../../../lib/validation";
 
@@ -82,7 +83,18 @@ const ViewPage = async ({ params }: Props) => {
         Memento Mori
       </h1>
 
-      <TableViewSwitcher dob={birthDate} initialView={view} />
+      {view === "table" ? (
+        <LifeTable dob={birthDate} />
+      ) : (
+        <div className="relative h-[80vh] w-full">
+          <BurstScene
+            dob={birthDate}
+            shape="circle"
+            itemSizeRem={0.25}
+            itemSpacingRem={0.1}
+          />
+        </div>
+      )}
     </div>
   );
 };

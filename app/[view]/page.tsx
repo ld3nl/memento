@@ -93,7 +93,14 @@ const ViewPage = async ({ params }: Props) => {
       {view === "table" ? (
         <LifeTable dob={birthDate} />
       ) : (
-        <BurstScene dob={birthDate} />
+        <div className="relative h-[80vh] w-full">
+          <BurstScene
+            dob={birthDate}
+            shape="circle"
+            itemSizeRem={0.15}
+            itemSpacingRem={0.1}
+          />
+        </div>
       )}
     </div>
   );
