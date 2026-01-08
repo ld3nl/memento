@@ -4,12 +4,12 @@ import {
   isCurrentWeek as isCurrentWeekFn,
   shouldShowYearLabel,
   shouldWeekBeFilled,
-} from "../lib/life-table-utils";
-import type { YearGridProps } from "../lib/types";
-import Week from "./Week";
+} from "./utils";
+import type { YearGridProps } from "./YearGrid.types";
+import Week from "../Week";
 
 // YearGrid component to display a grid of weeks for a year
-const YearGrid = ({
+export const YearGrid = ({
   weeks,
   yearsAlive,
   currentDecadeYear,

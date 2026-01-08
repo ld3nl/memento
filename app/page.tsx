@@ -50,14 +50,14 @@ const Page = () => {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <Form />
-      <div className="mx-auto flex max-w-sm flex-col px-4 md:max-w-lg ">
+      <div className="mx-auto flex max-w-sm flex-col px-4 md:max-w-lg">
         <Link
           href="/about"
           className="mt-4 text-sm text-black underline md:ml-auto md:w-2/3 dark:text-purple-500"
         >
           About this Calendar
         </Link>
-        <section className="mt-8 opacity-90 md:ml-auto md:w-2/3 ">
+        <section className="mt-8 opacity-90 md:ml-auto md:w-2/3">
           <details className="group text-xs text-gray-500 dark:text-gray-400">
             <summary className="cursor-pointer list-none font-bold text-gray-700 dark:text-gray-300">
               How it works

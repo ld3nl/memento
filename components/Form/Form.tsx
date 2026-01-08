@@ -130,7 +130,7 @@ const Form = () => {
   }, [form.state.values, saveData, form]);
 
   return (
-    <section className="md:px-md-0 m-auto max-w-sm sm:px-4 md:max-w-lg px-4">
+    <section className="md:px-md-0 m-auto max-w-sm px-4 sm:px-4 md:max-w-lg">
       <header>
         <Image
           src="https://utfs.io/f/vfxFGWyJBql9xCI1QO2QPvwdGrZoHIKXJqsfUxy6C9SDnN7b"

@@ -4,13 +4,13 @@ import {
   calculateWeeksFromLastBirthday,
   calculateYearsAlive,
   getDaysIntoCurrentWeek,
-} from "../lib/date-utils";
-import { generateDecadeConfig } from "../lib/life-table-utils";
-import type { LifeTableProps } from "../lib/types";
-import { isValidDate } from "../lib/validation";
-import DecadeGrid from "./DecadeGrid";
+} from "../../lib/date-utils";
+import { generateDecadeConfig } from "../../lib/life-table-utils";
+import type { LifeTableProps } from "./LifeTable.types";
+import { isValidDate } from "../../lib/validation";
+import DecadeGrid from "../DecadeGrid";
 
-const LifeTable = ({ dob }: LifeTableProps) => {
+export const LifeTable = ({ dob }: LifeTableProps) => {
   // Validate input DOB
   if (!dob) {
     console.error("Missing date of birth");

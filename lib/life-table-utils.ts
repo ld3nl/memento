@@ -5,37 +5,6 @@ import { DECADE_LENGTH, WEEKS_PER_YEAR, YEARS_IN_LIFETIME } from "./constants";
  */
 
 /**
- * Determines if a week should be filled based on age and current position
- */
-export const shouldWeekBeFilled = (
-  yearsAlive: number,
-  currentDecadeYear: number,
-  weekIndex: number,
-  weeksFromLastBday: number,
-): boolean => {
-  return (
-    yearsAlive >= currentDecadeYear ||
-    (yearsAlive + 1 === currentDecadeYear && weeksFromLastBday >= weekIndex)
-  );
-};
-
-/**
- * Determines if a week is the current week (actively being lived)
- * This is the first unfilled week after all filled weeks
- */
-export const isCurrentWeek = (
-  yearsAlive: number,
-  currentDecadeYear: number,
-  weekIndex: number,
-  weeksFromLastBday: number,
-): boolean => {
-  // Current week is in the current year (yearsAlive + 1) and is the next week after weeksFromLastBday
-  return (
-    yearsAlive + 1 === currentDecadeYear && weeksFromLastBday + 1 === weekIndex
-  );
-};
-
-/**
  * Generates an array of week indices
  */
 export const generateWeekIndices = (
@@ -52,19 +21,6 @@ export const generateDecadeConfig = () => ({
   yearsInLifetime: YEARS_IN_LIFETIME,
   weeks: generateWeekIndices(),
 });
-
-/**
- * Determines if a year should show age label
- */
-export const shouldShowYearLabel = (
-  currentDecadeYear: number,
-  weekIndex: number,
-): boolean => {
-  return (
-    weekIndex === WEEKS_PER_YEAR &&
-    (currentDecadeYear % 5 === 0 || currentDecadeYear === 1)
-  );
-};
 
 /**
  * Calculates the current decade year based on decade index and year index

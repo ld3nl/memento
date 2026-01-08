@@ -2,7 +2,7 @@ import * as React from "react";
 import * as THREE from "three";
 import { useFrame, useThree } from "@react-three/fiber";
 import { CONFIG } from "./config";
-import { BurstItem, ItemShape, TooltipData } from "./types";
+import { BurstItem, ItemShape, TooltipData } from "./BurstScene.types";
 import { vertexShader } from "./shaders/vertex";
 import { fragmentShader } from "./shaders/fragment";
 import { easeOutCubic } from "./utils/math";

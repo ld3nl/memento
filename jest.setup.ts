@@ -1,5 +1,6 @@
 // Jest setup file for global test configuration
 import "@jest/globals";
+import "@testing-library/jest-dom";
 
 // Set timezone to UTC for consistent date testing
 process.env.TZ = "UTC";

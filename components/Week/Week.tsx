@@ -1,9 +1,9 @@
 "use client";
-import type { WeekProps } from "../lib/types";
-import { cn } from "../lib/utils";
+import type { WeekProps } from "./Week.types";
+import { cn } from "../../lib/utils";
 
 // Week component to display a single week with conditional styling
-const Week = ({
+export const Week = ({
   weekIndex,
   isFilled,
   yearsAlive,

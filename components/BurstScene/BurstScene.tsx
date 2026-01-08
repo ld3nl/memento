@@ -10,8 +10,8 @@ import { generateDecadeConfig } from "../../lib/life-table-utils";
 import { isValidDate } from "../../lib/validation";
 
 import { CONFIG, getItemSizePx, getItemSpacingPx } from "./config";
-import { BurstSceneProps, ItemShape, TooltipData } from "./types";
-export type { ItemShape, BurstSceneProps };
+import { BurstSceneProps, ItemShape, TooltipData } from "./BurstScene.types";
+
 import { computeBurstItems } from "./utils/layout";
 import { useElementSize } from "./hooks/useElementSize";
 import { usePrefersReducedMotion } from "./hooks/usePrefersReducedMotion";

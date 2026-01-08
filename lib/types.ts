@@ -15,10 +15,6 @@ export type LabeledInputProps = {
   inputProps?: Record<string, unknown>; // Use Record type instead of 'any' for better type safety
 };
 
-export type LifeTableProps = {
-  dob: string | Date;
-};
-
 export type DecadeGridProps = {
   decadeLength: number;
   weeks: readonly number[]; // Use readonly for immutable arrays
@@ -26,23 +22,6 @@ export type DecadeGridProps = {
   yearIndex: number;
   weeksFromLastBday: number;
   daysIntoCurrentWeek: number; // 1-7 representing day within current week
-};
-
-export type YearGridProps = {
-  weeks: readonly number[]; // Use readonly for immutable arrays
-  yearsAlive: number;
-  currentDecadeYear: number;
-  weeksFromLastBday: number;
-  daysIntoCurrentWeek: number; // 1-7 representing day within current week
-};
-
-export type WeekProps = {
-  className?: string;
-  weekIndex: number;
-  isFilled: boolean;
-  yearsAlive?: string;
-  isCurrentWeek?: boolean;
-  currentDayOfWeek?: number; // 1-7 representing day within the week
 };
 
 // Example of using const assertions and satisfies operator
@@ -53,6 +32,8 @@ export type WeekDay = (typeof WEEK_DAYS)[number];
 export type DateString = `${number}-${number}-${number}`;
 
 // Example of using 'in' operator narrowing
+import type { YearGridProps } from "../components/YearGrid";
+
 export function isYearGridProps(
   props: DecadeGridProps | YearGridProps,
 ): props is YearGridProps {

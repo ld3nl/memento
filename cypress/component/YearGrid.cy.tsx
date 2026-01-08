@@ -21,9 +21,12 @@ describe("YearGrid Component", () => {
   it("fills the correct number of weeks based on weeksFromLastBday", () => {
     cy.mount(<YearGrid {...defaultProps} />);
 
+    // The filled weeks include past weeks (weeksFromLastBday) plus the current week's partial fill
+    // Current week (week 11) has an inner div with bg-black for partial progress
+    // So we expect weeksFromLastBday filled weeks + 1 partial fill element
     cy.get("[data-cy=year-grid]")
       .find(".bg-black")
-      .should("have.length", defaultProps.weeksFromLastBday);
+      .should("have.length", defaultProps.weeksFromLastBday + 1);
   });
 
   it("fills all weeks when currentDecadeYear is less than yearsAlive", () => {

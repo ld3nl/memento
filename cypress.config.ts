@@ -1,5 +1,6 @@
 import { defineConfig } from "cypress";
 import { configureVisualRegression } from "cypress-visual-regression";
+import path from "path";
 
 export default defineConfig({
   // Shared visual regression config
@@ -26,7 +27,10 @@ export default defineConfig({
       webpackConfig: {
         resolve: {
           alias: {
-            "next/navigation": "next-router-mock",
+            "next/navigation": path.resolve(
+              __dirname,
+              "cypress/support/nextNavigationMock.ts",
+            ),
           },
         },
       },

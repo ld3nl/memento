@@ -8,12 +8,13 @@ const createJestConfig = nextJest({
 
 const config: Config = {
   coverageProvider: "v8",
-  testEnvironment: "node", // Use 'node' for utils testing (faster, no DOM)
+  testEnvironment: "jsdom", // Use jsdom for component testing
 
   // Patterns for test files
   testMatch: [
     "<rootDir>/lib/**/*.test.{js,jsx,ts,tsx}",
     "<rootDir>/lib/**/__tests__/**/*.{js,jsx,ts,tsx}",
+    "<rootDir>/components/**/*.test.{js,jsx,ts,tsx}",
   ],
 
   // Use separate tsconfig for tests
@@ -27,10 +28,14 @@ const config: Config = {
   // Coverage settings
   collectCoverageFrom: [
     "lib/**/*.{js,ts,jsx,tsx}",
+    "components/**/*.{js,ts,jsx,tsx}",
     "!lib/**/*.d.ts",
     "!lib/index.ts", // Usually just exports
     "!lib/types.ts", // Type definitions
     "!lib/constants.ts", // Constants don't need coverage
+    "!components/**/*.types.ts", // Type definitions
+    "!components/**/index.ts", // Barrel files
+    "!components/**/*.stories.{ts,tsx}", // Stories
   ],
 
   // Setup files (uncomment if you need global test setup)
