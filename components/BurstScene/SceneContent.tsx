@@ -1,10 +1,10 @@
+import { useFrame, useThree } from "@react-three/fiber";
 import * as React from "react";
 import * as THREE from "three";
-import { useFrame, useThree } from "@react-three/fiber";
+import type { BurstItem, ItemShape, TooltipData } from "./BurstScene.types";
 import { CONFIG } from "./config";
-import { BurstItem, ItemShape, TooltipData } from "./BurstScene.types";
-import { vertexShader } from "./shaders/vertex";
 import { fragmentShader } from "./shaders/fragment";
+import { vertexShader } from "./shaders/vertex";
 import { easeOutCubic } from "./utils/math";
 
 type SceneContentProps = {
@@ -115,6 +115,7 @@ export const SceneContent = ({
   }, [items, reduceMotion, invalidate]);
 
   const startTimeRef = React.useRef(0);
+  // biome-ignore lint/correctness/useExhaustiveDependencies: items is used as a trigger to reset animation
   React.useEffect(() => {
     startTimeRef.current = clock.elapsedTime * 1000;
   }, [items, clock]);
@@ -195,8 +196,7 @@ export const SceneContent = ({
         if (dist < magneticRadius && dist > 0) {
           // Calculate attraction force with falloff
           const normalizedDist = dist / magneticRadius;
-          const force =
-            Math.pow(1 - normalizedDist, magneticFalloff) * magneticForce;
+          const force = (1 - normalizedDist) ** magneticFalloff * magneticForce;
 
           // Move towards mouse
           targetX += (dx / dist) * force;
@@ -299,15 +299,19 @@ export const SceneContent = ({
     [shape],
   );
 
+  const InstancedMesh = "instancedMesh" as any;
+  const PlaneGeometry = "planeGeometry" as any;
+  const Primitive = "primitive" as any;
+
   return (
-    <instancedMesh
+    <InstancedMesh
       ref={meshRef}
       args={[undefined, undefined, items.length]}
       onPointerMove={onMove}
       onPointerOut={onLeave}
     >
-      <planeGeometry args={[boxSize, boxSize]} />
-      <primitive object={shaderMaterial} ref={materialRef} attach="material" />
-    </instancedMesh>
+      <PlaneGeometry args={[boxSize, boxSize]} />
+      <Primitive object={shaderMaterial} ref={materialRef} attach="material" />
+    </InstancedMesh>
   );
 };

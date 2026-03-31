@@ -4,7 +4,17 @@ import { YearGrid } from "./YearGrid";
 // Mock the Week component
 jest.mock("../Week", () => ({
   __esModule: true,
-  default: ({ weekIndex, isFilled, isCurrentWeek, yearsAlive }: any) => (
+  default: ({
+    weekIndex,
+    isFilled,
+    isCurrentWeek,
+    yearsAlive,
+  }: {
+    weekIndex: number;
+    isFilled: boolean;
+    isCurrentWeek: boolean;
+    yearsAlive?: string;
+  }) => (
     <div
       data-testid={`week-${weekIndex}`}
       data-filled={isFilled}

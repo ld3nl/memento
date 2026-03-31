@@ -1,6 +1,6 @@
 "use client";
-import type { WeekProps } from "./Week.types";
 import { cn } from "../../lib/utils";
+import type { WeekProps } from "./Week.types";
 
 // Week component to display a single week with conditional styling
 export const Week = ({
@@ -50,5 +50,3 @@ export const Week = ({
     </div>
   );
 };
-
-export default Week;

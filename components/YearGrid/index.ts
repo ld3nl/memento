@@ -1,2 +1,1 @@
-export type { YearGridProps } from "./YearGrid.types";
-export { YearGrid as default, YearGrid } from "./YearGrid";
+export { YearGrid as default } from "./YearGrid";

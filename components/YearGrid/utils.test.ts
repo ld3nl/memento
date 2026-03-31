@@ -1,9 +1,9 @@
-import {
-  shouldWeekBeFilled,
-  shouldShowYearLabel,
-  isCurrentWeek,
-} from "./utils";
 import { WEEKS_PER_YEAR } from "../../lib/constants";
+import {
+  isCurrentWeek,
+  shouldShowYearLabel,
+  shouldWeekBeFilled,
+} from "./utils";
 
 describe("YearGrid utilities", () => {
   describe("shouldWeekBeFilled", () => {

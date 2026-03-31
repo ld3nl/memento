@@ -12,32 +12,25 @@ localforage.config({
   description: "Storage for Memento Mori form data",
 });
 
-// Storage keys
-export const STORAGE_KEYS = {
+const STORAGE_KEYS = {
   FORM_DATA: "formData",
-  USER_PREFERENCES: "userPreferences",
 } as const;
 
 // Type definitions
-export interface FormData {
+interface FormData {
   name?: string;
   date: string;
   saveData?: boolean;
 }
 
-export interface UserPreferences {
-  theme?: "light" | "dark";
-  // Add other preferences as needed
-}
-
 /**
  * Generic storage functions using localforage with localStorage fallback
  */
-export class StorageManager {
+const StorageManager = {
   /**
    * Set an item in storage
    */
-  static async setItem<T>(key: string, value: T): Promise<void> {
+  async setItem<T>(key: string, value: T): Promise<void> {
     try {
       await localforage.setItem(key, value);
     } catch (error) {
@@ -45,12 +38,12 @@ export class StorageManager {
       console.warn("localforage failed, falling back to localStorage:", error);
       localStorage.setItem(key, JSON.stringify(value));
     }
-  }
+  },
 
   /**
    * Get an item from storage
    */
-  static async getItem<T>(key: string): Promise<T | null> {
+  async getItem<T>(key: string): Promise<T | null> {
     try {
       const value = await localforage.getItem<T>(key);
       return value;
@@ -65,12 +58,12 @@ export class StorageManager {
         return null;
       }
     }
-  }
+  },
 
   /**
    * Remove an item from storage
    */
-  static async removeItem(key: string): Promise<void> {
+  async removeItem(key: string): Promise<void> {
     try {
       await localforage.removeItem(key);
     } catch (error) {
@@ -78,12 +71,12 @@ export class StorageManager {
       console.warn("localforage failed, falling back to localStorage:", error);
       localStorage.removeItem(key);
     }
-  }
+  },
 
   /**
    * Clear all storage
    */
-  static async clear(): Promise<void> {
+  async clear(): Promise<void> {
     try {
       await localforage.clear();
     } catch (error) {
@@ -91,12 +84,12 @@ export class StorageManager {
       console.warn("localforage failed, falling back to localStorage:", error);
       localStorage.clear();
     }
-  }
+  },
 
   /**
    * Get all keys from storage
    */
-  static async keys(): Promise<string[]> {
+  async keys(): Promise<string[]> {
     try {
       return await localforage.keys();
     } catch (error) {
@@ -109,59 +102,31 @@ export class StorageManager {
       }
       return keys;
     }
-  }
-}
+  },
+};
 
 /**
  * Form-specific storage functions
  */
-export class FormStorage {
+export const FormStorage = {
   /**
    * Save form data
    */
-  static async saveFormData(data: FormData): Promise<void> {
+  async saveFormData(data: FormData): Promise<void> {
     await StorageManager.setItem(STORAGE_KEYS.FORM_DATA, data);
-  }
+  },
 
   /**
    * Load form data
    */
-  static async loadFormData(): Promise<FormData | null> {
+  async loadFormData(): Promise<FormData | null> {
     return await StorageManager.getItem<FormData>(STORAGE_KEYS.FORM_DATA);
-  }
+  },
 
   /**
    * Clear form data
    */
-  static async clearFormData(): Promise<void> {
+  async clearFormData(): Promise<void> {
     await StorageManager.removeItem(STORAGE_KEYS.FORM_DATA);
-  }
-}
-
-/**
- * User preferences storage functions
- */
-export class PreferencesStorage {
-  /**
-   * Save user preferences
-   */
-  static async savePreferences(preferences: UserPreferences): Promise<void> {
-    await StorageManager.setItem(STORAGE_KEYS.USER_PREFERENCES, preferences);
-  }
-
-  /**
-   * Load user preferences
-   */
-  static async loadPreferences(): Promise<UserPreferences | null> {
-    return await StorageManager.getItem<UserPreferences>(
-      STORAGE_KEYS.USER_PREFERENCES,
-    );
-  }
-
-  /**
-   * Clear user preferences
-   */
-  static async clearPreferences(): Promise<void> {
-    await StorageManager.removeItem(STORAGE_KEYS.USER_PREFERENCES);
-  }
-}
+  },
+};

@@ -8,13 +8,6 @@
 // 7. Utilize the 'infer' keyword in conditional types for better type inference
 // 8. Implement mapped type 'as' clauses for more flexible type transformations
 
-export type LabeledInputProps = {
-  labelString: string;
-  inputId: string;
-  inputType: "text" | "number" | "date" | "email"; // Use literal types for more precise typing
-  inputProps?: Record<string, unknown>; // Use Record type instead of 'any' for better type safety
-};
-
 export type DecadeGridProps = {
   decadeLength: number;
   weeks: readonly number[]; // Use readonly for immutable arrays
@@ -23,28 +16,3 @@ export type DecadeGridProps = {
   weeksFromLastBday: number;
   daysIntoCurrentWeek: number; // 1-7 representing day within current week
 };
-
-// Example of using const assertions and satisfies operator
-import { WEEK_DAYS } from "./constants";
-export type WeekDay = (typeof WEEK_DAYS)[number];
-
-// Example of using template literal types
-export type DateString = `${number}-${number}-${number}`;
-
-// Example of using 'in' operator narrowing
-import type { YearGridProps } from "../components/YearGrid";
-
-export function isYearGridProps(
-  props: DecadeGridProps | YearGridProps,
-): props is YearGridProps {
-  return "currentDecadeYear" in props;
-}
-
-// Example of using mapped type 'as' clauses
-export type ReadonlyProps<T> = {
-  readonly [K in keyof T as `readonly${Capitalize<string & K>}`]: T[K];
-};
-
-// Usage example:
-// type ReadonlyWeekProps = ReadonlyProps<WeekProps>;
-// Result: { readonly readonlyWeekIndex: number; readonly readonlyIsFilled: boolean; }

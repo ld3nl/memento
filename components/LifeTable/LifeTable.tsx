@@ -6,9 +6,9 @@ import {
   getDaysIntoCurrentWeek,
 } from "../../lib/date-utils";
 import { generateDecadeConfig } from "../../lib/life-table-utils";
-import type { LifeTableProps } from "./LifeTable.types";
 import { isValidDate } from "../../lib/validation";
 import DecadeGrid from "../DecadeGrid";
+import type { LifeTableProps } from "./LifeTable.types";
 
 export const LifeTable = ({ dob }: LifeTableProps) => {
   // Validate input DOB
@@ -56,5 +56,3 @@ export const LifeTable = ({ dob }: LifeTableProps) => {
     </div>
   );
 };
-
-export default LifeTable;

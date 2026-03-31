@@ -1,7 +1,7 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "types": ["jest", "@types/jest", "@testing-library/jest-dom"]
+    "types": ["jest", "@types/jest", "@testing-library/jest-dom", "bun-types"]
   },
-  "include": ["**/*.test.ts", "**/*.test.tsx", "jest.setup.ts"]
+  "include": ["**/*.test.ts", "**/*.test.tsx", "jest.setup.ts", "bun.setup.ts"]
 }

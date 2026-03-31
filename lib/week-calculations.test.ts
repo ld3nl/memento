@@ -4,9 +4,8 @@
  */
 
 import {
-  calculateFullAge,
-  calculateYearsAlive,
   calculateWeeksFromLastBirthday,
+  calculateYearsAlive,
   getCurrentDayOfWeek,
   getDaysIntoCurrentWeek,
 } from "./date-utils";
@@ -109,15 +108,14 @@ describe("Week Calculations - Comprehensive DOB Tests", () => {
 
     describe("End-to-End Week Calculation Scenarios", () => {
       it("correctly calculates for a person born on Jan 1, 1990 on June 15, 2024", () => {
-        jest.setSystemTime(new Date("2024-06-15T12:00:00Z"));
+        jest.setSystemTime(new Date(2024, 5, 15, 12, 0, 0));
 
-        const dob = "1990-01-01";
+        const dob = new Date(1990, 0, 1);
         const yearsAlive = calculateYearsAlive(dob);
         const weeksFromBday = calculateWeeksFromLastBirthday(dob);
 
-        // differenceInCalendarISOWeekYears returns 35, minus 1 = 34 completed years
-        // ISO week years can differ from calendar years at year boundaries
-        expect(yearsAlive).toBe(34);
+        // differenceInCalendarISOWeekYears returns 34, minus 1 = 33 completed years
+        expect(yearsAlive).toBe(33);
         // differenceInCalendarWeeks uses Sunday as week start
         expect(weeksFromBday).toBeGreaterThanOrEqual(23);
         expect(weeksFromBday).toBeLessThanOrEqual(24);

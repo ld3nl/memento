@@ -1,26 +1,24 @@
 "use client";
 
-import * as React from "react";
 import { Canvas } from "@react-three/fiber";
+import * as React from "react";
 import {
   calculateWeeksFromLastBirthday,
   calculateYearsAlive,
 } from "../../lib/date-utils";
 import { generateDecadeConfig } from "../../lib/life-table-utils";
 import { isValidDate } from "../../lib/validation";
-
+import type { BurstSceneProps, TooltipData } from "./BurstScene.types";
 import {
   CONFIG,
-  REFERENCE_VIEWPORT_WIDTH,
   getItemSizePx,
   getItemSpacingPx,
+  REFERENCE_VIEWPORT_WIDTH,
 } from "./config";
-import { BurstSceneProps, TooltipData } from "./BurstScene.types";
-
-import { computeBurstItems } from "./utils/layout";
 import { useElementSize } from "./hooks/useElementSize";
 import { usePrefersReducedMotion } from "./hooks/usePrefersReducedMotion";
 import { SceneContent } from "./SceneContent";
+import { computeBurstItems } from "./utils/layout";
 
 export function BurstScene({
   dob,
@@ -132,5 +130,3 @@ export function BurstScene({
     </div>
   );
 }
-
-export default BurstScene;

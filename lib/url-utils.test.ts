@@ -1,7 +1,7 @@
 import {
+  extractNameFromUrl,
   generateLifeTableUrl,
   parseDateFromUrl,
-  extractNameFromUrl,
 } from "./url-utils";
 
 describe("url utilities", () => {

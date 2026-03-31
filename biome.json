@@ -52,6 +52,7 @@
       "**/*.css",
       "!**/node_modules",
       "!**/.next",
+      "!**/coverage",
       "!**/storybook-static",
       "!**/cypress/snapshots",
       "!**/cypress/downloads"

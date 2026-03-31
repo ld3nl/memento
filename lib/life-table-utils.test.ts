@@ -1,9 +1,9 @@
+import { DECADE_LENGTH, WEEKS_PER_YEAR, YEARS_IN_LIFETIME } from "./constants";
 import {
-  generateWeekIndices,
-  generateDecadeConfig,
   calculateDecadeYear,
+  generateDecadeConfig,
+  generateWeekIndices,
 } from "./life-table-utils";
-import { WEEKS_PER_YEAR, DECADE_LENGTH, YEARS_IN_LIFETIME } from "./constants";
 
 describe("life table utilities", () => {
   describe("generateWeekIndices", () => {

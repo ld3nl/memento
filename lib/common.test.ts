@@ -1,4 +1,4 @@
-import { calculateFullAge, getYearsAlive, generateUrl } from "./common";
+import { calculateFullAge, generateUrl, getYearsAlive } from "./common";
 
 // Mock the current date for consistent testing
 const MOCK_TODAY = new Date("2024-06-15T10:00:00Z");

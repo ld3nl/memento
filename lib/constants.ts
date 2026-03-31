@@ -20,10 +20,3 @@ export const WEEK_DAYS = [
   "Sat",
   "Sun",
 ] as const;
-
-// Grid layout constants
-export const GRID_CONFIG = {
-  maxWidth: "52rem",
-  columns: 52,
-  weekSize: "size-2",
-} as const;

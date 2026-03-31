@@ -1,12 +1,12 @@
 "use client";
 
+import Week from "../Week";
 import {
   isCurrentWeek as isCurrentWeekFn,
   shouldShowYearLabel,
   shouldWeekBeFilled,
 } from "./utils";
 import type { YearGridProps } from "./YearGrid.types";
-import Week from "../Week";
 
 // YearGrid component to display a grid of weeks for a year
 export const YearGrid = ({
@@ -52,5 +52,3 @@ export const YearGrid = ({
     </div>
   );
 };
-
-export default YearGrid;

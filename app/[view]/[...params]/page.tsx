@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import BackButton from "../../../components/BackButton";
-import LifeTable from "../../../components/LifeTable";
 import BurstScene from "../../../components/BurstScene";
+import LifeTable from "../../../components/LifeTable";
 import { calculateFullAge } from "../../../lib/date-utils";
 import { isValidDate } from "../../../lib/validation";
 

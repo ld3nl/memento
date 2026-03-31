@@ -1,5 +1,12 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import Form from "../components/Form";
+
+export const metadata: Metadata = {
+  title: "Memento Mori Life Calendar - Calculate Your Life in Weeks",
+  description:
+    "A Memento Mori calendar is a visual tool used to track life in weeks, helping users reflect on mortality and prioritize time.",
+};
 
 const Page = () => {
   const jsonLd = {
@@ -42,13 +49,11 @@ const Page = () => {
       ],
     },
   };
+  const serializedJsonLd = JSON.stringify(jsonLd).replace(/</g, "\\u003c");
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <script type="application/ld+json">{serializedJsonLd}</script>
       <Form />
       <div className="mx-auto flex max-w-sm flex-col px-4 md:max-w-lg">
         <Link

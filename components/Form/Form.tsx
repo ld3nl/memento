@@ -5,19 +5,18 @@ import {
   createFormHook,
   createFormHookContexts,
 } from "@tanstack/react-form-nextjs";
-import { useEffect, useState } from "react";
-
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { FormStorage } from "../../lib/storage";
+import { useEffect, useState } from "react";
 import { getFormattedAge } from "../../lib/date-utils";
+import { FormStorage } from "../../lib/storage";
 import { generateLifeTableUrl } from "../../lib/url-utils";
 import { cn } from "../../lib/utils";
 import LabeledInput from "./fields/LabeledInput";
 import { formSchema } from "./schema";
 
 // Create form contexts and hooks
-export const { fieldContext, formContext, useFieldContext, useFormContext } =
+const { fieldContext, formContext, useFieldContext, useFormContext } =
   createFormHookContexts();
 
 // Create SubmitButton component using useFormContext
@@ -92,15 +91,15 @@ const Form = () => {
   // Load saved form data on mount
   useEffect(() => {
     const loadSavedData = async () => {
-      try {
-        const savedData = await FormStorage.loadFormData();
-        if (savedData) {
-          form.setFieldValue("name", savedData.name || "");
-          form.setFieldValue("date", savedData.date || "");
-          setSaveData(savedData.saveData || false);
-        }
-      } catch (error) {
+      const savedData = await FormStorage.loadFormData().catch((error) => {
         console.error("Failed to load saved form data:", error);
+        return null;
+      });
+
+      if (savedData) {
+        form.setFieldValue("name", savedData.name || "");
+        form.setFieldValue("date", savedData.date || "");
+        setSaveData(() => savedData.saveData || false);
       }
     };
 
@@ -140,17 +139,9 @@ const Form = () => {
           className="mx-auto my-6"
         />
       </header>
-      <form
-        data-cy={"bday-form"}
-        onSubmit={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          form.handleSubmit();
-        }}
-      >
-        <form.AppField
-          name="name"
-          children={(field) => (
+      <form data-cy={"bday-form"} action={() => form.handleSubmit()}>
+        <form.AppField name="name">
+          {(field) => (
             <>
               <div className="mb-6 md:flex md:items-center">
                 <div className="md:w-1/3" />
@@ -163,11 +154,10 @@ const Form = () => {
               <field.LabeledInput labelString="Name" inputId="inline-name" />
             </>
           )}
-        />
+        </form.AppField>
 
-        <form.AppField
-          name="date"
-          children={(field) => (
+        <form.AppField name="date">
+          {(field) => (
             <>
               <field.LabeledInput
                 labelString="Birthday"
@@ -189,7 +179,7 @@ const Form = () => {
               )}
             </>
           )}
-        />
+        </form.AppField>
 
         <div className="mb-6 md:flex md:items-center">
           <div className="md:w-1/3" />

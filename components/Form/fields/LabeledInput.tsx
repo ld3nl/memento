@@ -54,16 +54,29 @@ const LabeledInput = ({
           <div className="md:w-1/3"></div>
           <div className="md:w-2/3">
             <div className="mt-1 text-sm text-red-500">
-              {field.state.meta.errors.map((error, index) => (
-                <div key={index}>
-                  {typeof error === "string"
+              {field.state.meta.errors.map((error) => {
+                const errorMessage =
+                  typeof error === "string"
                     ? error
                     : error?.message ||
                       (error?.issues && error.issues.length > 0
                         ? error.issues[0].message
-                        : String(error))}
-                </div>
-              ))}
+                        : String(error));
+
+                const errorKey =
+                  typeof error === "string"
+                    ? error
+                    : error?.issues && error.issues.length > 0
+                      ? error.issues
+                          .map(
+                            (issue) =>
+                              `${issue?.path?.join(".") ?? "field"}:${issue?.message ?? ""}`,
+                          )
+                          .join("|")
+                      : errorMessage;
+
+                return <div key={errorKey}>{errorMessage}</div>;
+              })}
             </div>
           </div>
         </div>

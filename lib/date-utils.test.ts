@@ -1,8 +1,8 @@
 import {
   calculateFullAge,
-  getFormattedAge,
-  calculateYearsAlive,
   calculateWeeksFromLastBirthday,
+  calculateYearsAlive,
+  getFormattedAge,
 } from "./date-utils";
 
 // Mock the current date for consistent testing

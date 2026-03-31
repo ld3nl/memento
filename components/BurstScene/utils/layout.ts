@@ -1,6 +1,6 @@
 import * as THREE from "three";
+import type { BurstItem } from "../BurstScene.types";
 import { CONFIG } from "../config";
-import { BurstItem } from "../BurstScene.types";
 
 function totalCapacity(step: number, maxRadius: number) {
   if (maxRadius <= 0) return 0;

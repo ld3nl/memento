@@ -16,8 +16,9 @@ export const generateLifeTableUrl = (
   const datePath = date ? `/${date.split("-").join("/")}` : "";
 
   // Handle name query parameter
-  const nameParam =
-    name && name.trim() ? `?name=${encodeURIComponent(name.trim())}` : "";
+  const nameParam = name?.trim()
+    ? `?name=${encodeURIComponent(name.trim())}`
+    : "";
 
   return `${basePath}${datePath}${nameParam}`;
 };
@@ -46,5 +47,5 @@ export const extractNameFromUrl = (
   searchParams: URLSearchParams,
 ): string | null => {
   const name = searchParams.get("name");
-  return name && name.trim() ? name.trim() : null;
+  return name?.trim() ? name.trim() : null;
 };

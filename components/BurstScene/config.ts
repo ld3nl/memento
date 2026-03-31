@@ -1,7 +1,7 @@
 // Reference viewport width for base sizing (1440px)
 export const REFERENCE_VIEWPORT_WIDTH = 1440;
 // Base rem size in pixels
-export const REM_TO_PX = 16;
+const REM_TO_PX = 16;
 
 // Calculate dynamic size based on viewport width
 // At 1440px, size is baseRem * 16px

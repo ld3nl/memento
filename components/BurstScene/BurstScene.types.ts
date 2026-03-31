@@ -1,5 +1,5 @@
-import * as THREE from "three";
-import { LifeTableProps } from "../LifeTable";
+import type * as THREE from "three";
+import type { LifeTableProps } from "../LifeTable";
 
 export type ItemShape = "square" | "circle";
 

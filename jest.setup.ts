@@ -1,6 +1,11 @@
 // Jest setup file for global test configuration
+import { GlobalRegistrator } from "@happy-dom/global-registrator";
 import "@jest/globals";
 import "@testing-library/jest-dom";
+
+if (typeof document === "undefined") {
+  GlobalRegistrator.register();
+}
 
 // Set timezone to UTC for consistent date testing
 process.env.TZ = "UTC";
