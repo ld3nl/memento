@@ -1,47 +1,47 @@
-"use client";
-"use no memo";
+'use client'
+'use no memo'
 
 import {
   createFormHook,
   createFormHookContexts,
-} from "@tanstack/react-form-nextjs";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { getFormattedAge } from "../../lib/date-utils";
-import { FormStorage } from "../../lib/storage";
-import { generateLifeTableUrl } from "../../lib/url-utils";
-import { cn } from "../../lib/utils";
-import LabeledInput from "./fields/LabeledInput";
-import { formSchema } from "./schema";
+} from '@tanstack/react-form-nextjs'
+import Image from 'next/image'
+import { useRouter } from 'next/navigation'
+import React, { useEffect, useState } from 'react'
+import { getFormattedAge } from '../../lib/date-utils'
+import { FormStorage } from '../../lib/storage'
+import { generateLifeTableUrl } from '../../lib/url-utils'
+import { cn } from '../../lib/utils'
+import LabeledInput from './fields/LabeledInput'
+import { formSchema } from './schema'
 
 // Create form contexts and hooks
-const { fieldContext, formContext, useFieldContext, useFormContext } =
-  createFormHookContexts();
+const { fieldContext, formContext, useFormContext } = createFormHookContexts()
 
 // Create SubmitButton component using useFormContext
 function SubmitButton() {
-  const form = useFormContext();
+  const form = useFormContext()
   return (
     <form.Subscribe selector={(state) => [state.canSubmit, state.isSubmitting]}>
       {([canSubmit, isSubmitting]) => (
         <button
           className={cn(
-            "focus:shadow-outline rounded bg-purple-500 px-4 py-2 font-bold text-white shadow transition-all hover:bg-purple-400 focus:outline-none",
+            'w-full min-h-[52px] rounded-none border-[3px] border-red-600 bg-white dark:bg-zinc-900 cursor-pointer px-6 py-4 font-display text-sm font-bold uppercase tracking-[0.25em] text-red-600 shadow-lg shadow-red-600/10 transition-all duration-200 hover:bg-red-600 hover:text-white hover:shadow-xl hover:shadow-red-600/20 focus:outline-none focus:ring-4 focus:ring-red-600/40 active:scale-[0.98] sm:w-auto sm:min-w-[240px] sm:text-base sm:px-8',
             {
-              "cursor-not-allowed bg-slate-400 hover:bg-slate-400 focus:outline-none disabled:opacity-75":
+              'cursor-not-allowed opacity-40 hover:bg-white dark:hover:bg-zinc-900 hover:text-red-600 hover:shadow-lg':
                 !canSubmit,
-            },
+            }
           )}
           type="submit"
           disabled={!canSubmit}
-          data-cy={"generate-table-button"}
+          data-cy={'generate-table-button'}
+          aria-busy={isSubmitting}
         >
-          {isSubmitting ? "Generating..." : "Generate Table"}
+          {isSubmitting ? 'Summoning...' : 'Reveal Calendar'}
         </button>
       )}
     </form.Subscribe>
-  );
+  )
 }
 
 // Create the app form hook with pre-configured components
@@ -54,16 +54,17 @@ const { useAppForm } = createFormHook({
   formComponents: {
     SubmitButton,
   },
-});
+})
 
 const Form = () => {
-  const router = useRouter();
-  const [saveData, setSaveData] = useState(false);
+  const router = useRouter()
+  const [saveData, setSaveData] = useState(false)
+  const [weeksLived, setWeeksLived] = useState<number | null>(null)
 
   const form = useAppForm({
     defaultValues: {
-      name: "",
-      date: "",
+      name: '',
+      date: '',
     } as { name?: string; date: string },
 
     validators: {
@@ -76,160 +77,193 @@ const Form = () => {
           name: value.name,
           date: value.date,
           saveData: true,
-        });
+        })
       } else {
         // Clear saved data if save is unchecked
-        await FormStorage.clearFormData();
+        await FormStorage.clearFormData()
       }
 
       // Navigate to the life table page
-      const url = generateLifeTableUrl(value.date, value.name);
-      router.push(url);
+      const url = generateLifeTableUrl(value.date, value.name)
+      router.push(url)
     },
-  });
+  })
+
+  const saveValues = async (values: { name?: string; date: string }) => {
+    if (!saveData || (!values.date && !values.name)) return
+
+    try {
+      await FormStorage.saveFormData({
+        name: values.name,
+        date: values.date,
+        saveData: true,
+      })
+    } catch (error) {
+      console.error('Failed to save form data:', error)
+    }
+  }
+
+  // Calculate weeks lived - memoized to avoid recreation
+  const calculateWeeksLived = React.useCallback((birthdate: string) => {
+    if (!birthdate) return null
+    const birth = new Date(birthdate)
+    const now = new Date()
+    const msPerWeek = 1000 * 60 * 60 * 24 * 7
+    return Math.floor((now.getTime() - birth.getTime()) / msPerWeek)
+  }, [])
 
   // Load saved form data on mount
   useEffect(() => {
     const loadSavedData = async () => {
       const savedData = await FormStorage.loadFormData().catch((error) => {
-        console.error("Failed to load saved form data:", error);
-        return null;
-      });
+        console.error('Failed to load saved form data:', error)
+        return null
+      })
 
       if (savedData) {
-        form.setFieldValue("name", savedData.name || "");
-        form.setFieldValue("date", savedData.date || "");
-        setSaveData(() => savedData.saveData || false);
-      }
-    };
+        form.setFieldValue('name', savedData.name || '')
+        form.setFieldValue('date', savedData.date || '')
+        setSaveData(() => savedData.saveData || false)
 
-    loadSavedData();
-  }, [form]);
-
-  // Save form data when values change and save is enabled
-  useEffect(() => {
-    const saveFormDataOnChange = async () => {
-      if (saveData) {
-        const values = form.state.values;
-        if (values.date || values.name) {
-          try {
-            await FormStorage.saveFormData({
-              name: values.name,
-              date: values.date,
-              saveData: true,
-            });
-          } catch (error) {
-            console.error("Failed to save form data:", error);
-          }
+        if (savedData.date) {
+          setWeeksLived(calculateWeeksLived(savedData.date))
         }
       }
-    };
+    }
 
-    saveFormDataOnChange();
-  }, [form.state.values, saveData, form]);
+    loadSavedData()
+  }, [form, calculateWeeksLived])
 
   return (
-    <section className="md:px-md-0 m-auto max-w-sm px-4 sm:px-4 md:max-w-lg">
-      <header>
-        <Image
-          src="https://utfs.io/f/vfxFGWyJBql9xCI1QO2QPvwdGrZoHIKXJqsfUxy6C9SDnN7b"
-          alt="Memento Mori Skull"
-          width={177}
-          height={141}
-          className="mx-auto my-6"
-        />
-      </header>
-      <form data-cy={"bday-form"} action={() => form.handleSubmit()}>
-        <form.AppField name="name">
-          {(field) => (
-            <>
-              <div className="mb-6 md:flex md:items-center">
-                <div className="md:w-1/3" />
-                <h1 className="mb-8 pr-4 font-serif text-2xl font-semibold text-black sm:text-center md:mb-0 md:w-2/3 lg:text-left dark:text-purple-500">
-                  Memento mori form{" "}
-                  {field.state.value && `for ${field.state.value}`}
-                </h1>
-              </div>
-
-              <field.LabeledInput labelString="Name" inputId="inline-name" />
-            </>
-          )}
-        </form.AppField>
-
-        <form.AppField name="date">
-          {(field) => (
-            <>
-              <field.LabeledInput
-                labelString="Birthday"
-                inputId="birthday"
-                inputType="date"
-              />
-              {field.state.value && !field.state.meta.errors.length && (
-                <div className="mb-6 transition-discrete duration-500 md:flex md:items-center starting:translate-y-2 starting:opacity-0">
-                  <div className="md:w-1/3">
-                    <span className="mb-1 block pr-4 font-bold text-gray-500 transition-all md:mb-0 md:text-right">
-                      You are:
-                    </span>
-                  </div>
-
-                  <div className="md:w-2/3 dark:text-white" data-cy={"age"}>
-                    {`${getFormattedAge(field.state.value)} of life experience! Make every week count! 🌟`}
-                  </div>
-                </div>
-              )}
-            </>
-          )}
-        </form.AppField>
-
-        <div className="mb-6 md:flex md:items-center">
-          <div className="md:w-1/3" />
-          <label className="block font-bold text-gray-500 md:w-2/3">
-            <input
-              className="mr-2 leading-tight"
-              type="checkbox"
-              checked={saveData}
-              onChange={async (e) => {
-                const isChecked = e.target.checked;
-                setSaveData(isChecked);
-
-                if (isChecked) {
-                  // Save current form data
-                  const values = form.state.values;
-                  try {
-                    await FormStorage.saveFormData({
-                      name: values.name,
-                      date: values.date,
-                      saveData: true,
-                    });
-                  } catch (error) {
-                    console.error("Failed to save form data:", error);
-                  }
-                } else {
-                  // Clear saved data
-                  try {
-                    await FormStorage.clearFormData();
-                  } catch (error) {
-                    console.error("Failed to clear form data:", error);
-                  }
-                }
-              }}
-              data-cy={"input-checkbox-save"}
+    <section className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16 xl:py-20">
+      <div className="grid gap-10 lg:grid-cols-2 lg:gap-12 xl:gap-16">
+        {/* Left column - Image and intro */}
+        <div className="flex flex-col justify-center space-y-5 sm:space-y-6 lg:space-y-8">
+          <div className="relative">
+            <Image
+              src="https://utfs.io/f/vfxFGWyJBql9xCI1QO2QPvwdGrZoHIKXJqsfUxy6C9SDnN7b"
+              alt="Memento Mori Skull"
+              width={177}
+              height={141}
+              className="mb-4 w-32 opacity-90 grayscale contrast-125 sm:mb-5 sm:w-36 lg:w-44"
+              loading="eager"
+              priority
             />
-            <span className="text-sm">Save</span>
-          </label>
+            <h1 className="font-display text-[2.5rem] italic leading-[0.95] tracking-tight text-zinc-900 dark:text-zinc-50 sm:text-5xl lg:text-6xl xl:text-7xl">
+              Memento
+              <br />
+              Mori
+            </h1>
+            <p className="mt-5 max-w-md text-base leading-relaxed text-zinc-500 dark:text-zinc-400 sm:mt-6 sm:text-lg">
+              Every week is numbered. Enter your birthdate to see yours.
+            </p>
+          </div>
         </div>
 
-        <form.AppForm>
-          <div className="md:flex md:items-center">
-            <div className="md:w-1/3" />
-            <div className="md:w-2/3">
-              <form.SubmitButton />
-            </div>
-          </div>
-        </form.AppForm>
-      </form>
-    </section>
-  );
-};
+        {/* Right column - Form */}
+        <div className="flex flex-col justify-center">
+          <form
+            data-cy={'bday-form'}
+            action={() => form.handleSubmit()}
+            className="space-y-6 sm:space-y-7"
+            noValidate
+          >
+            <form.AppField name="name">
+              {(field) => (
+                <field.LabeledInput
+                  labelString="Name"
+                  inputId="inline-name"
+                  placeholder="Enter your name (optional)"
+                  onValueChange={(name) =>
+                    void saveValues({ ...form.state.values, name })
+                  }
+                />
+              )}
+            </form.AppField>
 
-export default Form;
+            <form.AppField name="date">
+              {(field) => (
+                <>
+                  <field.LabeledInput
+                    labelString="Birthdate"
+                    inputId="birthday"
+                    inputType="date"
+                    onValueChange={(date) => {
+                      void saveValues({ ...form.state.values, date })
+                      setWeeksLived(calculateWeeksLived(date))
+                    }}
+                  />
+                  {field.state.value &&
+                    !field.state.meta.errors.length &&
+                    weeksLived !== null && (
+                      <div className="mt-6 animate-in fade-in slide-in-from-bottom-4 duration-700 sm:mt-8">
+                        <div className="border-[3px] border-red-600 bg-white dark:bg-zinc-900 p-6 shadow-2xl shadow-red-600/10 sm:p-7 lg:p-8">
+                          <div className="font-mono text-5xl font-bold tabular-nums tracking-tight text-red-600 sm:text-6xl lg:text-7xl">
+                            {weeksLived.toLocaleString()}
+                          </div>
+                          <div className="mt-3 font-display text-[0.6875rem] font-semibold uppercase tracking-[0.25em] text-zinc-500 dark:text-zinc-400 sm:mt-4">
+                            Weeks lived
+                          </div>
+                          {field.state.value && (
+                            <div className="mt-4 border-t border-zinc-200 dark:border-zinc-800 pt-4 font-display text-sm italic leading-relaxed text-zinc-500 dark:text-zinc-400">
+                              {getFormattedAge(field.state.value)}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                </>
+              )}
+            </form.AppField>
+
+            <div className="flex items-start space-x-3 py-2">
+              <input
+                id="save-data-checkbox"
+                className="mt-0.5 h-5 w-5 flex-shrink-0 cursor-pointer appearance-none rounded-none border-2 border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-red-600 transition-all checked:border-red-600 checked:bg-red-600 hover:border-zinc-400 dark:hover:border-zinc-600 focus:outline-none focus:ring-4 focus:ring-red-600/20 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-zinc-950"
+                type="checkbox"
+                checked={saveData}
+                onChange={async (e) => {
+                  const isChecked = e.target.checked
+                  setSaveData(isChecked)
+
+                  if (isChecked) {
+                    const values = form.state.values
+                    try {
+                      await FormStorage.saveFormData({
+                        name: values.name,
+                        date: values.date,
+                        saveData: true,
+                      })
+                    } catch (error) {
+                      console.error('Failed to save form data:', error)
+                    }
+                  } else {
+                    try {
+                      await FormStorage.clearFormData()
+                    } catch (error) {
+                      console.error('Failed to clear form data:', error)
+                    }
+                  }
+                }}
+                data-cy={'input-checkbox-save'}
+                aria-describedby="save-data-description"
+              />
+              <label
+                htmlFor="save-data-checkbox"
+                className="cursor-pointer select-none text-sm leading-snug text-zinc-500 dark:text-zinc-400 transition-colors hover:text-zinc-900 dark:hover:text-zinc-50 sm:text-base"
+              >
+                <span id="save-data-description">Remember my information</span>
+              </label>
+            </div>
+
+            <form.AppForm>
+              <form.SubmitButton />
+            </form.AppForm>
+          </form>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+export default Form

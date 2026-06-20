@@ -1,25 +1,17 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
   reactCompiler: {
-    compilationMode: "annotation",
+    compilationMode: 'annotation',
   },
   // Configure image domains to avoid invalid src prop error
   images: {
     remotePatterns: [
       {
-        protocol: "https",
-        hostname: "utfs.io",
+        protocol: 'https',
+        hostname: 'utfs.io',
       },
     ],
-  },
-  async rewrites() {
-    return [
-      {
-        source: "/robots.txt",
-        destination: "/api/robots",
-      },
-    ];
   },
   // Silence Next.js 16 error about missing turbopack config when webpack config is present
   turbopack: {},
@@ -28,11 +20,11 @@ const nextConfig: NextConfig = {
     if (dev && !isServer) {
       config.watchOptions = {
         ...config.watchOptions,
-        ignored: ["**/cypress/snapshots/**", "**/cypress/screenshots/**"],
-      };
+        ignored: ['**/cypress/snapshots/**', '**/cypress/screenshots/**'],
+      }
     }
-    return config;
+    return config
   },
-};
+}
 
-export default nextConfig;
+export default nextConfig

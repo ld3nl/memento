@@ -1,0 +1,33 @@
+# Dependencies
+node_modules
+.next
+.cache
+
+# Build outputs
+dist
+build
+out
+coverage
+
+# Agent skills and config
+.agents
+.kiro
+
+# Git
+.git
+
+# Lock files
+bun.lock
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Storybook
+storybook-static

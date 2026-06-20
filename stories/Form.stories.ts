@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from "@storybook/nextjs";
+import type { Meta, StoryObj } from '@storybook/nextjs'
 // import Page from "../app/page";
-import Form from "../components/Form";
+import Form from '../components/Form'
 
 // Suggestions for using Storybook 8.3.5:
 // 1. Use the new Component Story Format (CSF) 3.0
@@ -12,21 +12,21 @@ import Form from "../components/Form";
 // 7. Use the improved performance features
 
 const meta: Meta = {
-  title: "Components/Form",
+  title: 'Components/Form',
   component: Form,
   parameters: {
     nextjs: {
       appDirectory: true,
     },
-    layout: "centered",
+    layout: 'centered',
     // ... other parameters
   },
   // ... other meta properties
-};
+}
 
-export default meta;
+export default meta
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   args: {},
@@ -34,12 +34,12 @@ export const Default: Story = {
   play: async ({ canvasElement: _canvasElement }) => {
     // Add interaction test code here
   },
-};
+}
 
 export const WithPrefilledData: Story = {
   args: {
     // Add pre-filled data props here if applicable
   },
-};
+}
 
 // Add more stories as needed

@@ -1,38 +1,38 @@
-import type { Meta, StoryObj } from "@storybook/nextjs";
-import { YearGrid } from "./YearGrid";
+import type { Meta, StoryObj } from '@storybook/nextjs'
+import { YearGrid } from './YearGrid'
 
-const weeks = Array.from({ length: 52 }, (_, i) => i + 1) as readonly number[];
+const weeks = Array.from({ length: 52 }, (_, i) => i + 1) as readonly number[]
 
 const meta: Meta<typeof YearGrid> = {
-  title: "Components/YearGrid",
+  title: 'Components/YearGrid',
   component: YearGrid,
   parameters: {
-    layout: "centered",
+    layout: 'centered',
   },
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   argTypes: {
     yearsAlive: {
-      control: { type: "number", min: 0, max: 100 },
-      description: "Total years the person has lived",
+      control: { type: 'number', min: 0, max: 100 },
+      description: 'Total years the person has lived',
     },
     currentDecadeYear: {
-      control: { type: "number", min: 1, max: 100 },
-      description: "The year this grid represents",
+      control: { type: 'number', min: 1, max: 100 },
+      description: 'The year this grid represents',
     },
     weeksFromLastBday: {
-      control: { type: "number", min: 0, max: 51 },
-      description: "Weeks elapsed since last birthday",
+      control: { type: 'number', min: 0, max: 51 },
+      description: 'Weeks elapsed since last birthday',
     },
     daysIntoCurrentWeek: {
-      control: { type: "number", min: 1, max: 7 },
-      description: "Days into the current week",
+      control: { type: 'number', min: 1, max: 7 },
+      description: 'Days into the current week',
     },
   },
-};
+}
 
-export default meta;
+export default meta
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof meta>
 
 export const CurrentYear: Story = {
   args: {
@@ -42,7 +42,7 @@ export const CurrentYear: Story = {
     weeksFromLastBday: 20,
     daysIntoCurrentWeek: 3,
   },
-};
+}
 
 export const CompletedYear: Story = {
   args: {
@@ -52,7 +52,7 @@ export const CompletedYear: Story = {
     weeksFromLastBday: 10,
     daysIntoCurrentWeek: 1,
   },
-};
+}
 
 export const FutureYear: Story = {
   args: {
@@ -62,7 +62,7 @@ export const FutureYear: Story = {
     weeksFromLastBday: 10,
     daysIntoCurrentWeek: 1,
   },
-};
+}
 
 export const FirstYear: Story = {
   args: {
@@ -72,7 +72,7 @@ export const FirstYear: Story = {
     weeksFromLastBday: 5,
     daysIntoCurrentWeek: 2,
   },
-};
+}
 
 export const MilestoneYear: Story = {
   args: {
@@ -82,4 +82,4 @@ export const MilestoneYear: Story = {
     weeksFromLastBday: 26,
     daysIntoCurrentWeek: 4,
   },
-};
+}

@@ -1,5 +1,11 @@
 {
-  "name": "Memento Mori",
+  "name": "Memento Mori Life Calendar",
+  "short_name": "Memento Mori",
+  "description": "Visualize your life in weeks with our Memento Mori calendar. A powerful life in weeks calculator and mortality reminder tool.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#a855f7",
   "icons": [
     {
       "src": "/android-icon-36x36.png",

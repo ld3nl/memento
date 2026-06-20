@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from "@storybook/nextjs";
+import type { Meta, StoryObj } from '@storybook/nextjs'
 
-import LifeTable from "../components/LifeTable";
+import LifeTable from '../components/LifeTable'
 
 // Suggestions for using Storybook 8.3.5:
 // 1. Use the new Component Story Format (CSF) 3.0
@@ -12,24 +12,24 @@ import LifeTable from "../components/LifeTable";
 // 7. Use improved performance features
 
 const meta: Meta = {
-  title: "Components/LifeTable",
+  title: 'Components/LifeTable',
   component: LifeTable,
   parameters: {
     nextjs: {
       appDirectory: true,
     },
-    layout: "centered",
+    layout: 'centered',
     // ... other parameters
   },
   // ... other meta properties
-};
+}
 
-export default meta;
+export default meta
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof meta>
 
 export const from: Story = {
   args: {
-    dob: "1986-11-25",
+    dob: '1986-11-25',
   },
-};
+}

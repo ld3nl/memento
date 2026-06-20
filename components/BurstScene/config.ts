@@ -1,26 +1,26 @@
 // Reference viewport width for base sizing (1440px)
-export const REFERENCE_VIEWPORT_WIDTH = 1440;
+export const REFERENCE_VIEWPORT_WIDTH = 1440
 // Base rem size in pixels
-const REM_TO_PX = 16;
+const REM_TO_PX = 16
 
 // Calculate dynamic size based on viewport width
 // At 1440px, size is baseRem * 16px
 export function getItemSizePx(
   viewportWidth: number,
-  baseRem: number = 0.5,
+  baseRem: number = 0.5
 ): number {
-  const scale = viewportWidth / REFERENCE_VIEWPORT_WIDTH;
-  return baseRem * REM_TO_PX * scale;
+  const scale = viewportWidth / REFERENCE_VIEWPORT_WIDTH
+  return baseRem * REM_TO_PX * scale
 }
 
 // Calculate dynamic spacing based on viewport width
 // At 1440px, spacing is baseRem * 16px
 export function getItemSpacingPx(
   viewportWidth: number,
-  baseRem: number = 0.5,
+  baseRem: number = 0.5
 ): number {
-  const scale = viewportWidth / REFERENCE_VIEWPORT_WIDTH;
-  return baseRem * REM_TO_PX * scale;
+  const scale = viewportWidth / REFERENCE_VIEWPORT_WIDTH
+  return baseRem * REM_TO_PX * scale
 }
 
 export const CONFIG = {
@@ -43,4 +43,4 @@ export const CONFIG = {
   MAGNETIC_FORCE: 15, // Maximum displacement in pixels
   MAGNETIC_RADIUS: 150, // Radius of influence in pixels
   MAGNETIC_FALLOFF: 2, // Power for distance falloff (higher = sharper)
-};
+}

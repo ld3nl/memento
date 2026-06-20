@@ -1,88 +1,128 @@
-import type { Metadata } from "next";
-import Link from "next/link";
-import Form from "../components/Form";
+import type { Metadata } from 'next'
+import Link from 'next/link'
+import Form from '../components/Form/Form'
 
 export const metadata: Metadata = {
-  title: "Memento Mori Life Calendar - Calculate Your Life in Weeks",
+  title: 'Memento Mori Life Calendar - Visualize Your Life in Weeks',
   description:
-    "A Memento Mori calendar is a visual tool used to track life in weeks, helping users reflect on mortality and prioritize time.",
-};
+    'How many weeks have you lived? How many remain? Visualize your entire life in weeks with our powerful Memento Mori calendar. A life in weeks calculator that helps you reflect on mortality and make every week count.',
+  alternates: {
+    canonical: 'https://memento-mori.vercel.app',
+  },
+  openGraph: {
+    title: 'Memento Mori Life Calendar - Visualize Your Life in Weeks',
+    description:
+      'How many weeks have you lived? How many remain? Visualize your entire life in weeks with our Memento Mori calendar. Make every week count.',
+    url: 'https://memento-mori.vercel.app',
+    type: 'website',
+    images: [
+      {
+        url: 'https://utfs.io/f/vfxFGWyJBql9tjBcWhLA6EWr7SI90xRVulwdUhnPDQs8kcH3',
+        width: 730,
+        height: 548,
+        alt: 'Memento Mori Life Calendar',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Memento Mori Life Calendar - Visualize Your Life in Weeks',
+    description:
+      'How many weeks have you lived? How many remain? Visualize your entire life in weeks. Make every week count.',
+    images: [
+      'https://utfs.io/f/vfxFGWyJBql9tjBcWhLA6EWr7SI90xRVulwdUhnPDQs8kcH3',
+    ],
+  },
+}
 
 const Page = () => {
   const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    name: "Memento Mori Life Calendar",
-    applicationCategory: "LifestyleApplication",
-    operatingSystem: "Any",
-    browserRequirements: "Requires JavaScript. Requires HTML5.",
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: 'Memento Mori Life Calendar',
+    applicationCategory: 'LifestyleApplication',
+    operatingSystem: 'Any',
+    browserRequirements: 'Requires JavaScript. Requires HTML5.',
     offers: {
-      "@type": "Offer",
-      price: "0",
-      priceCurrency: "USD",
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'USD',
     },
     description:
-      "A Memento Mori calendar is a visual tool used to track life in weeks, helping users reflect on mortality and prioritize time.",
+      'A Memento Mori calendar is a visual tool used to track life in weeks, helping users reflect on mortality and prioritize time.',
     featureList:
-      "Calculate life in weeks, Visual grid of 80 years, Persistent bookmarkable URL",
+      'Calculate life in weeks, Visual grid of 80 years, Persistent bookmarkable URL',
     screenshot:
-      "https://utfs.io/f/vfxFGWyJBql9tjBcWhLA6EWr7SI90xRVulwdUhnPDQs8kcH3",
+      'https://utfs.io/f/vfxFGWyJBql9tjBcWhLA6EWr7SI90xRVulwdUhnPDQs8kcH3',
     mainEntity: {
-      "@type": "FAQPage",
+      '@type': 'FAQPage',
       mainEntity: [
         {
-          "@type": "Question",
-          name: "What is a Memento Mori calendar?",
+          '@type': 'Question',
+          name: 'What is a Memento Mori calendar?',
           acceptedAnswer: {
-            "@type": "Answer",
-            text: "A Memento Mori calendar is a visual tool used to track life in weeks, helping users reflect on mortality and prioritize time.",
+            '@type': 'Answer',
+            text: 'A Memento Mori calendar is a visual tool used to track life in weeks, helping users reflect on mortality and prioritize time.',
           },
         },
         {
-          "@type": "Question",
-          name: "How does this tool work?",
+          '@type': 'Question',
+          name: 'How does this tool work?',
           acceptedAnswer: {
-            "@type": "Answer",
-            text: "This tool is a high-precision Memento Mori life-in-weeks generator. It calculates exact weeks lived based on birthdate and provides a persistent, bookmarkable URL for tracking.",
+            '@type': 'Answer',
+            text: 'This tool is a high-precision Memento Mori life-in-weeks generator. It calculates exact weeks lived based on birthdate and provides a persistent, bookmarkable URL for tracking.',
           },
         },
       ],
     },
-  };
-  const serializedJsonLd = JSON.stringify(jsonLd).replace(/</g, "\\u003c");
+  }
+  const serializedJsonLd = JSON.stringify(jsonLd).replace(/</g, '\\u003c')
 
   return (
     <>
       <script type="application/ld+json">{serializedJsonLd}</script>
       <Form />
-      <div className="mx-auto flex max-w-sm flex-col px-4 md:max-w-lg">
-        <Link
-          href="/about"
-          className="mt-4 text-sm text-black underline md:ml-auto md:w-2/3 dark:text-purple-500"
-        >
-          About this Calendar
-        </Link>
-        <section className="mt-8 opacity-90 md:ml-auto md:w-2/3">
-          <details className="group text-xs text-gray-500 dark:text-gray-400">
-            <summary className="cursor-pointer list-none font-bold text-gray-700 dark:text-gray-300">
-              How it works
-            </summary>
-            <p className="mt-2 leading-relaxed text-balance">
-              A <strong>Memento Mori calendar</strong> is a visual tool used to
-              track life in weeks, helping users reflect on mortality and
-              prioritize time.
-            </p>
-            <p className="mt-2 leading-relaxed text-balance">
-              This tool acts as a high-precision life-in-weeks generator. Simply
-              enter your birthdate to calculate the exact number of weeks you
-              have lived. The result is a personalized 80-year grid that helps
-              you visualize your lifespan.
-            </p>
-          </details>
-        </section>
+      <div className="mx-auto w-full max-w-7xl px-4 pb-12 sm:px-6 sm:pb-16 lg:px-8">
+        <div className="grid gap-8 lg:grid-cols-2 lg:gap-12 xl:gap-16">
+          <Link
+            href="/about"
+            className="group inline-block border-b-[3px] border-accent/30 pb-1.5 font-display text-xs font-bold uppercase tracking-[0.25em] text-primary transition-all duration-200 hover:border-accent hover:text-accent sm:text-sm"
+          >
+            About this Calendar
+          </Link>
+
+          <section className="lg:col-start-2">
+            <details className="group">
+              <summary className="cursor-pointer list-none border-b-2 border-border pb-3 font-display text-xs font-bold uppercase tracking-[0.25em] text-secondary transition-colors hover:text-primary sm:text-[0.6875rem]">
+                How it works
+              </summary>
+              <div className="mt-5 space-y-4 font-body text-sm leading-relaxed text-secondary sm:mt-6 sm:text-base">
+                <p>
+                  A{' '}
+                  <strong className="font-semibold">
+                    Memento Mori calendar
+                  </strong>{' '}
+                  visualizes life in weeks—a tool for reflection on mortality
+                  and intentional living.
+                </p>
+                <p>
+                  Enter your birthdate to calculate weeks lived. The result: a
+                  personalized 80-year grid that transforms abstract time into
+                  something tangible.
+                </p>
+                <p>
+                  Rooted in{' '}
+                  <strong className="font-semibold">Stoic philosophy</strong>,
+                  this calendar serves as a reminder to make deliberate choices.
+                  Each week counts.
+                </p>
+              </div>
+            </details>
+          </section>
+        </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default Page;
+export default Page

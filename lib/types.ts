@@ -9,10 +9,10 @@
 // 8. Implement mapped type 'as' clauses for more flexible type transformations
 
 export type DecadeGridProps = {
-  decadeLength: number;
-  weeks: readonly number[]; // Use readonly for immutable arrays
-  yearsAlive: number;
-  yearIndex: number;
-  weeksFromLastBday: number;
-  daysIntoCurrentWeek: number; // 1-7 representing day within current week
-};
+  decadeLength: number
+  weeks: readonly number[] // Use readonly for immutable arrays
+  yearsAlive: number
+  yearIndex: number
+  weeksFromLastBday: number
+  daysIntoCurrentWeek: number // 1-7 representing day within current week
+}

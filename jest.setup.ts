@@ -1,14 +1,14 @@
 // Jest setup file for global test configuration
-import { GlobalRegistrator } from "@happy-dom/global-registrator";
-import "@jest/globals";
-import "@testing-library/jest-dom";
+import { GlobalRegistrator } from '@happy-dom/global-registrator'
+import '@jest/globals'
+import '@testing-library/jest-dom'
 
-if (typeof document === "undefined") {
-  GlobalRegistrator.register();
+if (typeof document === 'undefined') {
+  GlobalRegistrator.register()
 }
 
 // Set timezone to UTC for consistent date testing
-process.env.TZ = "UTC";
+process.env.TZ = 'UTC'
 
 // Mock console methods to reduce noise in tests (optional)
 // global.console = {

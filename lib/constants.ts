@@ -3,20 +3,9 @@
  */
 
 // Date and time constants
-export const WEEKS_PER_YEAR = 52;
-export const DECADE_LENGTH = 10;
-export const YEARS_IN_LIFETIME = 8;
+export const WEEKS_PER_YEAR = 52
+export const DECADE_LENGTH = 10
+export const YEARS_IN_LIFETIME = 8
 
 // Form constants
-export const DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
-
-// UI constants
-export const WEEK_DAYS = [
-  "Mon",
-  "Tue",
-  "Wed",
-  "Thu",
-  "Fri",
-  "Sat",
-  "Sun",
-] as const;
+export const DEFAULT_DATE_FORMAT = 'yyyy-MM-dd'
