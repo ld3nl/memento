@@ -1,17 +1,17 @@
-import Image from 'next/image'
-import Link from 'next/link'
-import { KofiButton } from './KofiButton'
+import Image from "next/image";
+import Link from "next/link";
+import { KofiButton } from "./KofiButton";
 
 export const Footer = () => {
-  const currentYear = new Date().getFullYear()
+  const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="mt-auto border-t-2 border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 py-10 print:hidden sm:py-12">
+    <footer className="mt-auto border-t-2 border-zinc-200 bg-white py-10 sm:py-12 dark:border-zinc-800 dark:bg-zinc-950 print:hidden">
       <div className="container mx-auto w-full px-4 sm:px-6 lg:px-8">
         {/* Support Section */}
         <div className="mb-8 text-center sm:mb-10">
           <KofiButton size="small" />
-          <p className="mt-3 font-display text-[0.6875rem] font-semibold uppercase tracking-[0.25em] text-zinc-500 dark:text-zinc-400 sm:text-xs">
+          <p className="font-display mt-3 text-[0.6875rem] font-semibold tracking-[0.25em] text-zinc-500 uppercase sm:text-xs dark:text-zinc-400">
             Support this reflection tool
           </p>
         </div>
@@ -23,25 +23,25 @@ export const Footer = () => {
         >
           <Link
             href="/"
-            className="font-display font-bold uppercase tracking-[0.25em] text-zinc-500 dark:text-zinc-400 transition-colors duration-200 hover:text-red-600 focus:text-red-600 focus:outline-none focus:ring-2 focus:ring-red-600/40"
+            className="font-display font-bold tracking-[0.25em] text-zinc-500 uppercase transition-colors duration-200 hover:text-red-600 focus:text-red-600 focus:ring-2 focus:ring-red-600/40 focus:outline-none dark:text-zinc-400"
           >
             Home
           </Link>
           <Link
             href="/about"
-            className="font-display font-bold uppercase tracking-[0.25em] text-zinc-500 dark:text-zinc-400 transition-colors duration-200 hover:text-red-600 focus:text-red-600 focus:outline-none focus:ring-2 focus:ring-red-600/40"
+            className="font-display font-bold tracking-[0.25em] text-zinc-500 uppercase transition-colors duration-200 hover:text-red-600 focus:text-red-600 focus:ring-2 focus:ring-red-600/40 focus:outline-none dark:text-zinc-400"
           >
             About
           </Link>
           <Link
             href="/table/1990/1/1"
-            className="font-display font-bold uppercase tracking-[0.25em] text-zinc-500 dark:text-zinc-400 transition-colors duration-200 hover:text-red-600 focus:text-red-600 focus:outline-none focus:ring-2 focus:ring-red-600/40"
+            className="font-display font-bold tracking-[0.25em] text-zinc-500 uppercase transition-colors duration-200 hover:text-red-600 focus:text-red-600 focus:ring-2 focus:ring-red-600/40 focus:outline-none dark:text-zinc-400"
           >
             Example: 1990
           </Link>
           <Link
             href="/burst/1985/6/15"
-            className="font-display font-bold uppercase tracking-[0.25em] text-zinc-500 dark:text-zinc-400 transition-colors duration-200 hover:text-red-600 focus:text-red-600 focus:outline-none focus:ring-2 focus:ring-red-600/40"
+            className="font-display font-bold tracking-[0.25em] text-zinc-500 uppercase transition-colors duration-200 hover:text-red-600 focus:text-red-600 focus:ring-2 focus:ring-red-600/40 focus:outline-none dark:text-zinc-400"
           >
             Burst View
           </Link>
@@ -49,20 +49,20 @@ export const Footer = () => {
 
         {/* Description */}
         <div className="mb-8 text-center sm:mb-10">
-          <p className="mx-auto max-w-2xl font-body text-xs leading-relaxed text-zinc-500 dark:text-zinc-400 sm:text-sm">
+          <p className="font-body mx-auto max-w-2xl text-xs leading-relaxed text-zinc-500 sm:text-sm dark:text-zinc-400">
             Memento Mori Life Calendar visualizes life in weeks. Rooted in Stoic
             philosophy, it transforms abstract time into tangible perspective.
           </p>
         </div>
 
         {/* Bottom Section */}
-        <div className="flex flex-col items-center justify-center gap-3 border-t-2 border-zinc-200 dark:border-zinc-800 pt-6 sm:pt-8">
+        <div className="flex flex-col items-center justify-center gap-3 border-t-2 border-zinc-200 pt-6 sm:pt-8 dark:border-zinc-800">
           <div className="flex items-center gap-2">
             <Link
               href="https://www.echoflow.ca/"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-zinc-100 dark:bg-zinc-900 transition-colors duration-200 hover:bg-red-600/10 focus:outline-none focus:ring-2 focus:ring-red-600/40 sm:h-10 sm:w-10"
+              className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-zinc-100 transition-colors duration-200 hover:bg-red-600/10 focus:ring-2 focus:ring-red-600/40 focus:outline-none sm:h-10 sm:w-10 dark:bg-zinc-900"
               aria-label="Echo Flow Canada"
             >
               <Image
@@ -73,12 +73,12 @@ export const Footer = () => {
                 className="h-4 w-4 sm:h-[1.125rem] sm:w-[1.125rem]"
               />
             </Link>
-            <span className="font-display text-[0.6875rem] font-semibold uppercase tracking-[0.2em] text-zinc-500 dark:text-zinc-400 sm:text-xs">
+            <span className="font-display text-[0.6875rem] font-semibold tracking-[0.2em] text-zinc-500 uppercase sm:text-xs dark:text-zinc-400">
               Echo Flow Canada © {currentYear}
             </span>
           </div>
         </div>
       </div>
     </footer>
-  )
-}
+  );
+};

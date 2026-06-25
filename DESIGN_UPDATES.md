@@ -1,6 +1,7 @@
 # Gothic Dark Theme Design Updates
 
 ## Overview
+
 Updated the Memento Mori UX to follow `.agents/skills/frontend-design` guidelines with a gothic dark theme, mobile-first approach, improved form UX, and WCAG-compliant color contrast.
 
 ## Key Changes
@@ -8,6 +9,7 @@ Updated the Memento Mori UX to follow `.agents/skills/frontend-design` guideline
 ### 1. **Gothic Dark Theme with Proper Contrast**
 
 #### Dark Mode Colors (Updated in `styles/globals.css`)
+
 - **Background Primary**: `#0D0C0B` (True deep void black - darker)
 - **Background Secondary**: `#171514` (Obsidian stone - darker)
 - **Text Primary**: `#F5F3F0` (Pale bone white - WCAG AAA contrast 14.8:1)
@@ -17,6 +19,7 @@ Updated the Memento Mori UX to follow `.agents/skills/frontend-design` guideline
 - **Border**: `#2C2A28` (Charcoal border - subtle but visible)
 
 #### Global Styles Enhancements
+
 - Added `-webkit-tap-highlight-color: transparent` for better mobile experience
 - Improved focus visibility with `outline: 2px solid` accent color
 - Added smooth scroll behavior (respecting `prefers-reduced-motion`)
@@ -25,6 +28,7 @@ Updated the Memento Mori UX to follow `.agents/skills/frontend-design` guideline
 ### 2. **Mobile-First Responsive Design**
 
 #### Form Component (`components/Form/Form.tsx`)
+
 - Updated spacing to be mobile-first: `space-y-6 sm:space-y-7`
 - Responsive padding: `py-8 sm:py-12 lg:py-16 xl:py-20`
 - Image sizing: `w-32 sm:w-36 lg:w-44` for proper scaling
@@ -33,6 +37,7 @@ Updated the Memento Mori UX to follow `.agents/skills/frontend-design` guideline
 - Full width containers: `w-full max-w-7xl`
 
 #### Input Fields (`components/Form/fields/LabeledInput.tsx`)
+
 - Minimum touch target: `min-h-[48px] sm:min-h-[52px]` (exceeds WCAG 44px minimum)
 - Responsive spacing: `space-y-2 sm:space-y-3`
 - Font sizing: `text-base sm:text-lg`
@@ -42,6 +47,7 @@ Updated the Memento Mori UX to follow `.agents/skills/frontend-design` guideline
 ### 3. **Enhanced Form UX**
 
 #### Visual Improvements
+
 - **Solid backgrounds** instead of transparency for better readability
 - **Stronger borders**: Changed from `border-2` to `border-[3px]` for accent elements
 - **Better hover states**: Added hover effects for inputs (`hover:border-text-secondary/40`)
@@ -49,6 +55,7 @@ Updated the Memento Mori UX to follow `.agents/skills/frontend-design` guideline
 - **Improved button**: Minimum width of 240px on desktop, better visual weight
 
 #### Accessibility Improvements
+
 - Added `noValidate` attribute to form for custom validation
 - Proper label associations with `htmlFor` and unique IDs
 - Checkbox label properly connected with `id` and `htmlFor`
@@ -57,6 +64,7 @@ Updated the Memento Mori UX to follow `.agents/skills/frontend-design` guideline
 - Touch-friendly checkbox with proper hit area
 
 #### Typography Refinements
+
 - Increased letter spacing: `tracking-[0.25em]` for labels (from `0.2em`)
 - Font weight consistency: `font-bold` for emphasis (from mixed weights)
 - Better visual hierarchy with `font-semibold` for labels
@@ -64,6 +72,7 @@ Updated the Memento Mori UX to follow `.agents/skills/frontend-design` guideline
 ### 4. **Consistent Design Language**
 
 #### Footer (`components/Footer.tsx`)
+
 - Thicker top border: `border-t-2` for visual separation
 - Improved spacing: `py-10 sm:py-12`
 - Full width container: `w-full`
@@ -71,6 +80,7 @@ Updated the Memento Mori UX to follow `.agents/skills/frontend-design` guideline
 - Larger touch targets for mobile
 
 #### About Page (`app/about/page.tsx`)
+
 - Consistent heading colors using accent color
 - Responsive text sizing: `text-[2.5rem] sm:text-5xl`
 - Updated text classes to use theme tokens
@@ -78,6 +88,7 @@ Updated the Memento Mori UX to follow `.agents/skills/frontend-design` guideline
 - Better spacing: `py-10 sm:py-12 lg:py-16`
 
 #### Back Button (`components/BackButton.tsx`)
+
 - Gothic styling with `border-2` and theme colors
 - Improved hover state with accent color
 - Larger size: `h-11 w-11` (from `h-10 w-10`)
@@ -85,6 +96,7 @@ Updated the Memento Mori UX to follow `.agents/skills/frontend-design` guideline
 - Better stroke weight: `strokeWidth="2.5"`
 
 #### Main Page (`app/page.tsx`)
+
 - Stronger accent underlines: `border-b-[3px]`
 - Bold typography: `font-bold` for emphasis
 - Improved spacing consistency
@@ -93,6 +105,7 @@ Updated the Memento Mori UX to follow `.agents/skills/frontend-design` guideline
 ### 5. **Theme Configuration**
 
 #### Layout (`app/layout.tsx`)
+
 - Dark mode applied to `<html>` element (not body) for proper cascading
 - Updated theme color to match dark background: `#0D0C0B`
 - Maintained all SEO and metadata configurations
@@ -103,13 +116,13 @@ Updated the Memento Mori UX to follow `.agents/skills/frontend-design` guideline
 
 1. **Distinctive Visual Identity**: Gothic dark theme with blood crimson accent creates a memorable, subject-appropriate aesthetic for "Memento Mori"
 
-2. **Deliberate Typography**: 
+2. **Deliberate Typography**:
    - EB Garamond (display): Elegant, classical serif for headers
    - Inter (body): Clean, readable sans-serif for content
    - JetBrains Mono (mono): Technical precision for numbers
    - Intentional tracking and weights throughout
 
-3. **Restraint and Discipline**: 
+3. **Restraint and Discipline**:
    - Bold elements limited to accent color and key interactions
    - Clean borders, no rounded corners (gothic aesthetic)
    - Consistent spacing scale

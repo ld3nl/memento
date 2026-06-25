@@ -1,25 +1,25 @@
 // components/PopOver/PopOver.stories.tsx
-import type { Meta, StoryObj } from '@storybook/react';
-import Popover from './';
-import { MementoCard } from './MementoCard';
-import { Week } from '../Week/Week';
+import type { Meta, StoryObj } from "@storybook/react";
+import { Week } from "../Week/Week";
+import Popover from "./";
+import { MementoCard } from "./MementoCard";
 
 const meta = {
-  title: 'UI/Popover',
+  title: "UI/Popover",
   component: Popover,
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   argTypes: {
     mode: {
-      control: 'select',
-      options: ['auto', 'manual'],
-      description: 'Native HTML popover mode',
+      control: "select",
+      options: ["auto", "manual"],
+      description: "Native HTML popover mode",
     },
     action: {
-      control: 'select',
-      options: ['toggle', 'show', 'hide'],
+      control: "select",
+      options: ["toggle", "show", "hide"],
     },
-    className: { control: 'text' },
-    triggerClassName: { control: 'text' },
+    className: { control: "text" },
+    triggerClassName: { control: "text" },
   },
   parameters: {
     docs: {
@@ -37,12 +37,12 @@ Production-ready Popover for Memento Mori using native Popover API + CSS Anchor 
         `,
       },
     },
-    layout: 'centered',
+    layout: "centered",
     backgrounds: {
-      default: 'dark',
+      default: "dark",
       values: [
-        { name: 'dark', value: '#09090b' },
-        { name: 'light', value: '#ffffff' },
+        { name: "dark", value: "#09090b" },
+        { name: "light", value: "#ffffff" },
       ],
     },
   },
@@ -53,7 +53,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    label: '',
+    label: "",
     children: (
       <MementoCard
         date="17 Dec 1987"
@@ -67,7 +67,7 @@ export const Default: Story = {
 
 export const WithCustomNote: Story = {
   args: {
-    label: '',
+    label: "",
     children: (
       <MementoCard
         date="25 Dec 2020"
@@ -82,8 +82,8 @@ export const WithCustomNote: Story = {
 
 export const ManualMode: Story = {
   args: {
-    mode: 'manual',
-    label: '',
+    mode: "manual",
+    label: "",
     children: (
       <MementoCard
         date="1 Jan 2024"
@@ -129,10 +129,11 @@ export const MultipleWeeks: Story = {
     </div>
   ),
   parameters: {
-    layout: 'padded',
+    layout: "padded",
     docs: {
       description: {
-        story: 'Demonstrates multiple week markers with unique anchor positioning.',
+        story:
+          "Demonstrates multiple week markers with unique anchor positioning.",
       },
     },
   },
@@ -148,10 +149,42 @@ export const MilestoneYearWithEvents: Story = {
 
     // Define milestone events at specific weeks (past and future)
     const milestoneEvents = new Map([
-      [5, { date: '5 Feb 1990', dateLabel: '1990.02.05', weekNumber: '№ 2 347', note: 'Started new job. A turning point.' }],
-      [18, { date: '7 May 1990', dateLabel: '1990.05.07', weekNumber: '№ 2 360', note: 'Met someone special.' }],
-      [34, { date: '27 Aug 1990', dateLabel: '1990.08.27', weekNumber: '№ 2 376', note: 'Vacation planned. A future moment to anticipate.' }],
-      [45, { date: '12 Nov 1990', dateLabel: '1990.11.12', weekNumber: '№ 2 387', note: 'Big presentation scheduled. Preparing now.' }],
+      [
+        5,
+        {
+          date: "5 Feb 1990",
+          dateLabel: "1990.02.05",
+          weekNumber: "№ 2 347",
+          note: "Started new job. A turning point.",
+        },
+      ],
+      [
+        18,
+        {
+          date: "7 May 1990",
+          dateLabel: "1990.05.07",
+          weekNumber: "№ 2 360",
+          note: "Met someone special.",
+        },
+      ],
+      [
+        34,
+        {
+          date: "27 Aug 1990",
+          dateLabel: "1990.08.27",
+          weekNumber: "№ 2 376",
+          note: "Vacation planned. A future moment to anticipate.",
+        },
+      ],
+      [
+        45,
+        {
+          date: "12 Nov 1990",
+          dateLabel: "1990.11.12",
+          weekNumber: "№ 2 387",
+          note: "Big presentation scheduled. Preparing now.",
+        },
+      ],
     ]);
 
     return (
@@ -166,9 +199,9 @@ export const MilestoneYearWithEvents: Story = {
           // If this week has a milestone event, wrap it in a popover
           if (milestone) {
             return (
-              <Popover 
-                key={weekIndex} 
-                label="" 
+              <Popover
+                key={weekIndex}
+                label=""
                 weekIndex={weekIndex}
                 isFilled={isFilled}
               >
@@ -199,10 +232,11 @@ export const MilestoneYearWithEvents: Story = {
     );
   },
   parameters: {
-    layout: 'centered',
+    layout: "centered",
     docs: {
       description: {
-        story: 'Milestone year (50) with notable events. Past events (filled) and future events (border only) at weeks 5, 18, 34, and 45.',
+        story:
+          "Milestone year (50) with notable events. Past events (filled) and future events (border only) at weeks 5, 18, 34, and 45.",
       },
     },
   },
@@ -214,60 +248,106 @@ export const EdgePositioning: Story = {
       {/* Top row */}
       <div className="flex items-start justify-start">
         <Popover label="">
-          <MementoCard date="1 Jan 1980" dateLabel="1980.01.01" weekNumber="№ 1" status="remembered" />
+          <MementoCard
+            date="1 Jan 1980"
+            dateLabel="1980.01.01"
+            weekNumber="№ 1"
+            status="remembered"
+          />
         </Popover>
       </div>
       <div className="flex items-start justify-center">
         <Popover label="">
-          <MementoCard date="1 Jan 1985" dateLabel="1985.01.01" weekNumber="№ 261" status="remembered" />
+          <MementoCard
+            date="1 Jan 1985"
+            dateLabel="1985.01.01"
+            weekNumber="№ 261"
+            status="remembered"
+          />
         </Popover>
       </div>
       <div className="flex items-start justify-end">
         <Popover label="">
-          <MementoCard date="1 Jan 1990" dateLabel="1990.01.01" weekNumber="№ 521" status="remembered" />
+          <MementoCard
+            date="1 Jan 1990"
+            dateLabel="1990.01.01"
+            weekNumber="№ 521"
+            status="remembered"
+          />
         </Popover>
       </div>
 
       {/* Middle row */}
       <div className="flex items-center justify-start">
         <Popover label="">
-          <MementoCard date="1 Jan 1995" dateLabel="1995.01.01" weekNumber="№ 781" status="remembered" />
+          <MementoCard
+            date="1 Jan 1995"
+            dateLabel="1995.01.01"
+            weekNumber="№ 781"
+            status="remembered"
+          />
         </Popover>
       </div>
       <div className="flex items-center justify-center">
         <Popover label="">
-          <MementoCard date="1 Jan 2000" dateLabel="2000.01.01" weekNumber="№ 1 041" status="remembered" />
+          <MementoCard
+            date="1 Jan 2000"
+            dateLabel="2000.01.01"
+            weekNumber="№ 1 041"
+            status="remembered"
+          />
         </Popover>
       </div>
       <div className="flex items-center justify-end">
         <Popover label="">
-          <MementoCard date="1 Jan 2005" dateLabel="2005.01.01" weekNumber="№ 1 301" status="remembered" />
+          <MementoCard
+            date="1 Jan 2005"
+            dateLabel="2005.01.01"
+            weekNumber="№ 1 301"
+            status="remembered"
+          />
         </Popover>
       </div>
 
       {/* Bottom row */}
       <div className="flex items-end justify-start">
         <Popover label="">
-          <MementoCard date="1 Jan 2010" dateLabel="2010.01.01" weekNumber="№ 1 561" status="remembered" />
+          <MementoCard
+            date="1 Jan 2010"
+            dateLabel="2010.01.01"
+            weekNumber="№ 1 561"
+            status="remembered"
+          />
         </Popover>
       </div>
       <div className="flex items-end justify-center">
         <Popover label="">
-          <MementoCard date="1 Jan 2015" dateLabel="2015.01.01" weekNumber="№ 1 821" status="remembered" />
+          <MementoCard
+            date="1 Jan 2015"
+            dateLabel="2015.01.01"
+            weekNumber="№ 1 821"
+            status="remembered"
+          />
         </Popover>
       </div>
       <div className="flex items-end justify-end">
         <Popover label="">
-          <MementoCard date="1 Jan 2020" dateLabel="2020.01.01" weekNumber="№ 2 081" status="remembered" />
+          <MementoCard
+            date="1 Jan 2020"
+            dateLabel="2020.01.01"
+            weekNumber="№ 2 081"
+            status="remembered"
+          />
         </Popover>
       </div>
     </div>
   ),
   parameters: {
-    layout: 'centered',
+    layout: "centered",
     docs: {
       description: {
-        story: 'Tests automatic position fallbacks at screen edges (right → left → bottom → top).',
+        story:
+          "Tests automatic position fallbacks at screen edges (right → left → bottom → top).",
       },
     },
   },

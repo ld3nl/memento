@@ -8,44 +8,44 @@
 export const generateLifeTableUrl = (
   date: string | null,
   name?: string,
-  view: 'table' | 'burst' = 'table'
+  view: "table" | "burst" = "table",
 ): string => {
-  const basePath = `/${view}`
+  const basePath = `/${view}`;
 
   // Handle date path segment
-  const datePath = date ? `/${date.split('-').join('/')}` : ''
+  const datePath = date ? `/${date.split("-").join("/")}` : "";
 
   // Handle name query parameter
   const nameParam = name?.trim()
     ? `?name=${encodeURIComponent(name.trim())}`
-    : ''
+    : "";
 
-  return `${basePath}${datePath}${nameParam}`
-}
+  return `${basePath}${datePath}${nameParam}`;
+};
 
 /**
  * Parses date from URL path segments
  */
 export const parseDateFromUrl = (pathSegments: string[]): string | null => {
-  if (pathSegments.length < 3) return null
+  if (pathSegments.length < 3) return null;
 
-  const [year, month, day] = pathSegments
+  const [year, month, day] = pathSegments;
 
   // Basic validation
-  if (!year || !month || !day) return null
+  if (!year || !month || !day) return null;
 
   // Ensure proper formatting (YYYY-MM-DD)
-  const formattedDate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
+  const formattedDate = `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
 
-  return formattedDate
-}
+  return formattedDate;
+};
 
 /**
  * Extracts name from URL search params
  */
 export const extractNameFromUrl = (
-  searchParams: URLSearchParams
+  searchParams: URLSearchParams,
 ): string | null => {
-  const name = searchParams.get('name')
-  return name?.trim() ? name.trim() : null
-}
+  const name = searchParams.get("name");
+  return name?.trim() ? name.trim() : null;
+};

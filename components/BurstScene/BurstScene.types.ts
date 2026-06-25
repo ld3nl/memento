@@ -1,34 +1,34 @@
-import type * as THREE from 'three'
-import type { LifeTableProps } from '../LifeTable'
+import type * as THREE from "three";
+import type { LifeTableProps } from "../LifeTable";
 
-export type ItemShape = 'square' | 'circle'
+export type ItemShape = "square" | "circle";
 
 export type BurstSceneProps = LifeTableProps & {
-  totalWeeks?: number
+  totalWeeks?: number;
   /** Shape of each item: 'square' or 'circle'. Defaults to 'square' */
-  shape?: ItemShape
+  shape?: ItemShape;
   /** Base item size in rem at 1440px viewport. Defaults to 0.5 */
-  itemSizeRem?: number
+  itemSizeRem?: number;
   /** Base spacing between items in rem at 1440px viewport. Defaults to 0.5 */
-  itemSpacingRem?: number
-}
+  itemSpacingRem?: number;
+};
 
 export type BurstItem = {
-  id: string
-  tx: number
-  ty: number // Visual Y
-  rotation: number // Z-rotation in radians
-  delayMs: number
-  isFilled: boolean
-  isCurrentWeek: boolean
-  yearIndex: number
-  weekIndex: number
-  dateRangeLabel: string
-  color: THREE.Color
-}
+  id: string;
+  tx: number;
+  ty: number; // Visual Y
+  rotation: number; // Z-rotation in radians
+  delayMs: number;
+  isFilled: boolean;
+  isCurrentWeek: boolean;
+  yearIndex: number;
+  weekIndex: number;
+  dateRangeLabel: string;
+  color: THREE.Color;
+};
 
 export type TooltipData = {
-  x: number
-  y: number
-  text: string
-}
+  x: number;
+  y: number;
+  text: string;
+};

@@ -1,30 +1,30 @@
-import { createFormHookContexts } from '@tanstack/react-form-nextjs'
-import { cn } from '../../../lib/utils'
+import { createFormHookContexts } from "@tanstack/react-form-nextjs";
+import { cn } from "../../../lib/utils";
 
 // Import the field context (same one used in Form.tsx)
-const { useFieldContext } = createFormHookContexts()
+const { useFieldContext } = createFormHookContexts();
 
 interface LabeledInputProps {
-  labelString: string
-  inputId: string
-  inputType?: string
-  placeholder?: string
-  onValueChange?: (value: string) => void
+  labelString: string;
+  inputId: string;
+  inputType?: string;
+  placeholder?: string;
+  onValueChange?: (value: string) => void;
 }
 
 const LabeledInput = ({
   labelString,
   inputId,
-  inputType = 'text',
+  inputType = "text",
   placeholder,
   onValueChange,
 }: LabeledInputProps) => {
-  const field = useFieldContext<string>()
+  const field = useFieldContext<string>();
   return (
     <>
       <div className="flex flex-col space-y-2 sm:space-y-3">
         <label
-          className="font-display text-xs font-semibold uppercase tracking-[0.25em] text-zinc-500 dark:text-zinc-400 transition-colors sm:text-[0.6875rem]"
+          className="font-display text-xs font-semibold tracking-[0.25em] text-zinc-500 uppercase transition-colors sm:text-[0.6875rem] dark:text-zinc-400"
           htmlFor={inputId}
           data-cy={`${inputId}-label`}
         >
@@ -32,21 +32,21 @@ const LabeledInput = ({
         </label>
         <input
           className={cn(
-            'min-h-[48px] w-full appearance-none rounded-none border-2 bg-zinc-100 dark:bg-zinc-900 px-4 py-3.5 font-body text-base leading-tight text-zinc-900 dark:text-zinc-50 shadow-sm transition-all duration-200 placeholder:text-zinc-400 dark:placeholder:text-zinc-600 focus:outline-none focus:ring-4 sm:min-h-[52px] sm:px-5 sm:text-lg',
+            "font-body min-h-[48px] w-full appearance-none rounded-none border-2 bg-zinc-100 px-4 py-3.5 text-base leading-tight text-zinc-900 shadow-sm transition-all duration-200 placeholder:text-zinc-400 focus:ring-4 focus:outline-none sm:min-h-[52px] sm:px-5 sm:text-lg dark:bg-zinc-900 dark:text-zinc-50 dark:placeholder:text-zinc-600",
             field.state.meta.isTouched && field.state.meta.errors.length > 0
-              ? 'border-red-600 focus:border-red-600 focus:ring-red-600/30'
-              : 'border-zinc-200 dark:border-zinc-700 hover:border-zinc-300 dark:hover:border-zinc-600 focus:border-red-600 focus:ring-red-600/20'
+              ? "border-red-600 focus:border-red-600 focus:ring-red-600/30"
+              : "border-zinc-200 hover:border-zinc-300 focus:border-red-600 focus:ring-red-600/20 dark:border-zinc-700 dark:hover:border-zinc-600",
           )}
           id={inputId}
           type={inputType}
           data-cy={`${inputId}-input`}
           name={field.name}
-          value={field.state.value ?? ''}
+          value={field.state.value ?? ""}
           onBlur={field.handleBlur}
           onChange={(e) => {
-            const value = e.target.value
-            field.handleChange(value)
-            onValueChange?.(value)
+            const value = e.target.value;
+            field.handleChange(value);
+            onValueChange?.(value);
           }}
           placeholder={placeholder}
           aria-invalid={field.state.meta.errors.length > 0}
@@ -59,37 +59,37 @@ const LabeledInput = ({
         <div
           id={`${inputId}-error`}
           role="alert"
-          className="mt-2 animate-in fade-in slide-in-from-top-1 duration-300 sm:mt-3"
+          className="animate-in fade-in slide-in-from-top-1 mt-2 duration-300 sm:mt-3"
         >
           <div className="text-sm font-medium text-red-600 sm:text-base">
             {field.state.meta.errors.map((error) => {
               const errorMessage =
-                typeof error === 'string'
+                typeof error === "string"
                   ? error
                   : error?.message ||
                     (error?.issues && error.issues.length > 0
                       ? error.issues[0].message
-                      : String(error))
+                      : String(error));
 
               const errorKey =
-                typeof error === 'string'
+                typeof error === "string"
                   ? error
                   : error?.issues && error.issues.length > 0
                     ? error.issues
                         .map(
                           (issue) =>
-                            `${issue?.path?.join('.') ?? 'field'}:${issue?.message ?? ''}`
+                            `${issue?.path?.join(".") ?? "field"}:${issue?.message ?? ""}`,
                         )
-                        .join('|')
-                    : errorMessage
+                        .join("|")
+                    : errorMessage;
 
-              return <div key={errorKey}>{errorMessage}</div>
+              return <div key={errorKey}>{errorMessage}</div>;
             })}
           </div>
         </div>
       ) : null}
     </>
-  )
-}
+  );
+};
 
-export default LabeledInput
+export default LabeledInput;

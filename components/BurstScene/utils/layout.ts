@@ -1,43 +1,43 @@
-import { addDays, addWeeks, format } from 'date-fns'
-import * as THREE from 'three'
-import type { BurstItem } from '../BurstScene.types'
-import { CONFIG } from '../config'
+import { addDays, addWeeks, format } from "date-fns";
+import * as THREE from "three";
+import type { BurstItem } from "../BurstScene.types";
+import { CONFIG } from "../config";
 
 function parseBirthDate(dob: string | Date) {
-  if (dob instanceof Date) return dob
+  if (dob instanceof Date) return dob;
 
-  const dateParts = dob.match(/^(\d{4})-(\d{2})-(\d{2})$/)
-  if (!dateParts) return new Date(dob)
+  const dateParts = dob.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (!dateParts) return new Date(dob);
 
-  const [, year, month, day] = dateParts
-  return new Date(Number(year), Number(month) - 1, Number(day))
+  const [, year, month, day] = dateParts;
+  return new Date(Number(year), Number(month) - 1, Number(day));
 }
 
 function formatWeekDateRange(birthDate: Date, weekIndex: number) {
-  const startDate = addWeeks(birthDate, weekIndex)
-  const endDate = addDays(startDate, 6)
+  const startDate = addWeeks(birthDate, weekIndex);
+  const endDate = addDays(startDate, 6);
 
   if (startDate.getFullYear() !== endDate.getFullYear()) {
-    return `${format(startDate, 'MMM d, yyyy')}-${format(endDate, 'MMM d, yyyy')}`
+    return `${format(startDate, "MMM d, yyyy")}-${format(endDate, "MMM d, yyyy")}`;
   }
 
   if (startDate.getMonth() !== endDate.getMonth()) {
-    return `${format(startDate, 'MMM d')}-${format(endDate, 'MMM d, yyyy')}`
+    return `${format(startDate, "MMM d")}-${format(endDate, "MMM d, yyyy")}`;
   }
 
-  return `${format(startDate, 'MMM d')}-${format(endDate, 'd, yyyy')}`
+  return `${format(startDate, "MMM d")}-${format(endDate, "d, yyyy")}`;
 }
 
 function totalCapacity(step: number, maxRadius: number) {
-  if (maxRadius <= 0) return 0
-  let total = 0
+  if (maxRadius <= 0) return 0;
+  let total = 0;
   for (let ring = 0; ring * step <= maxRadius + 1e-6; ring++) {
-    const r = ring * step
+    const r = ring * step;
     const cap =
-      ring === 0 ? 1 : Math.max(1, Math.floor((2 * Math.PI * r) / step))
-    total += cap
+      ring === 0 ? 1 : Math.max(1, Math.floor((2 * Math.PI * r) / step));
+    total += cap;
   }
-  return total
+  return total;
 }
 
 function findStepPx({
@@ -46,53 +46,53 @@ function findStepPx({
   maxRadius,
   spacingPx,
 }: {
-  count: number
-  boxPx: number
-  maxRadius: number
-  spacingPx: number
+  count: number;
+  boxPx: number;
+  maxRadius: number;
+  spacingPx: number;
 }) {
   // Use spacing parameter for gap between items
-  const effectiveSize = boxPx + spacingPx
+  const effectiveSize = boxPx + spacingPx;
 
-  const minStep = Math.max(1, effectiveSize)
-  const minCap = totalCapacity(minStep, maxRadius)
+  const minStep = Math.max(1, effectiveSize);
+  const minCap = totalCapacity(minStep, maxRadius);
 
-  if (minCap <= 0) return { step: minStep, clampedCount: 0 }
+  if (minCap <= 0) return { step: minStep, clampedCount: 0 };
   if (minCap < count) {
-    let lo = 0.1
-    let hi = minStep
+    let lo = 0.1;
+    let hi = minStep;
 
     for (let i = 0; i < 24; i++) {
-      const mid = (lo + hi) / 2
-      if (totalCapacity(mid, maxRadius) >= count) lo = mid
-      else hi = mid
+      const mid = (lo + hi) / 2;
+      if (totalCapacity(mid, maxRadius) >= count) lo = mid;
+      else hi = mid;
     }
 
-    return { step: lo, clampedCount: count }
+    return { step: lo, clampedCount: count };
   }
 
-  let lo = minStep
-  let hi = Math.max(minStep, maxRadius)
+  let lo = minStep;
+  let hi = Math.max(minStep, maxRadius);
 
   // Quick check upper bound
   if (totalCapacity(hi, maxRadius) >= count) {
-    return { step: hi, clampedCount: count }
+    return { step: hi, clampedCount: count };
   }
 
   // Binary search for optimal density
   for (let i = 0; i < 22; i++) {
-    const mid = (lo + hi) / 2
-    if (totalCapacity(mid, maxRadius) >= count) lo = mid
-    else hi = mid
+    const mid = (lo + hi) / 2;
+    if (totalCapacity(mid, maxRadius) >= count) lo = mid;
+    else hi = mid;
   }
-  return { step: lo, clampedCount: count }
+  return { step: lo, clampedCount: count };
 }
 
 export type LayoutResult = {
-  items: BurstItem[]
-  maxDelay: number
-  boxSizePx: number
-}
+  items: BurstItem[];
+  maxDelay: number;
+  boxSizePx: number;
+};
 
 /**
  * Computes the spatial layout of all burst items.
@@ -107,46 +107,46 @@ export function computeBurstItems({
   yearsAlive,
   weeksFromLastBday,
 }: {
-  dob: string | Date
-  totalWeeks: number
-  maxRadius: number
-  boxPx: number
-  spacingPx: number
-  yearsAlive: number
-  weeksFromLastBday: number
+  dob: string | Date;
+  totalWeeks: number;
+  maxRadius: number;
+  boxPx: number;
+  spacingPx: number;
+  yearsAlive: number;
+  weeksFromLastBday: number;
 }): LayoutResult {
   const { step, clampedCount } = findStepPx({
     count: totalWeeks,
     boxPx,
     maxRadius: Math.max(0, maxRadius),
     spacingPx,
-  })
+  });
 
-  const items: BurstItem[] = []
-  let remaining = clampedCount
-  let globalWeekIndex = 0
-  let maxDelay = 0
+  const items: BurstItem[] = [];
+  let remaining = clampedCount;
+  let globalWeekIndex = 0;
+  let maxDelay = 0;
 
-  const effectiveMaxRadius = Math.max(0, maxRadius)
-  const boxSizePx = Math.max(0.5, Math.min(boxPx, step * 0.72))
-  const birthDate = parseBirthDate(dob)
+  const effectiveMaxRadius = Math.max(0, maxRadius);
+  const boxSizePx = Math.max(0.5, Math.min(boxPx, step * 0.72));
+  const birthDate = parseBirthDate(dob);
 
   for (
     let ring = 0;
     remaining > 0 && ring * step <= effectiveMaxRadius + 0.1;
     ring++
   ) {
-    const r = ring * step
+    const r = ring * step;
     const cap =
-      ring === 0 ? 1 : Math.max(1, Math.floor((2 * Math.PI * r) / step))
-    const n = Math.min(cap, remaining)
+      ring === 0 ? 1 : Math.max(1, Math.floor((2 * Math.PI * r) / step));
+    const n = Math.min(cap, remaining);
 
     for (let j = 0; j < n; j++) {
       // Angle: start at -PI/2 (top)
-      const theta = -Math.PI / 2 + (j * 2 * Math.PI) / n
+      const theta = -Math.PI / 2 + (j * 2 * Math.PI) / n;
 
-      const tx = Math.cos(theta) * r
-      const ty = Math.sin(theta) * r
+      const tx = Math.cos(theta) * r;
+      const ty = Math.sin(theta) * r;
 
       // Rotation: Face Outward
       // theta is angle from center.
@@ -154,29 +154,29 @@ export function computeBurstItems({
       // If we want +Y to point Away from center:
       // At Top (theta=PI/2), we want Rotation=0. => PI/2 - offset = 0 => offset = PI/2.
       // So Rotation = theta - PI/2.
-      const rotation = theta - Math.PI / 2
+      const rotation = theta - Math.PI / 2;
 
-      const yearIndex = Math.floor(globalWeekIndex / CONFIG.WEEKS_PER_YEAR)
-      const weekIndex = (globalWeekIndex % CONFIG.WEEKS_PER_YEAR) + 1
+      const yearIndex = Math.floor(globalWeekIndex / CONFIG.WEEKS_PER_YEAR);
+      const weekIndex = (globalWeekIndex % CONFIG.WEEKS_PER_YEAR) + 1;
 
       const isFilled =
         yearIndex < yearsAlive ||
-        (yearIndex === yearsAlive && weeksFromLastBday >= weekIndex)
+        (yearIndex === yearsAlive && weeksFromLastBday >= weekIndex);
 
       const isCurrentWeek =
-        yearIndex === yearsAlive && weeksFromLastBday + 1 === weekIndex
+        yearIndex === yearsAlive && weeksFromLastBday + 1 === weekIndex;
 
       // Color Calculation
-      const rDist = effectiveMaxRadius > 0 ? r / effectiveMaxRadius : 0
-      const twoPi = Math.PI * 2
+      const rDist = effectiveMaxRadius > 0 ? r / effectiveMaxRadius : 0;
+      const twoPi = Math.PI * 2;
       const cwFromTop =
-        ((Math.atan2(ty, tx) + Math.PI / 2 + twoPi) % twoPi) / twoPi
-      const hue = (rDist * 360 + cwFromTop * 140) % 360
-      const color = new THREE.Color().setHSL(hue / 360, 0.9, 0.55)
+        ((Math.atan2(ty, tx) + Math.PI / 2 + twoPi) % twoPi) / twoPi;
+      const hue = (rDist * 360 + cwFromTop * 140) % 360;
+      const color = new THREE.Color().setHSL(hue / 360, 0.9, 0.55);
 
       const delayMs =
-        ring * CONFIG.STAGGER_DELAY_RING_MS + j * CONFIG.STAGGER_DELAY_INDEX_MS
-      if (delayMs > maxDelay) maxDelay = delayMs
+        ring * CONFIG.STAGGER_DELAY_RING_MS + j * CONFIG.STAGGER_DELAY_INDEX_MS;
+      if (delayMs > maxDelay) maxDelay = delayMs;
 
       items.push({
         id: `${ring}-${j}`,
@@ -190,12 +190,12 @@ export function computeBurstItems({
         weekIndex,
         dateRangeLabel: formatWeekDateRange(birthDate, globalWeekIndex),
         color,
-      })
+      });
 
-      globalWeekIndex++
+      globalWeekIndex++;
     }
-    remaining -= n
+    remaining -= n;
   }
 
-  return { items, maxDelay, boxSizePx }
+  return { items, maxDelay, boxSizePx };
 }

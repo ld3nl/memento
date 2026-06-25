@@ -1,72 +1,72 @@
-import type { Metadata } from 'next'
-import Image from 'next/image'
-import BackButton from '../../components/BackButton'
+import type { Metadata } from "next";
+import Image from "next/image";
+import BackButton from "../../components/BackButton";
 
-const DATE_PUBLISHED = '2024-01-01T00:00:00.000Z'
+const DATE_PUBLISHED = "2024-01-01T00:00:00.000Z";
 
 // Add metadata for SEO
 export const metadata: Metadata = {
   title:
-    'About Memento Mori Calendar | Daily Stoic Life in Weeks Visualization',
+    "About Memento Mori Calendar | Daily Stoic Life in Weeks Visualization",
   description:
-    'Discover our unique digital calendar that combines Stoic wisdom with Memento Mori philosophy, helping you live each day with purpose and mindfulness. Learn about the philosophy behind visualizing life in weeks.',
+    "Discover our unique digital calendar that combines Stoic wisdom with Memento Mori philosophy, helping you live each day with purpose and mindfulness. Learn about the philosophy behind visualizing life in weeks.",
   alternates: {
-    canonical: 'https://memento-mori.vercel.app/about',
+    canonical: "https://memento-mori.vercel.app/about",
   },
   openGraph: {
-    title: 'About Memento Mori Calendar | Daily Stoic Life Visualization',
+    title: "About Memento Mori Calendar | Daily Stoic Life Visualization",
     description:
-      'Discover our unique digital calendar that combines Stoic wisdom with Memento Mori philosophy, helping you live each day with purpose.',
-    url: 'https://memento-mori.vercel.app/about',
-    type: 'article',
+      "Discover our unique digital calendar that combines Stoic wisdom with Memento Mori philosophy, helping you live each day with purpose.",
+    url: "https://memento-mori.vercel.app/about",
+    type: "article",
     images: [
       {
-        url: 'https://utfs.io/f/vfxFGWyJBql9tjBcWhLA6EWr7SI90xRVulwdUhnPDQs8kcH3',
+        url: "https://utfs.io/f/vfxFGWyJBql9tjBcWhLA6EWr7SI90xRVulwdUhnPDQs8kcH3",
         width: 730,
         height: 548,
-        alt: 'Memento Mori Skull with Flowers',
+        alt: "Memento Mori Skull with Flowers",
       },
     ],
   },
   twitter: {
-    card: 'summary_large_image',
-    title: 'About Memento Mori Calendar',
+    card: "summary_large_image",
+    title: "About Memento Mori Calendar",
     description:
-      'Discover our unique digital calendar that combines Stoic wisdom with Memento Mori philosophy.',
+      "Discover our unique digital calendar that combines Stoic wisdom with Memento Mori philosophy.",
     images: [
-      'https://utfs.io/f/vfxFGWyJBql9tjBcWhLA6EWr7SI90xRVulwdUhnPDQs8kcH3',
+      "https://utfs.io/f/vfxFGWyJBql9tjBcWhLA6EWr7SI90xRVulwdUhnPDQs8kcH3",
     ],
   },
-}
+};
 
 const Page = () => {
   const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'Article',
-    headline: 'About Daily Stoic Memento Mori Calendar',
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: "About Daily Stoic Memento Mori Calendar",
     datePublished: DATE_PUBLISHED,
     dateModified: DATE_PUBLISHED,
     author: {
-      '@type': 'Organization',
-      name: 'Daily Stoic Memento Mori Team',
+      "@type": "Organization",
+      name: "Daily Stoic Memento Mori Team",
     },
     publisher: {
-      '@type': 'Organization',
-      name: 'Memento Mori',
+      "@type": "Organization",
+      name: "Memento Mori",
       logo: {
-        '@type': 'ImageObject',
-        url: 'https://memento-mori.vercel.app/favicon.ico',
+        "@type": "ImageObject",
+        url: "https://memento-mori.vercel.app/favicon.ico",
       },
     },
     image: {
-      '@type': 'ImageObject',
-      url: 'https://utfs.io/f/vfxFGWyJBql9tjBcWhLA6EWr7SI90xRVulwdUhnPDQs8kcH3',
+      "@type": "ImageObject",
+      url: "https://utfs.io/f/vfxFGWyJBql9tjBcWhLA6EWr7SI90xRVulwdUhnPDQs8kcH3",
       width: 730,
       height: 548,
     },
     description:
-      'Discover our unique digital calendar that combines Stoic wisdom with Memento Mori philosophy, helping you live each day with purpose and mindfulness.',
-  }
+      "Discover our unique digital calendar that combines Stoic wisdom with Memento Mori philosophy, helping you live each day with purpose and mindfulness.",
+  };
 
   return (
     <>
@@ -79,7 +79,7 @@ const Page = () => {
       <main
         id="main-content"
         aria-label="About page content"
-        className="mx-auto w-full max-w-prose px-4 py-10 text-base leading-relaxed text-primary sm:px-6 sm:py-12 lg:py-16"
+        className="text-primary mx-auto w-full max-w-prose px-4 py-10 text-base leading-relaxed sm:px-6 sm:py-12 lg:py-16"
       >
         <article>
           <Image
@@ -91,53 +91,53 @@ const Page = () => {
             priority={false}
           />
 
-          <h1 className="mb-8 font-display text-[2.5rem] italic leading-tight tracking-tight text-accent sm:mb-10 sm:text-5xl">
+          <h1 className="font-display text-accent mb-8 text-[2.5rem] leading-tight tracking-tight italic sm:mb-10 sm:text-5xl">
             About Memento Mori
           </h1>
 
-          <p className="mb-6 text-primary">
+          <p className="text-primary mb-6">
             The Daily Stoic Memento Mori Calendar intertwines timeless Stoic
             wisdom with the poignant reminder of mortality. Each day is an
             opportunity to live with intention, virtue, and resilience.
           </p>
 
-          <h2 className="mb-4 mt-10 font-display text-2xl italic text-accent sm:mt-12 sm:text-3xl">
+          <h2 className="font-display text-accent mt-10 mb-4 text-2xl italic sm:mt-12 sm:text-3xl">
             Thoughtful Design
           </h2>
 
-          <p className="mb-6 text-primary">
+          <p className="text-primary mb-6">
             Every element reflects tranquility—the quiet beauty of sunrise, the
             reflective calm of sunset. Soothing colors and natural imagery
             create a sanctuary for daily reflection.
           </p>
 
-          <p className="mb-4 text-primary">
+          <p className="text-primary mb-4">
             Design philosophy embraces both form and function:
           </p>
 
-          <ul className="mb-6 list-disc space-y-3 pl-6 text-secondary sm:mb-8">
+          <ul className="text-secondary mb-6 list-disc space-y-3 pl-6 sm:mb-8">
             <li>
-              <strong className="font-semibold text-primary">
+              <strong className="text-primary font-semibold">
                 Aesthetically Pleasing:
-              </strong>{' '}
+              </strong>{" "}
               Inspired by nature's peace to calm your mind as you start or end
               your day.
             </li>
             <li>
-              <strong className="font-semibold text-primary">
+              <strong className="text-primary font-semibold">
                 Seamless Experience:
-              </strong>{' '}
+              </strong>{" "}
               Intuitive interface on any device makes Stoic wisdom easily
               accessible.
             </li>
           </ul>
 
           <section aria-label="Stoicism and Memento Mori">
-            <h2 className="mb-4 mt-10 font-display text-2xl italic text-accent sm:mt-12 sm:text-3xl">
+            <h2 className="font-display text-accent mt-10 mb-4 text-2xl italic sm:mt-12 sm:text-3xl">
               Stoicism and Memento Mori
             </h2>
 
-            <p className="mb-6 text-primary">
+            <p className="text-primary mb-6">
               Stoicism is a way of life that has inspired giants like Steve Jobs
               and Leo Tolstoy. Journey with teachings of Marcus Aurelius,
               Seneca, and Epictetus. Their words serve as a bridge between
@@ -146,21 +146,21 @@ const Page = () => {
           </section>
 
           <section aria-label="Inspiration and Purpose">
-            <h2 className="mb-4 mt-10 font-display text-2xl italic text-accent sm:mt-12 sm:text-3xl">
+            <h2 className="font-display text-accent mt-10 mb-4 text-2xl italic sm:mt-12 sm:text-3xl">
               Inspiration and Purpose
             </h2>
 
             <Image
               className="float-right ms-4 mb-6 w-40 rounded-none opacity-90 grayscale sm:ms-6 sm:w-48 lg:w-56"
               src={
-                'https://utfs.io/f/vfxFGWyJBql9iPL0zzmHfGMqUKyTLPZcjQwxsDBOXp4J2bCo'
+                "https://utfs.io/f/vfxFGWyJBql9iPL0zzmHfGMqUKyTLPZcjQwxsDBOXp4J2bCo"
               }
               width={1125}
               height={1192}
               alt="A serene forest scene with tall trees and sunlight filtering through the canopy, creating a warm glow and dappled light effect on lush green foliage."
               priority={false}
             />
-            <p className="mb-6 text-primary">
+            <p className="text-primary mb-6">
               This calendar emerged from contemplative walks in nature, where
               life's fleeting beauty becomes starkly apparent. It's crafted for
               those who seek intentional living, who remember life's brevity,
@@ -169,7 +169,7 @@ const Page = () => {
 
             <Image
               src={
-                'https://utfs.io/f/vfxFGWyJBql9tA8n5LA6EWr7SI90xRVulwdUhnPDQs8kcH3y'
+                "https://utfs.io/f/vfxFGWyJBql9tA8n5LA6EWr7SI90xRVulwdUhnPDQs8kcH3y"
               }
               width={730}
               height={548}
@@ -188,7 +188,7 @@ const Page = () => {
         </article>
       </main>
     </>
-  )
-}
+  );
+};
 
-export default Page
+export default Page;

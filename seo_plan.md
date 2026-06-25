@@ -34,21 +34,21 @@ Remaining work is primarily around **analytics misconfiguration, semantic HTML f
 
 ## Previous Audit — Status Tracker
 
-| # | Issue | Status |
-|---|-------|--------|
-| 1 | Missing canonical tags | ✅ Fixed — all pages now have `alternates.canonical` |
-| 2 | Robots.txt rewrite misconfigured | ✅ Fixed — rewrite removed, using `app/robots.ts` |
-| 3 | Sitemap missing dynamic routes | ✅ Fixed — 9 sample birth years × 2 views = 18 dynamic URLs |
-| 4 | No structured data on About page | ✅ Fixed — Article JSON-LD added |
-| 5 | GTM misconfigured (`G-` vs `GTM-`) | ❌ **Still broken** — see §1 below |
-| 6 | Meta descriptions not compelling | ✅ Fixed — emotional hooks added |
-| 7 | Missing breadcrumb navigation | ✅ Fixed — BreadcrumbList JSON-LD on `[...params]` route |
-| 8 | Manifest.json missing fields | ✅ Fixed — full PWA manifest via `app/manifest.ts` |
-| 9 | Thin content on dynamic pages | ✅ Partially fixed — contextual stats on `[...params]` route |
-| 10 | Missing H1 on calendar pages | ✅ Fixed — unique H1 on every page |
-| 11 | Homepage keyword targeting | ✅ Improved — keywords array in layout metadata |
-| 12 | No blog/content hub | ❌ Not started — empty `app/api/blog/` directory |
-| 13 | Limited internal linking | ✅ Partially fixed — Footer has 4 nav links |
+| #   | Issue                              | Status                                                       |
+| --- | ---------------------------------- | ------------------------------------------------------------ |
+| 1   | Missing canonical tags             | ✅ Fixed — all pages now have `alternates.canonical`         |
+| 2   | Robots.txt rewrite misconfigured   | ✅ Fixed — rewrite removed, using `app/robots.ts`            |
+| 3   | Sitemap missing dynamic routes     | ✅ Fixed — 9 sample birth years × 2 views = 18 dynamic URLs  |
+| 4   | No structured data on About page   | ✅ Fixed — Article JSON-LD added                             |
+| 5   | GTM misconfigured (`G-` vs `GTM-`) | ❌ **Still broken** — see §1 below                           |
+| 6   | Meta descriptions not compelling   | ✅ Fixed — emotional hooks added                             |
+| 7   | Missing breadcrumb navigation      | ✅ Fixed — BreadcrumbList JSON-LD on `[...params]` route     |
+| 8   | Manifest.json missing fields       | ✅ Fixed — full PWA manifest via `app/manifest.ts`           |
+| 9   | Thin content on dynamic pages      | ✅ Partially fixed — contextual stats on `[...params]` route |
+| 10  | Missing H1 on calendar pages       | ✅ Fixed — unique H1 on every page                           |
+| 11  | Homepage keyword targeting         | ✅ Improved — keywords array in layout metadata              |
+| 12  | No blog/content hub                | ❌ Not started — empty `app/api/blog/` directory             |
+| 13  | Limited internal linking           | ✅ Partially fixed — Footer has 4 nav links                  |
 
 ---
 
@@ -60,11 +60,14 @@ Remaining work is primarily around **analytics misconfiguration, semantic HTML f
 
 **Impact:** High — analytics data may not be tracking
 **Evidence:** `app/layout.tsx` line 201:
+
 ```tsx
 <GoogleTagManager gtmId="G-CYT1S2EC6W" />
 ```
+
 **Issue:** `GoogleTagManager` expects a `GTM-` prefixed ID. `G-CYT1S2EC6W` is a GA4 Measurement ID.
 **Fix:**
+
 ```tsx
 // Option A: Use the correct component for GA4
 import { GoogleAnalytics } from '@next/third-parties/google'
@@ -73,6 +76,7 @@ import { GoogleAnalytics } from '@next/third-parties/google'
 // Option B: If you have a real GTM container, use:
 <GoogleTagManager gtmId="GTM-XXXXXXX" />
 ```
+
 **Priority:** 1 — Immediate
 
 ---
@@ -81,10 +85,12 @@ import { GoogleAnalytics } from '@next/third-parties/google'
 
 **Impact:** Medium-High — invalid HTML, accessibility issue, confusing for screen readers
 **Evidence:**
+
 - `app/layout.tsx` line 197: `<main className="flex-1">{children}</main>`
 - `app/about/page.tsx` line 79: `<main id="main-content" ...>`
-**Issue:** Two nested `<main>` elements. The HTML spec requires exactly one `<main>` per page.
-**Fix:** Change `about/page.tsx` to use `<div>` or `<section>` instead of `<main>`:
+  **Issue:** Two nested `<main>` elements. The HTML spec requires exactly one `<main>` per page.
+  **Fix:** Change `about/page.tsx` to use `<div>` or `<section>` instead of `<main>`:
+
 ```tsx
 // app/about/page.tsx — change <main> to <div>
 <div
@@ -93,6 +99,7 @@ import { GoogleAnalytics } from '@next/third-parties/google'
   className="mx-auto w-full max-w-prose ..."
 >
 ```
+
 **Priority:** 1 — Immediate
 
 ---
@@ -103,10 +110,11 @@ import { GoogleAnalytics } from '@next/third-parties/google'
 
 **Impact:** High — directly increases TTFB by 500 ms on every calendar page load
 **Evidence:**
+
 - `app/[view]/page.tsx` line 78: `await new Promise((resolve) => setTimeout(resolve, 500))`
 - `app/[view]/[...params]/page.tsx` line 77: identical
-**Fix:** Remove both `setTimeout` calls. If a loading state is needed, use `loading.tsx` instead.
-**Priority:** 2 — This week
+  **Fix:** Remove both `setTimeout` calls. If a loading state is needed, use `loading.tsx` instead.
+  **Priority:** 2 — This week
 
 ---
 
@@ -115,11 +123,12 @@ import { GoogleAnalytics } from '@next/third-parties/google'
 **Impact:** Medium — poor UX for errors, missed SEO opportunity for custom 404
 **Evidence:** No `not-found.tsx`, `error.tsx`, `global-error.tsx`, or `loading.tsx` files exist anywhere in `app/`.
 **Fix per Next.js best practices:**
+
 - `app/not-found.tsx` — custom 404 with internal links (recaptures lost traffic)
 - `app/error.tsx` — client error boundary with retry
 - `app/global-error.tsx` — root error handler (must include own `<html>` and `<body>`)
 - `app/loading.tsx` — loading skeleton (replaces artificial setTimeout)
-**Priority:** 2 — This week
+  **Priority:** 2 — This week
 
 ---
 
@@ -128,9 +137,10 @@ import { GoogleAnalytics } from '@next/third-parties/google'
 **Impact:** Medium — if utfs.io is slow or unavailable, social shares show no image
 **Evidence:** All OG images reference `https://utfs.io/f/vfxFGWyJBql9...`
 **Fix options:**
+
 1. **Local static OG image:** Save the image to `public/og-image.jpg` and reference `/og-image.jpg`
 2. **Generated OG image:** Create `app/opengraph-image.tsx` using `next/og` ImageResponse (recommended by Next.js best practices for dynamic pages)
-**Priority:** 2 — This week
+   **Priority:** 2 — This week
 
 ---
 
@@ -145,9 +155,10 @@ import { GoogleAnalytics } from '@next/third-parties/google'
 | `viewport.themeColor` | `#0D0C0B` (black) | — |
 
 **Fix:**
+
 1. Delete `public/manifest.json` — it's superseded by `app/manifest.ts`
 2. Align `theme_color` across manifest and viewport (use accent red `#dc2626` or the dark bg `#0D0C0B`)
-**Priority:** 3 — Quick win
+   **Priority:** 3 — Quick win
 
 ---
 
@@ -156,6 +167,7 @@ import { GoogleAnalytics } from '@next/third-parties/google'
 **Impact:** Medium — no CSP, X-Frame-Options, or HSTS configured
 **Evidence:** Neither `vercel.json` nor `next.config.ts` define security headers.
 **Fix:** Add headers to `next.config.ts`:
+
 ```ts
 async headers() {
   return [
@@ -171,6 +183,7 @@ async headers() {
   ]
 },
 ```
+
 **Priority:** 3 — This month
 
 ---
@@ -210,11 +223,13 @@ async headers() {
 **Impact:** Low — gives Google incorrect modification signals
 **Evidence:** `app/sitemap.tsx` always returns the current timestamp for `lastModified`.
 **Fix:** Use actual content modification dates:
+
 ```ts
 // Static routes
 { url: baseUrl, lastModified: new Date('2026-06-19'), ... }
 // Dynamic routes — omit lastModified or use a fixed recent date
 ```
+
 **Priority:** 5 — Low
 
 ---
@@ -223,10 +238,11 @@ async headers() {
 
 **Impact:** Low — both approaches work, but inconsistency is a code smell
 **Evidence:**
+
 - `app/page.tsx` uses `{serializedJsonLd}` as text children of `<script>`
 - `app/about/page.tsx` and `app/[view]/[...params]/page.tsx` use `dangerouslySetInnerHTML`
-**Fix:** Standardise on `dangerouslySetInnerHTML` (the Next.js convention) across all pages.
-**Priority:** 5 — Low
+  **Fix:** Standardise on `dangerouslySetInnerHTML` (the Next.js convention) across all pages.
+  **Priority:** 5 — Low
 
 ---
 
@@ -255,6 +271,7 @@ async headers() {
 The `app/api/blog/` directory exists but is empty. A content hub targeting informational queries would significantly expand organic reach.
 
 **Recommended articles:**
+
 - "What is Memento Mori? A Complete Guide to the Stoic Practice"
 - "Your Life in Weeks: The Psychology of Time Visualisation"
 - "How to Use a Life Calendar for Goal Setting and Prioritisation"
@@ -262,6 +279,7 @@ The `app/api/blog/` directory exists but is empty. A content hub targeting infor
 - "Memento Mori vs Other Life Calendars — What Makes This Different"
 
 **Target keywords:**
+
 - `memento mori meaning` (high volume)
 - `life in weeks` (medium volume)
 - `stoic philosophy tools` (low competition)
@@ -275,6 +293,7 @@ The `app/api/blog/` directory exists but is empty. A content hub targeting infor
 Current internal links: Homepage ↔ About, Footer → 4 links. This is minimal.
 
 **Recommendations:**
+
 - Add "Try it yourself" CTAs on About page → homepage
 - Cross-link table/burst views ("See this in burst view" / "See this as a table")
 - Add related-age links on dynamic pages ("See age 30 | 40 | 50")
@@ -286,6 +305,7 @@ Current internal links: Homepage ↔ About, Footer → 4 links. This is minimal.
 
 **Current:** `public/llms.txt` exists but is a single line.
 **Recommendation:** Expand to include:
+
 - Clear tool description
 - Usage instructions
 - Key features
@@ -295,29 +315,29 @@ Current internal links: Homepage ↔ About, Footer → 4 links. This is minimal.
 
 ## Technical Checklist — What's Working Well
 
-| Area | Status | Notes |
-|------|--------|-------|
-| `lang="en"` on `<html>` | ✅ | Correct |
-| Title template (`%s \| Memento Mori`) | ✅ | Good pattern |
-| Unique titles per page | ✅ | All pages have distinct titles |
-| Meta descriptions | ✅ | Compelling, keyword-rich |
-| Canonical tags | ✅ | On all pages via `alternates.canonical` |
-| Open Graph tags | ✅ | Full OG on all pages |
-| Twitter Card tags | ✅ | `summary_large_image` on all pages |
-| JSON-LD structured data | ✅ | WebApplication, FAQPage, Article, BreadcrumbList |
-| Robots.txt | ✅ | Proper Next.js convention |
-| XML Sitemap | ✅ | Static + 18 dynamic URLs |
-| Google Site Verification | ✅ | Token present |
-| Viewport meta | ✅ | Mobile-first, allows zoom |
-| `next/font` with `display: swap` | ✅ | Zero layout shift |
-| `next/image` throughout | ✅ | Optimised images |
-| Hero image `priority` | ✅ | On homepage Form component |
-| Semantic HTML | ✅ | `<article>`, `<section>`, `<nav>` with `aria-label` |
-| PWA manifest | ✅ | Full `app/manifest.ts` |
-| HTTPS | ✅ | Vercel default |
-| Clean URL structure | ✅ | `/table/YYYY/MM/DD`, `/burst/YYYY/MM/DD` |
-| AI SEO (llms.txt) | ✅ | Present (could be expanded) |
-| `formatDetection` | ✅ | Prevents unwanted phone/email linking |
+| Area                                  | Status | Notes                                               |
+| ------------------------------------- | ------ | --------------------------------------------------- |
+| `lang="en"` on `<html>`               | ✅     | Correct                                             |
+| Title template (`%s \| Memento Mori`) | ✅     | Good pattern                                        |
+| Unique titles per page                | ✅     | All pages have distinct titles                      |
+| Meta descriptions                     | ✅     | Compelling, keyword-rich                            |
+| Canonical tags                        | ✅     | On all pages via `alternates.canonical`             |
+| Open Graph tags                       | ✅     | Full OG on all pages                                |
+| Twitter Card tags                     | ✅     | `summary_large_image` on all pages                  |
+| JSON-LD structured data               | ✅     | WebApplication, FAQPage, Article, BreadcrumbList    |
+| Robots.txt                            | ✅     | Proper Next.js convention                           |
+| XML Sitemap                           | ✅     | Static + 18 dynamic URLs                            |
+| Google Site Verification              | ✅     | Token present                                       |
+| Viewport meta                         | ✅     | Mobile-first, allows zoom                           |
+| `next/font` with `display: swap`      | ✅     | Zero layout shift                                   |
+| `next/image` throughout               | ✅     | Optimised images                                    |
+| Hero image `priority`                 | ✅     | On homepage Form component                          |
+| Semantic HTML                         | ✅     | `<article>`, `<section>`, `<nav>` with `aria-label` |
+| PWA manifest                          | ✅     | Full `app/manifest.ts`                              |
+| HTTPS                                 | ✅     | Vercel default                                      |
+| Clean URL structure                   | ✅     | `/table/YYYY/MM/DD`, `/burst/YYYY/MM/DD`            |
+| AI SEO (llms.txt)                     | ✅     | Present (could be expanded)                         |
+| `formatDetection`                     | ✅     | Prevents unwanted phone/email linking               |
 
 ---
 
@@ -325,57 +345,57 @@ Current internal links: Homepage ↔ About, Footer → 4 links. This is minimal.
 
 ### 🔴 Immediate (Do Now)
 
-| # | Task | Effort |
-|---|------|--------|
-| 1 | Fix GTM → `GoogleAnalytics` component | 5 min |
-| 2 | Fix nested `<main>` on about page | 5 min |
-| 3 | Delete `public/manifest.json` | 1 min |
-| 4 | Remove `setTimeout(500)` from both dynamic routes | 2 min |
+| #   | Task                                              | Effort |
+| --- | ------------------------------------------------- | ------ |
+| 1   | Fix GTM → `GoogleAnalytics` component             | 5 min  |
+| 2   | Fix nested `<main>` on about page                 | 5 min  |
+| 3   | Delete `public/manifest.json`                     | 1 min  |
+| 4   | Remove `setTimeout(500)` from both dynamic routes | 2 min  |
 
 ### 🟡 This Week
 
-| # | Task | Effort |
-|---|------|--------|
-| 5 | Create `not-found.tsx` with branded 404 + internal links | 30 min |
-| 6 | Create `error.tsx` and `global-error.tsx` | 30 min |
-| 7 | Create `loading.tsx` skeleton | 15 min |
-| 8 | Add local OG image or `opengraph-image.tsx` | 1 hr |
-| 9 | Align theme_color across manifest + viewport | 10 min |
-| 10 | Set `priority={true}` on About hero image | 1 min |
+| #   | Task                                                     | Effort |
+| --- | -------------------------------------------------------- | ------ |
+| 5   | Create `not-found.tsx` with branded 404 + internal links | 30 min |
+| 6   | Create `error.tsx` and `global-error.tsx`                | 30 min |
+| 7   | Create `loading.tsx` skeleton                            | 15 min |
+| 8   | Add local OG image or `opengraph-image.tsx`              | 1 hr   |
+| 9   | Align theme_color across manifest + viewport             | 10 min |
+| 10  | Set `priority={true}` on About hero image                | 1 min  |
 
 ### 🟢 This Month
 
-| # | Task | Effort |
-|---|------|--------|
-| 11 | Add security headers to `next.config.ts` | 15 min |
-| 12 | Standardise JSON-LD serialisation pattern | 15 min |
-| 13 | Fix sitemap `lastModified` dates | 10 min |
-| 14 | Trim EB_Garamond font weights | 10 min |
-| 15 | Expand `llms.txt` for better AI search visibility | 30 min |
-| 16 | Clean up `--color-PLACEHOLDER_DARK_COLOR` token | 5 min |
-| 17 | Add cross-view links on dynamic pages | 1 hr |
+| #   | Task                                              | Effort |
+| --- | ------------------------------------------------- | ------ |
+| 11  | Add security headers to `next.config.ts`          | 15 min |
+| 12  | Standardise JSON-LD serialisation pattern         | 15 min |
+| 13  | Fix sitemap `lastModified` dates                  | 10 min |
+| 14  | Trim EB_Garamond font weights                     | 10 min |
+| 15  | Expand `llms.txt` for better AI search visibility | 30 min |
+| 16  | Clean up `--color-PLACEHOLDER_DARK_COLOR` token   | 5 min  |
+| 17  | Add cross-view links on dynamic pages             | 1 hr   |
 
 ### 🔵 Long-Term (1–3 Months)
 
-| # | Task | Effort |
-|---|------|--------|
-| 18 | Build `/blog` section with educational content | 1–2 weeks |
-| 19 | Create comparison pages (life calendar alternatives) | 2–3 days |
-| 20 | Add `generateStaticParams` for most popular calendar URLs | 2 hrs |
-| 21 | Dynamic import three.js for burst view (`ssr: false`) | 1 hr |
-| 22 | Consider `opengraph-image.tsx` with dynamic age-based OG images | 2 hrs |
+| #   | Task                                                            | Effort    |
+| --- | --------------------------------------------------------------- | --------- |
+| 18  | Build `/blog` section with educational content                  | 1–2 weeks |
+| 19  | Create comparison pages (life calendar alternatives)            | 2–3 days  |
+| 20  | Add `generateStaticParams` for most popular calendar URLs       | 2 hrs     |
+| 21  | Dynamic import three.js for burst view (`ssr: false`)           | 1 hr      |
+| 22  | Consider `opengraph-image.tsx` with dynamic age-based OG images | 2 hrs     |
 
 ---
 
 ## Validation Tools
 
-| Tool | URL | Use |
-|------|-----|-----|
-| Google Search Console | https://search.google.com/search-console | Indexation, coverage, CWV |
-| Rich Results Test | https://search.google.com/test/rich-results | Validate JSON-LD schema |
-| PageSpeed Insights | https://pagespeed.web.dev/ | Core Web Vitals |
-| Schema Validator | https://validator.schema.org/ | JSON-LD syntax |
-| Lighthouse | Chrome DevTools | Full audit |
+| Tool                  | URL                                         | Use                       |
+| --------------------- | ------------------------------------------- | ------------------------- |
+| Google Search Console | https://search.google.com/search-console    | Indexation, coverage, CWV |
+| Rich Results Test     | https://search.google.com/test/rich-results | Validate JSON-LD schema   |
+| PageSpeed Insights    | https://pagespeed.web.dev/                  | Core Web Vitals           |
+| Schema Validator      | https://validator.schema.org/               | JSON-LD syntax            |
+| Lighthouse            | Chrome DevTools                             | Full audit                |
 
 ---
 

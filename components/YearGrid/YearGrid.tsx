@@ -1,12 +1,12 @@
-'use client'
+"use client";
 
-import { Week } from '../Week/Week'
+import { Week } from "../Week/Week";
 import {
   isCurrentWeek as isCurrentWeekFn,
   shouldShowYearLabel,
   shouldWeekBeFilled,
-} from './utils'
-import type { YearGridProps } from './YearGrid.types'
+} from "./utils";
+import type { YearGridProps } from "./YearGrid.types";
 
 // YearGrid component to display a grid of weeks for a year
 export const YearGrid = ({
@@ -17,26 +17,26 @@ export const YearGrid = ({
   daysIntoCurrentWeek,
 }: YearGridProps) => {
   return (
-    <div data-cy="year-grid" className={'mx-auto grid w-208 grid-cols-52'}>
+    <div data-cy="year-grid" className={"mx-auto grid w-208 grid-cols-52"}>
       {weeks.map((weekIndex) => {
         // Determine if the week should be filled using utility function
         const isFilled = shouldWeekBeFilled(
           yearsAlive,
           currentDecadeYear,
           weekIndex,
-          weeksFromLastBday
-        )
+          weeksFromLastBday,
+        );
 
         // Determine if this is the current week (actively being lived)
         const isCurrentWeek = isCurrentWeekFn(
           yearsAlive,
           currentDecadeYear,
           weekIndex,
-          weeksFromLastBday
-        )
+          weeksFromLastBday,
+        );
 
         // Determine if year label should be shown using utility function
-        const showYearLabel = shouldShowYearLabel(currentDecadeYear, weekIndex)
+        const showYearLabel = shouldShowYearLabel(currentDecadeYear, weekIndex);
 
         return (
           <Week
@@ -47,8 +47,8 @@ export const YearGrid = ({
             currentDayOfWeek={isCurrentWeek ? daysIntoCurrentWeek : undefined}
             {...(showYearLabel ? { yearsAlive: `${currentDecadeYear}` } : {})}
           />
-        )
+        );
       })}
     </div>
-  )
-}
+  );
+};

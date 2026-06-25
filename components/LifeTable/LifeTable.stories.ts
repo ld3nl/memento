@@ -1,42 +1,42 @@
-import type { Meta, StoryObj } from '@storybook/nextjs'
-import { LifeTable } from './LifeTable'
+import type { Meta, StoryObj } from "@storybook/nextjs";
+import { LifeTable } from "./LifeTable";
 
 const meta: Meta<typeof LifeTable> = {
-  title: 'Components/LifeTable',
+  title: "Components/LifeTable",
   component: LifeTable,
   parameters: {
     nextjs: {
       appDirectory: true,
     },
-    layout: 'centered',
+    layout: "centered",
   },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   argTypes: {
     dob: {
-      control: 'text',
-      description: 'Date of birth in YYYY-MM-DD format',
+      control: "text",
+      description: "Date of birth in YYYY-MM-DD format",
     },
   },
-}
+};
 
-export default meta
+export default meta;
 
-type Story = StoryObj<typeof meta>
+type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    dob: '1986-11-25',
+    dob: "1986-11-25",
   },
-}
+};
 
 export const YoungPerson: Story = {
   args: {
-    dob: '2010-06-15',
+    dob: "2010-06-15",
   },
-}
+};
 
 export const MiddleAged: Story = {
   args: {
-    dob: '1975-03-20',
+    dob: "1975-03-20",
   },
-}
+};
