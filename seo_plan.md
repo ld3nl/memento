@@ -148,11 +148,12 @@ import { GoogleAnalytics } from '@next/third-parties/google'
 
 **Impact:** Low-Medium — browser confusion, inconsistent PWA install experience
 **Evidence:**
-| Source | theme_color | background_color |
-|--------|-------------|------------------|
-| `app/manifest.ts` | `#EF4444` (red) | `#0A0908` |
-| `public/manifest.json` | `#a855f7` (purple) | `#000000` |
-| `viewport.themeColor` | `#0D0C0B` (black) | — |
+
+| Source                 | theme_color        | background_color |
+| ---------------------- | ------------------ | ---------------- |
+| `app/manifest.ts`      | `#EF4444` (red)    | `#0A0908`        |
+| `public/manifest.json` | `#a855f7` (purple) | `#000000`        |
+| `viewport.themeColor`  | `#0D0C0B` (black)  | —                |
 
 **Fix:**
 

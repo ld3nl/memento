@@ -4,7 +4,7 @@ export function useElementSize<T extends HTMLElement>() {
   const ref = React.useRef<T>(null);
   const [size, setSize] = React.useState({ w: 0, h: 0 });
 
-  const observer = React.useRef<ResizeObserver>();
+  const observer = React.useRef<ResizeObserver | null>(null);
 
   React.useLayoutEffect(() => {
     if (!ref.current) return;

@@ -1,0 +1,96 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-display: var(--font-garamond);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-jetbrains);
+  --color-primary: light-dark(var(--color-zinc-900), var(--color-zinc-50));
+  --color-secondary: light-dark(var(--color-zinc-500), var(--color-zinc-400));
+  --color-accent: var(--color-red-600);
+  --color-border: light-dark(var(--color-zinc-200), var(--color-zinc-700));
+}
+
+/* CSS Anchor Positioning: custom property for dynamic anchor names */
+@property --memento-anchor {
+  syntax: "*";
+  inherits: false;
+}
+
+/* Popover positioning classes with anchor positioning */
+.popover-left-top {
+  position-area: top span-left;
+  margin-bottom: 0.625rem;
+  margin-right: 0.625rem;
+}
+
+.popover-right-top {
+  position-area: top span-right;
+  margin-bottom: 0.625rem;
+  margin-left: 0.625rem;
+}
+
+.popover-left-center {
+  position-area: left;
+  margin-right: 0.625rem;
+  inset-block: anchor(center);
+  translate: 0 -50%;
+}
+
+.popover-right-center {
+  position-area: right;
+  margin-left: 0.625rem;
+  inset-block: anchor(center);
+  translate: 0 -50%;
+}
+
+.popover-left-bottom {
+  position-area: bottom span-left;
+  margin-top: 0.625rem;
+  margin-right: 0.625rem;
+}
+
+.popover-center-top {
+  position-area: top;
+  margin-bottom: 0.625rem;
+  inset-inline-start: anchor(center);
+  translate: -50% 0;
+}
+
+.popover-center-center {
+  position-area: center;
+  inset-inline-start: anchor(center);
+  inset-block-start: anchor(center);
+  translate: -50% -50%;
+}
+
+.popover-center-bottom {
+  position-area: bottom;
+  margin-top: 0.625rem;
+  inset-inline-start: anchor(center);
+  translate: -50% 0;
+}
+
+.popover-right-bottom {
+  position-area: bottom span-right;
+  margin-top: 0.625rem;
+  margin-left: 0.625rem;
+}
+
+/* Auto positioning with viewport-aware fallbacks.
+ *
+ * Next.js 16.3 Turbopack parses CSS with LightningCSS 1.32, which
+ * rejects the @position-try at-rule. Use <position-area> fallbacks
+ * instead so the rules stay in the bundled stylesheet.
+ *
+ * Two-keyword areas (e.g. right center) keep the popover on one cell
+ * of the 3x3 grid. Uniform margin stays valid after a fallback.
+ */
+.popover-auto {
+  position-area: right center;
+  margin: 0.625rem;
+  position-try-fallbacks:
+    left center,
+    top center,
+    bottom center;
+  position-try-order: most-width;
+}

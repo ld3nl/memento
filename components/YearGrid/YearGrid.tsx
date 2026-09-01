@@ -1,5 +1,3 @@
-"use client";
-
 import { Week } from "../Week/Week";
 import {
   isCurrentWeek as isCurrentWeekFn,
@@ -17,7 +15,7 @@ export const YearGrid = ({
   daysIntoCurrentWeek,
 }: YearGridProps) => {
   return (
-    <div data-cy="year-grid" className={"mx-auto grid w-208 grid-cols-52"}>
+    <div data-cy="year-grid" className="mx-auto grid w-208 grid-cols-52">
       {weeks.map((weekIndex) => {
         // Determine if the week should be filled using utility function
         const isFilled = shouldWeekBeFilled(

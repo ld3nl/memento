@@ -46,10 +46,11 @@ describe("Form Component", () => {
     cy.get("[data-cy=birthday-input]").type(TEST_DOB);
     cy.get("[data-cy=birthday-input]").blur();
 
-    cy.get("[data-cy=age]")
+    cy.get("[data-cy=age]").should("exist");
+    cy.get("[data-cy=age-copy]")
       .should("exist")
       .invoke("text")
-      .should("match", /\d+ years, \d+ months, \d+ days/);
+      .should("match", /\d+ years/);
   });
 
   it("checks submit button exists", () => {

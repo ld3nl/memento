@@ -162,5 +162,31 @@ describe("BurstScene layout utilities", () => {
         expect(typeof item.rotation).toBe("number");
       });
     });
+
+    it("winds weeks along a spiral instead of concentric rings", () => {
+      const result = computeBurstItems(defaultParams);
+      const radii = result.items.map((item) => Math.hypot(item.tx, item.ty));
+
+      expect(radii[0]).toBeCloseTo(0, 5);
+
+      for (let i = 1; i < radii.length; i++) {
+        expect(radii[i]).toBeGreaterThanOrEqual(radii[i - 1] - 1e-9);
+      }
+
+      const uniqueRadii = new Set(radii.slice(1).map((r) => r.toFixed(3)));
+      expect(uniqueRadii.size).toBeGreaterThan(result.items.length * 0.8);
+
+      const first = result.items[1];
+      const last = result.items[result.items.length - 1];
+      const quarter = result.items[Math.floor(result.items.length / 4)];
+      expect(Math.hypot(first.tx, first.ty)).toBeGreaterThan(0);
+      expect(Math.hypot(first.tx, first.ty)).toBeLessThan(
+        Math.hypot(quarter.tx, quarter.ty),
+      );
+      expect(Math.hypot(last.tx, last.ty)).toBeCloseTo(
+        defaultParams.maxRadius,
+        0,
+      );
+    });
   });
 });

@@ -25,9 +25,10 @@ describe("Form E2E Tests", () => {
 
   it("displays the correct age based on birthday input", () => {
     cy.get("input[data-cy=birthday-input]").type(TEST_DOB);
-    cy.get("[data-cy=age]")
+    cy.get("[data-cy=age]").should("exist");
+    cy.get("[data-cy=age-copy]")
       .should("exist")
-      .contains(/\d+ years, \d+ months, \d+ days young\?/);
+      .contains(/\d+ years/);
   });
 
   it("button is disabled when no birthday is entered", () => {
@@ -44,8 +45,6 @@ describe("Form E2E Tests", () => {
     cy.get("input[data-cy=birthday-input]").type(TEST_DOB);
     cy.get("input[data-cy=input-checkbox-save]").check();
 
-    // Set to 'base' mode for baseline capture
-    Cypress.env("visualRegressionType", "base");
     cy.compareSnapshot("form-filled");
   });
 });

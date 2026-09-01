@@ -1,4 +1,5 @@
 import {
+  birthDateFromPathSegments,
   extractNameFromUrl,
   generateLifeTableUrl,
   parseDateFromUrl,
@@ -63,6 +64,19 @@ describe("url utilities", () => {
       expect(parseDateFromUrl(["", "01", "15"])).toBe(null);
       expect(parseDateFromUrl(["2023", "", "15"])).toBe(null);
       expect(parseDateFromUrl(["2023", "01", ""])).toBe(null);
+    });
+  });
+
+  describe("birthDateFromPathSegments", () => {
+    it("builds a local calendar date", () => {
+      const result = birthDateFromPathSegments(["2023", "1", "5"]);
+      expect(result?.getFullYear()).toBe(2023);
+      expect(result?.getMonth()).toBe(0);
+      expect(result?.getDate()).toBe(5);
+    });
+
+    it("rejects impossible dates", () => {
+      expect(birthDateFromPathSegments(["2023", "2", "31"])).toBe(null);
     });
   });
 

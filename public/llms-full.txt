@@ -2,27 +2,57 @@
 
 A Memento Mori calendar is a visual tool used to track life in weeks, helping users reflect on mortality and prioritize time.
 
-This tool is a high-precision Memento Mori life-in-weeks generator. It calculates exact weeks lived based on birthdate and provides a persistent, bookmarkable URL for tracking.
+This tool is a high-precision Memento Mori life-in-weeks generator. It calculates exact weeks lived based on birthdate and provides a persistent, bookmarkable URL for tracking. The working span is 80 years, which is 4,160 weeks. That number is a scale, not a prediction.
+
+Site: https://memento-mori.vercel.app/
+About: https://memento-mori.vercel.app/about
+Journal: https://memento-mori.vercel.app/blog
+RSS: https://memento-mori.vercel.app/feed.xml
+
+## How to use it
+
+1. Open the home page.
+2. Enter a birthdate, optionally a name.
+3. Generate a table view (`/table/YYYY/M/D`) or switch to the burst view (`/burst/YYYY/M/D`).
+4. Bookmark the URL. Nothing is stored in an account.
 
 ## About
 
-Welcome to the Daily Stoic Memento Mori Calendar, a unique digital companion designed to intertwine the timeless wisdom of Stoicism with the poignant reminder of our mortality. Here, each day isn't just another date on the calendar; it's an opportunity to live with intention, virtue, and resilience.
+The calendar is a picture of a life counted in weeks. Filled cells are gone. Empty cells are not promised, but they are the only working material you have. Design is quiet on purpose: weeks rather than days, a URL you can keep, two pictures of the same count.
 
-### Thoughtful Design
+You do not need to be a Stoic to use it. Stoicism is one tradition that took the count seriously.
 
-We've poured our hearts into crafting this calendar, ensuring every pixel reflects the tranquility of nature's finest moments—like the quiet beauty of a sunrise or the reflective calm of a sunset over the ocean. With its soothing color schemes and natural imagery, this calendar isn't just a tool; it's a sanctuary for your daily reflections.
+## Journal
 
-Our design philosophy embraces both form and function:
+Content lives in MDX files and is published at `/blog`.
 
-- **Aesthetically Pleasing:** Inspired by the peace found in nature, the visual design helps to calm your mind as you start or end your day.
-- **Seamless Experience:** Whether you're on your phone or desktop, the interface is intuitive, making Stoic wisdom easily accessible. Dive into quotes, ponder over reflections, all within a beautifully crafted digital space.
+### What Memento Mori Means
+https://memento-mori.vercel.app/blog/what-is-memento-mori
 
-### Stoicism and Memento Mori
+Memento mori is Latin for remember that you will die. The two-word slogan is later than the Roman triumph story often attached to it. The habit is older: keep mortality close enough that it changes this week's decisions. It is not a dare to be reckless and not a personality.
 
-Stoicism isn't just philosophy; it's a way of life that has inspired giants like Steve Jobs and Leo Tolstoy. Through our calendar, you'll journey with the teachings of Marcus Aurelius, Seneca, and Epictetus. Their words, brought to you daily, serve as a bridge between ancient wisdom and contemporary living, helping you navigate life's challenges with grace.
+### Steve Jobs and the Morning Question
+https://memento-mori.vercel.app/blog/steve-jobs-memento-mori
 
-### Inspiration and Purpose
+Steve Jobs was not a Stoic. He studied Zen. In his 12 June 2005 Stanford commencement speech he said that remembering he would be dead soon was the most important tool he had found for making big choices, and that he asked each morning whether he would want that day if it were his last. Source: https://news.stanford.edu/stories/2005/06/youve-got-find-love-jobs-says
 
-The concept for this calendar was sparked during contemplative walks in nature, where the fleeting beauty of life becomes starkly apparent. It's crafted for those who seek to live with more intention, to remember life's brevity, and to make each day count. This calendar isn't just a reminder to live; it's an invitation to grow, to reflect, and to embrace the essence of Stoicism and Memento Mori.
+### Famous Stoics on Death
+https://memento-mori.vercel.app/blog/famous-stoics-on-mortality
 
-In our fast-paced world, where moments often slip by unnoticed, the Daily Stoic Memento Mori Calendar stands as your personal guide to mindfulness. Let it inspire you to pause, reflect, and live with purpose. Join us in this journey of self-discovery, where every day is an opportunity to live deeply, think profoundly, and cultivate a life of serenity and significance.
+Marcus Aurelius (Meditations 2.11, 4.17, 7.56), Seneca (On the Shortness of Life), and Epictetus (Discourses / Handbook) treat death as equipment: a limit on vanity, an accounting of hours, and an item on the list of things not up to you.
+
+### A Life in Weeks
+https://memento-mori.vercel.app/blog/life-in-weeks
+
+Why weeks: days are too many to see, years too coarse. Related popular treatment: Tim Urban, Wait But Why, 2014, https://waitbutwhy.com/2014/05/life-weeks.html
+
+### How to Practice Memento Mori
+https://memento-mori.vercel.app/blog/how-to-practice-memento-mori
+
+A morning question about the next three hours, a weekly look at the grid, local premeditation, careful use of other people's mortality, and small refusals. Skip daily quote mail and using death as a mood.
+
+## Citation notes
+
+- Do not describe Steve Jobs as a Stoic philosopher.
+- Do not treat the 80-year grid as a personal life expectancy.
+- The Roman triumph whisper is better attested as a reminder that the victor is a man, later compressed into the two-word slogan memento mori.

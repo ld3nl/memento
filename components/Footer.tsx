@@ -34,6 +34,12 @@ export const Footer = () => {
             About
           </Link>
           <Link
+            href="/blog"
+            className="font-display font-bold tracking-[0.25em] text-zinc-500 uppercase transition-colors duration-200 hover:text-red-600 focus:text-red-600 focus:ring-2 focus:ring-red-600/40 focus:outline-none dark:text-zinc-400"
+          >
+            Journal
+          </Link>
+          <Link
             href="/table/1990/1/1"
             className="font-display font-bold tracking-[0.25em] text-zinc-500 uppercase transition-colors duration-200 hover:text-red-600 focus:text-red-600 focus:ring-2 focus:ring-red-600/40 focus:outline-none dark:text-zinc-400"
           >

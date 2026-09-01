@@ -20,6 +20,53 @@ type SceneContentProps = {
 const HOVER_SCALE = 2.0;
 const HOVER_LERP_SPEED = 0.15;
 
+type BurstUniforms = {
+  uTime: { value: number };
+  uBorderThickness: { value: number };
+  uIsCircle: { value: number };
+  uColorWaveSpeed: { value: number };
+  uColorWaveOffset: { value: number };
+  uReduceMotion: { value: number };
+};
+
+type BurstGpu = {
+  uniforms: BurstUniforms;
+  mouseWorld: THREE.Vector2;
+  raycaster: THREE.Raycaster;
+  mouseNDC: THREE.Vector2;
+  dummy: THREE.Object3D;
+  hoverPlane: THREE.Plane;
+  hoverHit: THREE.Vector3;
+  shaderMaterial: THREE.ShaderMaterial;
+};
+
+function createBurstGpu(): BurstGpu {
+  const uniforms: BurstUniforms = {
+    uTime: { value: 0 },
+    uBorderThickness: { value: CONFIG.BORDER_THICKNESS },
+    uIsCircle: { value: 0 },
+    uColorWaveSpeed: { value: CONFIG.COLOR_WAVE_SPEED },
+    uColorWaveOffset: { value: CONFIG.COLOR_WAVE_OFFSET },
+    uReduceMotion: { value: 0 },
+  };
+
+  return {
+    uniforms,
+    mouseWorld: new THREE.Vector2(9999, 9999),
+    raycaster: new THREE.Raycaster(),
+    mouseNDC: new THREE.Vector2(),
+    dummy: new THREE.Object3D(),
+    hoverPlane: new THREE.Plane(new THREE.Vector3(0, 0, 1), 0),
+    hoverHit: new THREE.Vector3(),
+    shaderMaterial: new THREE.ShaderMaterial({
+      vertexShader,
+      fragmentShader,
+      uniforms,
+      transparent: true,
+    }),
+  };
+}
+
 // Extracted component for instanced mesh rendering
 const InstancedBurstMesh = React.forwardRef<
   THREE.InstancedMesh,
@@ -51,22 +98,17 @@ const InstancedBurstMesh = React.forwardRef<
 InstancedBurstMesh.displayName = "InstancedBurstMesh";
 
 // Hook for managing animation state and timing
-const useAnimationState = (items: BurstItem[], clock: THREE.Clock) => {
+const useAnimationState = () => {
   const startTimeRef = React.useRef(0);
   const animationFinishedRef = React.useRef(false);
+  const hasStartedRef = React.useRef(false);
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: items is used as a trigger to reset animation
-  React.useEffect(() => {
-    startTimeRef.current = clock.elapsedTime * 1000;
-    animationFinishedRef.current = false;
-  }, [items, clock]);
-
-  return { startTimeRef, animationFinishedRef };
+  return { startTimeRef, animationFinishedRef, hasStartedRef };
 };
 
 // Initialize geometry attributes
 const useGeometrySetup = (
-  meshRef: React.RefObject<THREE.InstancedMesh>,
+  meshRef: React.RefObject<THREE.InstancedMesh | null>,
   items: BurstItem[],
   reduceMotion: boolean,
   invalidate: () => void,
@@ -137,82 +179,100 @@ export const SceneContent = ({
   const { clock, invalidate, camera } = useThree();
   const meshRef = React.useRef<THREE.InstancedMesh>(null);
   const hoveredIndexRef = React.useRef<number | null>(null);
-  const itemScalesRef = React.useRef<Float32Array>(
-    new Float32Array(items.length).fill(1),
+  const [itemScales] = React.useState(
+    () => new Float32Array(items.length).fill(1),
   );
-  const mouseWorldRef = React.useRef<THREE.Vector2>(
-    new THREE.Vector2(9999, 9999),
-  );
-  const raycasterRef = React.useRef<THREE.Raycaster>(new THREE.Raycaster());
-  const mouseNDCRef = React.useRef<THREE.Vector2>(new THREE.Vector2());
-  const dummyRef = React.useRef<THREE.Object3D>(new THREE.Object3D());
+  const itemScalesRef = React.useRef(itemScales);
+  const [gpu] = React.useState(createBurstGpu);
+  const gpuRef = React.useRef(gpu);
 
-  const { startTimeRef, animationFinishedRef } = useAnimationState(
-    items,
-    clock,
-  );
+  const { startTimeRef, animationFinishedRef, hasStartedRef } =
+    useAnimationState();
 
-  // Create shader material with useMemo to handle shape changes
-  const shaderMaterial = React.useMemo(
-    () =>
-      new THREE.ShaderMaterial({
-        vertexShader,
-        fragmentShader,
-        uniforms: {
-          uTime: { value: 0 },
-          uBorderThickness: { value: CONFIG.BORDER_THICKNESS },
-          uIsCircle: { value: shape === "circle" ? 1.0 : 0.0 },
-          uColorWaveSpeed: { value: CONFIG.COLOR_WAVE_SPEED },
-          uColorWaveOffset: { value: CONFIG.COLOR_WAVE_OFFSET },
-        },
-        transparent: true,
-      }),
-    [shape],
-  );
-
-  // Reset scales when items length changes
   React.useEffect(() => {
     itemScalesRef.current = new Float32Array(items.length).fill(1);
   }, [items.length]);
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: restart the intro when the week set changes, not only its length
+  React.useEffect(() => {
+    hasStartedRef.current = false;
+    animationFinishedRef.current = false;
+    let raf = 0;
+    let alive = true;
+    const kick = () => {
+      if (!alive) return;
+      invalidate();
+      if (!animationFinishedRef.current) {
+        raf = requestAnimationFrame(kick);
+      }
+    };
+    kick();
+    const stopAt = window.setTimeout(() => {
+      alive = false;
+    }, maxDelay + CONFIG.ANIMATION_DURATION_MS + 400);
+    return () => {
+      alive = false;
+      cancelAnimationFrame(raf);
+      clearTimeout(stopAt);
+    };
+  }, [items, invalidate, maxDelay]);
+
+  React.useEffect(() => {
+    return () => {
+      gpu.shaderMaterial.dispose();
+    };
+  }, [gpu]);
 
   useGeometrySetup(meshRef, items, reduceMotion, invalidate);
 
   useFrame(({ pointer }) => {
     const mesh = meshRef.current;
-    const mat = shaderMaterial;
-    const mouseWorld = mouseWorldRef.current;
-    const raycaster = raycasterRef.current;
-    const mouseNDC = mouseNDCRef.current;
-    const dummy = dummyRef.current;
+    const itemScales = itemScalesRef.current;
+    const gpu = gpuRef.current;
 
-    if (!mesh || !mouseWorld || !raycaster || !mouseNDC || !dummy) {
+    if (!mesh || !itemScales || !gpu) {
       return;
     }
+
+    if (!hasStartedRef.current) {
+      startTimeRef.current = clock.elapsedTime * 1000;
+      hasStartedRef.current = true;
+    }
+
+    const {
+      mouseWorld,
+      raycaster,
+      mouseNDC,
+      dummy,
+      hoverPlane,
+      hoverHit,
+      uniforms,
+    } = gpu;
 
     // Update mouse world position for magnetic effect
     mouseNDC.set(pointer.x, pointer.y);
     raycaster.setFromCamera(mouseNDC, camera);
-    const plane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
-    const intersection = new THREE.Vector3();
-    raycaster.ray.intersectPlane(plane, intersection);
-    if (intersection) {
-      mouseWorld.set(intersection.x, intersection.y);
+    const hit = raycaster.ray.intersectPlane(hoverPlane, hoverHit);
+    if (hit) {
+      mouseWorld.set(hit.x, hit.y);
     }
 
     const globalTime = clock.elapsedTime * 1000;
     const time = globalTime - startTimeRef.current;
 
-    // Update shader uniforms
-    mat.uniforms.uTime.value = globalTime;
-    mat.uniforms.uColorWaveSpeed.value = CONFIG.COLOR_WAVE_SPEED;
-    mat.uniforms.uColorWaveOffset.value = CONFIG.COLOR_WAVE_OFFSET;
-
-    if (reduceMotion) {
-      animationFinishedRef.current = true;
-    }
+    uniforms.uTime.value = globalTime;
+    uniforms.uColorWaveSpeed.value = CONFIG.COLOR_WAVE_SPEED;
+    uniforms.uColorWaveOffset.value = CONFIG.COLOR_WAVE_OFFSET;
+    uniforms.uIsCircle.value = shape === "circle" ? 1.0 : 0.0;
+    uniforms.uReduceMotion.value = reduceMotion ? 1.0 : 0.0;
 
     const isAnimationComplete =
+      reduceMotion ||
       time > maxDelay + CONFIG.ANIMATION_DURATION_MS + 200;
+
+    if (isAnimationComplete) {
+      animationFinishedRef.current = true;
+    }
     const mouseX = mouseWorld.x;
     const mouseY = mouseWorld.y;
     const magneticForce = CONFIG.MAGNETIC_FORCE;
@@ -227,11 +287,11 @@ export const SceneContent = ({
 
       // Calculate hover scale
       const targetHoverScale = i === hoveredIdx ? HOVER_SCALE : 1.0;
-      const currentHoverScale = itemScalesRef.current[i] ?? 1;
+      const currentHoverScale = itemScales[i] ?? 1;
       const newHoverScale =
         currentHoverScale +
         (targetHoverScale - currentHoverScale) * HOVER_LERP_SPEED;
-      itemScalesRef.current[i] = newHoverScale;
+      itemScales[i] = newHoverScale;
 
       if (Math.abs(newHoverScale - targetHoverScale) > 0.01) {
         activeUpdate = true;
@@ -293,8 +353,12 @@ export const SceneContent = ({
       if (tLinear < 1.0) activeUpdate = true;
     }
 
-    if (activeUpdate || !isAnimationComplete || !reduceMotion) {
-      mesh.instanceMatrix.needsUpdate = true;
+    mesh.instanceMatrix.needsUpdate = true;
+    const needsFrame =
+      activeUpdate ||
+      hoveredIdx !== null ||
+      (!reduceMotion && !isAnimationComplete);
+    if (needsFrame) {
       invalidate();
     }
   });
@@ -329,7 +393,7 @@ export const SceneContent = ({
       ref={meshRef}
       items={items}
       boxSize={boxSize}
-      shaderMaterial={shaderMaterial}
+      shaderMaterial={gpu.shaderMaterial}
       onPointerMove={onMove}
       onPointerOut={onLeave}
     />

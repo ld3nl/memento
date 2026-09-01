@@ -43,6 +43,8 @@ bun run build
 
 - Next.js 16 + React 19 + TypeScript
 - Tailwind CSS for styling
+- Biome for linting (replaces ESLint; Next.js 16 dropped `next lint`)
+- Prettier + `prettier-plugin-tailwindcss` for formatting
 - Jest for testing
 - date-fns for date utilities
 

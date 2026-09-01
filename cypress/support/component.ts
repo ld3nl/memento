@@ -1,5 +1,5 @@
 // Global styles for component tests
-import "../../styles/globals.css";
+import "../../app/globals.css";
 
 // Import shared commands
 import "./commands";

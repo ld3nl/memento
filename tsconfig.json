@@ -24,6 +24,7 @@
     ".next/types/**/*.ts",
     "**/*.ts",
     "**/*.tsx",
+    "mdx.d.ts",
     ".next/dev/types/**/*.ts"
   ],
   "exclude": [

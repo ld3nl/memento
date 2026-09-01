@@ -2,20 +2,21 @@
 
 import { type ReactNode, useEffect, useId, useRef, useState } from "react";
 
-// Module augmentation for CSS Anchor Positioning properties
-declare module "react" {
-  interface CSSProperties {
-    anchorName?: string;
-    positionAnchor?: string;
-    positionArea?: string;
-    positionTryFallbacks?: string;
-    positionTryOptions?: string;
-    "--memento-anchor"?: string;
-  }
-}
+import { cn } from "../../lib/utils";
 
 type PopoverMode = "auto" | "manual";
 type PopoverAction = "toggle" | "show" | "hide";
+type PopoverPosition =
+  | "auto"
+  | "left_top"
+  | "center_top"
+  | "right_top"
+  | "left_center"
+  | "center_center"
+  | "right_center"
+  | "left_bottom"
+  | "center_bottom"
+  | "right_bottom";
 
 interface PopoverProps {
   /** Trigger button content */
@@ -26,6 +27,8 @@ interface PopoverProps {
   mode?: PopoverMode;
   /** Native popovertargetaction */
   action?: PopoverAction;
+  /** Popover position relative to trigger */
+  position?: PopoverPosition;
   className?: string;
   triggerClassName?: string;
   /** Week index for ml-auto positioning (weeks > 26) */
@@ -33,9 +36,9 @@ interface PopoverProps {
   /** Whether the week is filled (past) or empty (future) */
   isFilled?: boolean;
   /** Fired before the popover state changes */
-  onBeforeToggle?: (event: React.ToggleEvent<HTMLDivElement>) => void;
+  onBeforeToggle?: (event: React.ToggleEvent<HTMLDialogElement>) => void;
   /** Fired after the popover state changes */
-  onToggle?: (event: React.ToggleEvent<HTMLDivElement>) => void;
+  onToggle?: (event: React.ToggleEvent<HTMLDialogElement>) => void;
 }
 
 export default function Popover({
@@ -43,6 +46,7 @@ export default function Popover({
   children,
   mode = "auto",
   action = "toggle",
+  position = "auto",
   className = "",
   triggerClassName = "",
   weekIndex,
@@ -53,15 +57,17 @@ export default function Popover({
   const popoverId = useId();
   const anchorName = `--memento-${popoverId.replace(/[^a-zA-Z0-9_-]/g, "")}`;
 
-  const popoverRef = useRef<HTMLDivElement>(null);
+  const popoverRef = useRef<HTMLDialogElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const [open, setOpen] = useState(false);
 
-  const handleBeforeToggle = (event: React.ToggleEvent<HTMLDivElement>) => {
+  const handleBeforeToggle = (
+    event: React.ToggleEvent<HTMLDialogElement>,
+  ) => {
     onBeforeToggle?.(event);
   };
 
-  const handleToggle = (event: React.ToggleEvent<HTMLDivElement>) => {
+  const handleToggle = (event: React.ToggleEvent<HTMLDialogElement>) => {
     const isOpen = event.newState === "open";
     setOpen(isOpen);
     onToggle?.(event);
@@ -104,57 +110,55 @@ export default function Popover({
         aria-expanded={open}
         aria-haspopup="dialog"
         aria-controls={popoverId}
-        className={[
+        className={cn(
           "relative size-2 cursor-pointer border text-zinc-500 transition-colors outline-none",
-          // Border and background colors based on filled state
-          isFilled
-            ? "border-zinc-950 bg-zinc-950 dark:border-red-700 dark:bg-red-700"
-            : "border-red-600 dark:border-red-500",
-          // Hover states
-          isFilled
-            ? "hover:border-red-600 hover:bg-red-600 dark:hover:border-red-500 dark:hover:bg-red-500"
-            : "hover:border-red-700 hover:bg-red-600/10 dark:hover:border-red-400 dark:hover:bg-red-500/10",
-          // Focus states
-          "focus-visible:ring-2 focus-visible:ring-red-600/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white",
-          "dark:text-zinc-400 dark:focus-visible:ring-offset-zinc-950",
-          weekIndex && weekIndex > 26 ? "ml-auto" : "",
+          {
+            "border-zinc-950 bg-zinc-950 dark:border-red-700 dark:bg-red-700":
+              isFilled,
+            "border-red-600 dark:border-red-500": !isFilled,
+            "hover:border-red-600 hover:bg-red-600 dark:hover:border-red-500 dark:hover:bg-red-500":
+              isFilled,
+            "hover:border-red-700 hover:bg-red-600/10 dark:hover:border-red-400 dark:hover:bg-red-500/10":
+              !isFilled,
+            "ml-auto": weekIndex && weekIndex > 26,
+          },
+          "focus-visible:ring-2 focus-visible:ring-red-600/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:text-zinc-400 dark:focus-visible:ring-offset-zinc-950",
           triggerClassName,
-        ].join(" ")}
+        )}
         style={{ anchorName }}
       >
         {label}
       </button>
 
-      <div
+      <dialog
         ref={popoverRef}
         id={popoverId}
         popover={mode}
         tabIndex={-1}
-        role="dialog"
         aria-label="Record details"
         onBeforeToggle={handleBeforeToggle}
         onToggle={handleToggle}
         style={{
           positionAnchor: anchorName,
-          positionArea: "right center",
-          positionTryFallbacks:
-            "--memento-left, --memento-bottom, --memento-top",
         }}
-        className={[
-          "fixed inset-auto z-50 m-[0.625rem]",
-          "w-max max-w-[calc(100vw-1.25rem)]",
-          "overflow-hidden border border-zinc-950 bg-white text-zinc-950",
-          "shadow-[6px_6px_0_0_rgb(24_24_27/0.16)]",
-          "dark:border-red-700 dark:bg-zinc-950 dark:text-zinc-100",
-          "dark:shadow-[6px_6px_0_0_rgb(220_38_38/0.22)]",
-          "opacity-0 transition-opacity duration-200",
-          "[&:popover-open]:opacity-100",
-          "[&::backdrop]:bg-black/30 [&::backdrop]:backdrop-blur-sm",
+        className={cn(
+          "fixed inset-auto z-50 m-0 max-w-none border-0 bg-transparent p-0 opacity-0 transition-opacity duration-200 [&::backdrop]:bg-black/30 [&::backdrop]:backdrop-blur-sm [&:popover-open]:opacity-100",
+          // Position classes
+          position === "auto" && "popover-auto",
+          position === "left_top" && "popover-left-top",
+          position === "center_top" && "popover-center-top",
+          position === "right_top" && "popover-right-top",
+          position === "left_center" && "popover-left-center",
+          position === "center_center" && "popover-center-center",
+          position === "right_center" && "popover-right-center",
+          position === "left_bottom" && "popover-left-bottom",
+          position === "center_bottom" && "popover-center-bottom",
+          position === "right_bottom" && "popover-right-bottom",
           className,
-        ].join(" ")}
+        )}
       >
         {children}
-      </div>
+      </dialog>
     </>
   );
 }

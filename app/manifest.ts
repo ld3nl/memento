@@ -8,8 +8,8 @@ export default function manifest(): MetadataRoute.Manifest {
       "Visualize your entire life in weeks. A mortality reminder tool based on Stoic philosophy that helps you reflect on time and make every week count.",
     start_url: "/",
     display: "standalone",
-    background_color: "#0A0908",
-    theme_color: "#EF4444",
+    background_color: "#09090b",
+    theme_color: "#dc2626",
     orientation: "portrait-primary",
     scope: "/",
     icons: [
@@ -47,7 +47,7 @@ export default function manifest(): MetadataRoute.Manifest {
         src: "/android-icon-192x192.png",
         sizes: "192x192",
         type: "image/png",
-        purpose: "any maskable" as "any",
+        purpose: "maskable",
       },
       {
         src: "/favicon-32x32.png",

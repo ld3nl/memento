@@ -1,9 +1,10 @@
-import "../styles/globals.css";
-import { GoogleTagManager } from "@next/third-parties/google";
+import "./globals.css";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import { Analytics } from "@vercel/analytics/react";
-import type { Viewport } from "next";
+import type { Metadata, Viewport } from "next";
 import { Footer } from "../components/Footer";
 import { body, display, mono } from "../lib/fonts";
+import { OG_IMAGE, SITE_NAME, SITE_URL } from "../lib/site";
 
 // Define viewport settings for mobile-first responsive design
 export const viewport: Viewport = {
@@ -11,12 +12,15 @@ export const viewport: Viewport = {
   initialScale: 1.0,
   maximumScale: 5.0,
   userScalable: true, // Allow zoom for accessibility
-  themeColor: "#0D0C0B", // Gothic deep void black
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#09090b" },
+  ],
 };
 
-export const metadata = {
+export const metadata: Metadata = {
   title: {
-    default: "Memento Mori Life Calendar - Visualize Your Life in Weeks",
+    default: `${SITE_NAME} - Visualize Your Life in Weeks`,
     template: "%s | Memento Mori",
   },
   description:
@@ -40,21 +44,24 @@ export const metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL("https://memento-mori.vercel.app"),
+  metadataBase: new URL(SITE_URL),
   alternates: {
     canonical: "/",
+    types: {
+      "application/rss+xml": `${SITE_URL}/feed.xml`,
+    },
   },
   openGraph: {
     title: "Memento Mori Life Calendar - Visualize Your Life in Weeks",
     description:
       "How many weeks have you lived? How many remain? Visualize your entire life in weeks with our powerful Memento Mori calendar. Make every week count.",
-    url: "https://memento-mori.vercel.app",
-    siteName: "Memento Mori Life Calendar",
+    url: SITE_URL,
+    siteName: SITE_NAME,
     locale: "en_US",
     type: "website",
     images: [
       {
-        url: "https://utfs.io/f/vfxFGWyJBql9tjBcWhLA6EWr7SI90xRVulwdUhnPDQs8kcH3",
+        url: OG_IMAGE,
         width: 730,
         height: 548,
         alt: "Memento Mori Life Calendar Visualization",
@@ -66,9 +73,7 @@ export const metadata = {
     title: "Memento Mori Life Calendar - Visualize Your Life in Weeks",
     description:
       "How many weeks have you lived? How many remain? Visualize your entire life in weeks. Make every week count.",
-    images: [
-      "https://utfs.io/f/vfxFGWyJBql9tjBcWhLA6EWr7SI90xRVulwdUhnPDQs8kcH3",
-    ],
+    images: [OG_IMAGE],
   },
   robots: {
     index: true,
@@ -85,7 +90,7 @@ export const metadata = {
     icon: "/favicon.ico",
     shortcut: "/favicon.ico",
     apple: [
-      { url: "/apple-icon.png", sizes: "57x57" },
+      { url: "/apple-icon.png" },
       { url: "/apple-icon-60x60.png", sizes: "60x60" },
       { url: "/apple-icon-72x72.png", sizes: "72x72" },
       { url: "/apple-icon-76x76.png", sizes: "76x76" },
@@ -186,19 +191,25 @@ type RootLayoutProps = {
   children: React.ReactNode;
 };
 
-export default async function RootLayout({ children }: RootLayoutProps) {
+export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html
       lang="en"
-      suppressHydrationWarning
-      className={`${display.variable} ${body.variable} ${mono.variable} scroll-smooth`}
+      className={`${display.variable} ${body.variable} ${mono.variable} scroll-smooth scheme-light-dark`}
     >
-      <body className="font-body flex min-h-screen flex-col bg-white text-zinc-900 antialiased dark:bg-zinc-950 dark:text-zinc-50">
-        <main className="flex-1">{children}</main>
+      <body className="flex min-h-screen flex-col bg-white font-sans text-zinc-900 antialiased dark:bg-zinc-950 dark:text-zinc-50">
+        <a
+          href="#main-content"
+          className="bg-accent sr-only text-white focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:px-4 focus:py-2"
+        >
+          Skip to content
+        </a>
+        <main id="main-content" className="flex-1">
+          {children}
+        </main>
         <Footer />
-        {/* <GoogleAnalytics gaId="G-XXXXXXXXXX" /> */}
         <Analytics />
-        <GoogleTagManager gtmId="G-CYT1S2EC6W" />
+        <GoogleAnalytics gaId="G-CYT1S2EC6W" />
       </body>
     </html>
   );

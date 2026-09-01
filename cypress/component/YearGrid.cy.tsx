@@ -21,11 +21,8 @@ describe("YearGrid Component", () => {
   it("fills the correct number of weeks based on weeksFromLastBday", () => {
     cy.mount(<YearGrid {...defaultProps} />);
 
-    // The filled weeks include past weeks (weeksFromLastBday) plus the current week's partial fill
-    // Current week (week 11) has an inner div with bg-black for partial progress
-    // So we expect weeksFromLastBday filled weeks + 1 partial fill element
     cy.get("[data-cy=year-grid]")
-      .find(".bg-black")
+      .find(".bg-zinc-900")
       .should("have.length", defaultProps.weeksFromLastBday + 1);
   });
 
@@ -34,7 +31,9 @@ describe("YearGrid Component", () => {
       <YearGrid {...defaultProps} currentDecadeYear={25} yearsAlive={30} />,
     );
 
-    cy.get("[data-cy=year-grid]").find(".bg-black").should("have.length", 52);
+    cy.get("[data-cy=year-grid]")
+      .find(".bg-zinc-900")
+      .should("have.length", 52);
   });
 
   it("fills no weeks when currentDecadeYear is greater than yearsAlive", () => {
@@ -42,6 +41,6 @@ describe("YearGrid Component", () => {
       <YearGrid {...defaultProps} currentDecadeYear={35} yearsAlive={30} />,
     );
 
-    cy.get("[data-cy=year-grid]").find(".bg-black").should("have.length", 0);
+    cy.get("[data-cy=year-grid]").find(".bg-zinc-900").should("have.length", 0);
   });
 });

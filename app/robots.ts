@@ -1,5 +1,6 @@
 // filepath: /Users/denis/Documents/GitHub/memento/app/robots.ts
 import type { MetadataRoute } from "next";
+import { SITE_URL } from "../lib/site";
 
 // Function to dynamically generate robots.txt content
 export default function generateRobots(): MetadataRoute.Robots {
@@ -7,8 +8,8 @@ export default function generateRobots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: "/private/",
     },
-    sitemap: "https://memento-mori.vercel.app/sitemap.xml",
+    sitemap: `${SITE_URL}/sitemap.xml`,
+    host: SITE_URL,
   };
 }

@@ -40,6 +40,37 @@ export const parseDateFromUrl = (pathSegments: string[]): string | null => {
   return formattedDate;
 };
 
+/** Local calendar date from `/yyyy/m/d` segments (not UTC `Date.parse`). */
+export const birthDateFromPathSegments = (
+  pathSegments: string[],
+): Date | null => {
+  const iso = parseDateFromUrl(pathSegments);
+  if (!iso) return null;
+
+  const [year, month, day] = iso.split("-").map(Number);
+  if (
+    year === undefined ||
+    month === undefined ||
+    day === undefined ||
+    Number.isNaN(year) ||
+    Number.isNaN(month) ||
+    Number.isNaN(day)
+  ) {
+    return null;
+  }
+
+  const date = new Date(year, month - 1, day);
+  if (
+    date.getFullYear() !== year ||
+    date.getMonth() !== month - 1 ||
+    date.getDate() !== day
+  ) {
+    return null;
+  }
+
+  return date;
+};
+
 /**
  * Extracts name from URL search params
  */

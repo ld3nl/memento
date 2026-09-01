@@ -1,61 +1,141 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.5.0/schema.json",
-  "assist": { "actions": { "source": { "organizeImports": "on" } } },
-  "linter": {
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  "vcs": {
     "enabled": true,
-    "rules": {
-      "preset": "recommended",
-      "suspicious": {
-        "noArrayIndexKey": "off"
-      }
-    }
-  },
-  "formatter": {
-    "enabled": true,
-    "formatWithErrors": false,
-    "indentStyle": "space",
-    "indentWidth": 2,
-    "lineEnding": "lf",
-    "lineWidth": 80,
-    "attributePosition": "auto"
-  },
-  "javascript": {
-    "formatter": {
-      "quoteStyle": "single",
-      "jsxQuoteStyle": "double",
-      "quoteProperties": "asNeeded",
-      "trailingCommas": "es5",
-      "semicolons": "asNeeded",
-      "arrowParentheses": "always",
-      "bracketSpacing": true,
-      "bracketSameLine": false,
-      "enabled": true
-    }
-  },
-  "css": {
-    "formatter": {
-      "enabled": true
-    }
-  },
-  "json": {
-    "formatter": {
-      "enabled": true
-    }
+    "clientKind": "git",
+    "useIgnoreFile": true
   },
   "files": {
     "includes": [
-      "**/*.js",
-      "**/*.jsx",
-      "**/*.ts",
-      "**/*.tsx",
-      "**/*.json",
-      "**/*.css",
+      "**",
       "!**/node_modules",
       "!**/.next",
       "!**/coverage",
       "!**/storybook-static",
       "!**/cypress/snapshots",
-      "!**/cypress/downloads"
+      "!**/cypress/downloads",
+      "!**/.agents",
+      "!**/.kiro",
+      "!**/bun.lock",
+      "!**/public/**/*.svg",
+      "!**/content/**/*.mdx"
     ]
-  }
+  },
+  "assist": {
+    "enabled": true,
+    "actions": {
+      "source": {
+        "organizeImports": "on"
+      }
+    }
+  },
+  "linter": {
+    "enabled": true,
+    "domains": {
+      "react": "recommended",
+      "next": "recommended",
+      "test": "recommended"
+    },
+    "rules": {
+      "preset": "recommended",
+      "a11y": {
+        "recommended": true
+      },
+      "suspicious": {
+        "noArrayIndexKey": "off"
+      },
+      "correctness": {
+        "noUnusedImports": "error",
+        "noUnusedVariables": "error",
+        "useExhaustiveDependencies": "error",
+        "useHookAtTopLevel": "error"
+      },
+      "security": {
+        "noDangerouslySetInnerHtml": "warn"
+      }
+    }
+  },
+  "formatter": {
+    "enabled": false
+  },
+  "javascript": {
+    "jsxRuntime": "transparent",
+    "formatter": {
+      "enabled": false
+    }
+  },
+  "css": {
+    "parser": {
+      "tailwindDirectives": true
+    },
+    "linter": {
+      "enabled": true
+    },
+    "formatter": {
+      "enabled": false
+    }
+  },
+  "json": {
+    "formatter": {
+      "enabled": false
+    }
+  },
+  "overrides": [
+    {
+      "includes": [
+        "**/*.test.ts",
+        "**/*.test.tsx",
+        "jest.setup.ts",
+        "bun.setup.ts"
+      ],
+      "javascript": {
+        "globals": ["jest"]
+      },
+      "linter": {
+        "domains": {
+          "test": "recommended"
+        },
+        "rules": {
+          "suspicious": {
+            "noExplicitAny": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["cypress/**/*.ts", "cypress/**/*.tsx", "cypress.config.ts"],
+      "javascript": {
+        "globals": [
+          "Cypress",
+          "cy",
+          "expect",
+          "assert",
+          "describe",
+          "it",
+          "before",
+          "beforeEach",
+          "after",
+          "afterEach",
+          "context"
+        ]
+      },
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noEmptyBlockStatements": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["**/*.stories.ts", "**/*.stories.tsx", "stories/**"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noExplicitAny": "off"
+          }
+        }
+      }
+    }
+  ]
 }

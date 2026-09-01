@@ -82,7 +82,7 @@ const StorageManager = {
     } catch (error) {
       // Fallback to localStorage
       console.warn("localforage failed, falling back to localStorage:", error);
-      localStorage.clear();
+      localStorage.removeItem(STORAGE_KEYS.FORM_DATA);
     }
   },
 

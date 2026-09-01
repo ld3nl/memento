@@ -39,6 +39,42 @@ const parseDateInput = (dob: string | Date) => {
   return new Date(Number(year), Number(month) - 1, Number(day));
 };
 
+function buildBurstLayout({
+  birthDate,
+  totalWeeks,
+  width,
+  height,
+  itemSizePx,
+  itemSpacingPx,
+}: {
+  birthDate: Date;
+  totalWeeks?: number;
+  width: number;
+  height: number;
+  itemSizePx: number;
+  itemSpacingPx: number;
+}) {
+  const yearsAlive = calculateYearsAlive(birthDate);
+  const weeksFromBirthday = calculateWeeksFromLastBirthday(birthDate);
+
+  if (yearsAlive === null || weeksFromBirthday === null) return null;
+
+  const { weeks, yearsInLifetime, decadeLength } = generateDecadeConfig();
+  const effectiveTotalWeeks =
+    totalWeeks ?? yearsInLifetime * decadeLength * weeks.length;
+  const maxRadius = Math.min(width, height) / 2 - 40;
+
+  return computeBurstItems({
+    dob: birthDate,
+    totalWeeks: effectiveTotalWeeks,
+    maxRadius,
+    boxPx: itemSizePx,
+    spacingPx: itemSpacingPx,
+    yearsAlive,
+    weeksFromLastBday: weeksFromBirthday,
+  });
+}
+
 export function BurstScene({
   dob,
   totalWeeks,
@@ -57,45 +93,23 @@ export function BurstScene({
     getServerViewportWidth,
   );
 
-  const itemSizePx = getItemSizePx(viewportWidth, itemSizeRem);
-  const itemSpacingPx = getItemSpacingPx(viewportWidth, itemSpacingRem);
+  const sizingWidth = size.w > 0 ? size.w : viewportWidth;
+  const itemSizePx = getItemSizePx(sizingWidth, itemSizeRem);
+  const itemSpacingPx = getItemSpacingPx(sizingWidth, itemSpacingRem);
 
-  // Check validity for rendering, but don't return early before hooks
-  const birthDate = React.useMemo(() => parseDateInput(dob), [dob]);
+  const birthDate = parseDateInput(dob);
   const isValid = isValidDate(birthDate);
-
-  const layout = React.useMemo(() => {
-    if (!isValid || size.w === 0 || size.h === 0) return null;
-
-    const yearsAlive = calculateYearsAlive(birthDate);
-    const weeksFromBirthday = calculateWeeksFromLastBirthday(birthDate);
-
-    if (yearsAlive === null || weeksFromBirthday === null) return null;
-
-    const { weeks, yearsInLifetime, decadeLength } = generateDecadeConfig();
-    const effectiveTotalWeeks =
-      totalWeeks || yearsInLifetime * decadeLength * weeks.length;
-    const minDim = Math.min(size.w, size.h);
-    const maxRadius = minDim / 2 - 40;
-
-    return computeBurstItems({
-      dob: birthDate,
-      totalWeeks: effectiveTotalWeeks,
-      maxRadius,
-      boxPx: itemSizePx,
-      spacingPx: itemSpacingPx,
-      yearsAlive,
-      weeksFromLastBday: weeksFromBirthday,
-    });
-  }, [
-    birthDate,
-    isValid,
-    itemSizePx,
-    itemSpacingPx,
-    size.h,
-    size.w,
-    totalWeeks,
-  ]);
+  const layout =
+    isValid && size.w > 0 && size.h > 0
+      ? buildBurstLayout({
+          birthDate,
+          totalWeeks,
+          width: size.w,
+          height: size.h,
+          itemSizePx,
+          itemSpacingPx,
+        })
+      : null;
 
   // Early return after all hooks
   if (!isValid) {
@@ -107,16 +121,20 @@ export function BurstScene({
     <div
       ref={containerRef}
       className="relative h-full w-full overflow-hidden border-0 bg-white select-none dark:bg-zinc-950"
+      role="img"
+      aria-label="Radial visualization of weeks lived"
     >
       {/* If layout is ready, show Canvas. Otherwise empty div ensures size measurement happens. */}
       {layout && (
         <Canvas
-          frameloop="demand" // On-demand rendering
+          frameloop="demand"
           orthographic
           camera={{ zoom: 1, position: [0, 0, 100] }}
-          dpr={[1, 2]} // Optimize pixel ratio
-          // Ensure canvas takes full size of container
+          dpr={[1, 2]}
           style={{ width: "100%", height: "100%" }}
+          onCreated={(state) => {
+            state.invalidate();
+          }}
         >
           <SceneContent
             items={layout.items}

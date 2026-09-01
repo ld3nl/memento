@@ -11,13 +11,13 @@ describe("Week", () => {
   it("applies filled styling when isFilled is true", () => {
     const { container } = render(<Week weekIndex={1} isFilled={true} />);
     const weekElement = container.firstChild;
-    expect(weekElement).toHaveClass("bg-black");
+    expect(weekElement).toHaveClass("bg-zinc-900");
   });
 
   it("does not apply filled styling when isFilled is false", () => {
     const { container } = render(<Week weekIndex={1} isFilled={false} />);
     const weekElement = container.firstChild;
-    expect(weekElement).not.toHaveClass("bg-black");
+    expect(weekElement).not.toHaveClass("bg-zinc-900");
   });
 
   it("displays year label when yearsAlive is provided", () => {

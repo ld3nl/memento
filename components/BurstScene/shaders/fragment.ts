@@ -19,6 +19,7 @@ export const fragmentShader = `
   uniform float uIsCircle;
   uniform float uColorWaveSpeed;
   uniform float uColorWaveOffset;
+  uniform float uReduceMotion;
 
   // RGB to HSL conversion
   vec3 rgb2hsl(vec3 c) {
@@ -121,7 +122,7 @@ export const fragmentShader = `
       // Inside Content
       if (vCurrent > 0.5) {
            // Current Week: Pulse Opacity (Alive effect)
-           float pulse = 0.5 + 0.5 * sin(uTime * 0.005);
+           float pulse = uReduceMotion > 0.5 ? 0.5 : (0.5 + 0.5 * sin(uTime * 0.005));
            // Pulse between 0.3 and 0.8 opacity
            finalColor = vec4(displayColor, 0.3 + 0.5 * pulse); 
       } else if (vFilled > 0.5) {

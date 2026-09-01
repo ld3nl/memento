@@ -1,8 +1,5 @@
-import { createFormHookContexts } from "@tanstack/react-form-nextjs";
 import { cn } from "../../../lib/utils";
-
-// Import the field context (same one used in Form.tsx)
-const { useFieldContext } = createFormHookContexts();
+import { useFieldContext } from "../form-hook";
 
 interface LabeledInputProps {
   labelString: string;
@@ -32,7 +29,7 @@ const LabeledInput = ({
         </label>
         <input
           className={cn(
-            "font-body min-h-[48px] w-full appearance-none rounded-none border-2 bg-zinc-100 px-4 py-3.5 text-base leading-tight text-zinc-900 shadow-sm transition-all duration-200 placeholder:text-zinc-400 focus:ring-4 focus:outline-none sm:min-h-[52px] sm:px-5 sm:text-lg dark:bg-zinc-900 dark:text-zinc-50 dark:placeholder:text-zinc-600",
+            "min-h-[48px] w-full appearance-none rounded-none border-2 bg-zinc-100 px-4 py-3.5 font-sans text-base leading-tight text-zinc-900 shadow-sm transition-colors duration-200 placeholder:text-zinc-400 focus:ring-4 focus:outline-none sm:min-h-[52px] sm:px-5 sm:text-lg dark:bg-zinc-900 dark:text-zinc-50 dark:placeholder:text-zinc-500",
             field.state.meta.isTouched && field.state.meta.errors.length > 0
               ? "border-red-600 focus:border-red-600 focus:ring-red-600/30"
               : "border-zinc-200 hover:border-zinc-300 focus:border-red-600 focus:ring-red-600/20 dark:border-zinc-700 dark:hover:border-zinc-600",
@@ -49,6 +46,7 @@ const LabeledInput = ({
             onValueChange?.(value);
           }}
           placeholder={placeholder}
+          autoComplete={inputType === "date" ? "bday" : "name"}
           aria-invalid={field.state.meta.errors.length > 0}
           aria-describedby={
             field.state.meta.errors.length > 0 ? `${inputId}-error` : undefined
@@ -56,11 +54,7 @@ const LabeledInput = ({
         />
       </div>
       {field.state.meta.isTouched && field.state.meta.errors.length > 0 ? (
-        <div
-          id={`${inputId}-error`}
-          role="alert"
-          className="animate-in fade-in slide-in-from-top-1 mt-2 duration-300 sm:mt-3"
-        >
+        <div id={`${inputId}-error`} role="alert" className="mt-2 sm:mt-3">
           <div className="text-sm font-medium text-red-600 sm:text-base">
             {field.state.meta.errors.map((error) => {
               const errorMessage =

@@ -1,1 +1,21 @@
-This tool is a high-precision Memento Mori life-in-weeks generator. It calculates exact weeks lived based on birthdate and provides a persistent, bookmarkable URL for tracking.
+# Memento Mori Life Calendar
+
+> A free tool that draws a life as a grid of weeks from a birthdate. Built around the Stoic practice of memento mori: remember that you will die, closely enough that this week counts.
+
+- Home / calendar: https://memento-mori.vercel.app/
+- About: https://memento-mori.vercel.app/about
+- Journal: https://memento-mori.vercel.app/blog
+- RSS: https://memento-mori.vercel.app/feed.xml
+- Full notes: https://memento-mori.vercel.app/llms-full.txt
+
+## What it does
+
+Enter a birthdate. The site counts weeks lived against a working span of 80 years (4,160 weeks) and shows a table or a radial burst. The URL is bookmarkable. There is no account.
+
+## Journal
+
+- What Memento Mori Means: https://memento-mori.vercel.app/blog/what-is-memento-mori
+- Steve Jobs and the Morning Question: https://memento-mori.vercel.app/blog/steve-jobs-memento-mori
+- Famous Stoics on Death: https://memento-mori.vercel.app/blog/famous-stoics-on-mortality
+- A Life in Weeks: https://memento-mori.vercel.app/blog/life-in-weeks
+- How to Practice Memento Mori: https://memento-mori.vercel.app/blog/how-to-practice-memento-mori

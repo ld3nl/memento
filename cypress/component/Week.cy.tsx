@@ -4,7 +4,9 @@ describe("Week Component", () => {
   it("renders a filled week with correct styling", () => {
     cy.mount(<Week weekIndex={1} isFilled={true} />);
 
-    cy.get("[class*='size-2']").should("exist").and("have.class", "bg-black");
+    cy.get("[class*='size-2']")
+      .should("exist")
+      .and("have.class", "bg-zinc-900");
   });
 
   it("renders an unfilled week without fill styling", () => {
@@ -12,7 +14,7 @@ describe("Week Component", () => {
 
     cy.get("[class*='size-2']")
       .should("exist")
-      .and("not.have.class", "bg-black");
+      .and("not.have.class", "bg-zinc-900");
   });
 
   it("displays year label when yearsAlive prop is provided", () => {

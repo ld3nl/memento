@@ -1,5 +1,3 @@
-"use client";
-
 import {
   calculateWeeksFromLastBirthday,
   calculateYearsAlive,
@@ -41,7 +39,12 @@ export const LifeTable = ({ dob }: LifeTableProps) => {
   const { weeks, yearsInLifetime, decadeLength } = generateDecadeConfig();
 
   return (
-    <div className="flex flex-col gap-4" data-cy="life-table">
+    <div
+      className="flex flex-col gap-4"
+      data-cy="life-table"
+      role="img"
+      aria-label="Life calendar of weeks lived"
+    >
       {Array.from({ length: yearsInLifetime }, (_, yearIndex) => (
         <DecadeGrid
           key={yearIndex}

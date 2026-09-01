@@ -1,11 +1,7 @@
-"use client";
-
-import { useTransition } from "react";
 import { calculateDecadeYear } from "../lib/life-table-utils";
 import type { DecadeGridProps } from "../lib/types";
 import { YearGrid } from "./YearGrid/YearGrid";
 
-// DecadeGrid component to display a grid of years for a decade
 const DecadeGrid = ({
   decadeLength,
   weeks,
@@ -14,8 +10,6 @@ const DecadeGrid = ({
   weeksFromLastBday,
   daysIntoCurrentWeek,
 }: DecadeGridProps) => {
-  const [isPending] = useTransition();
-
   const decadeYears = Array.from({ length: decadeLength }, (_, decadeIndex) => {
     const currentDecadeYear = calculateDecadeYear(
       decadeIndex,
@@ -37,7 +31,7 @@ const DecadeGrid = ({
 
   return (
     <div data-cy="decade-grid" className="flex flex-col gap-2">
-      {isPending ? <div>Loading...</div> : decadeYears}
+      {decadeYears}
     </div>
   );
 };
