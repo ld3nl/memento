@@ -1,6 +1,12 @@
 {
   "version": 1,
   "skills": {
+    "article-writing": {
+      "source": "affaan-m/ecc",
+      "sourceType": "github",
+      "skillPath": "skills/article-writing/SKILL.md",
+      "computedHash": "728cf7d0c32b65162d86133a8351398657207dad5d8ef68d031d4a5934a0d4df"
+    },
     "frontend-design": {
       "source": "anthropics/skills",
       "sourceType": "github",
