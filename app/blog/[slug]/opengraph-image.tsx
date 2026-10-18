@@ -1,5 +1,9 @@
 import { getBlogPost } from "../../../lib/content";
-import { contentOgImage, OG_CONTENT_TYPE, OG_SIZE } from "../../../lib/og-image";
+import {
+  contentOgImage,
+  OG_CONTENT_TYPE,
+  OG_SIZE,
+} from "../../../lib/og-image";
 
 export const alt = "Memento Mori journal note";
 export const size = OG_SIZE;

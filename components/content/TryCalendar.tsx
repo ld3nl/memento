@@ -8,10 +8,10 @@ export function TryCalendar({
   children?: React.ReactNode;
 }) {
   return (
-    <p className="border-accent mt-10 mb-8 border-l-[3px] pl-6">
+    <p className="border-accent mt-10 mb-8 stroke-l pl-6">
       <Link
         href={href}
-        className="font-display text-accent text-sm font-bold tracking-[0.2em] uppercase hover:underline"
+        className="font-display text-accent text-sm font-bold tracking-label-tight uppercase hover:underline"
       >
         {children}
       </Link>

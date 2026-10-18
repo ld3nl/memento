@@ -7,7 +7,7 @@ export const shouldWeekBeFilled = (
   yearsAlive: number,
   currentDecadeYear: number,
   weekIndex: number,
-  weeksFromLastBday: number,
+  weeksFromLastBday: number
 ): boolean => {
   return (
     yearsAlive >= currentDecadeYear ||
@@ -23,7 +23,7 @@ export const isCurrentWeek = (
   yearsAlive: number,
   currentDecadeYear: number,
   weekIndex: number,
-  weeksFromLastBday: number,
+  weeksFromLastBday: number
 ): boolean => {
   // Current week is in the current year (yearsAlive + 1) and is the next week after weeksFromLastBday
   return (
@@ -36,7 +36,7 @@ export const isCurrentWeek = (
  */
 export const shouldShowYearLabel = (
   currentDecadeYear: number,
-  weekIndex: number,
+  weekIndex: number
 ): boolean => {
   return (
     weekIndex === WEEKS_PER_YEAR &&

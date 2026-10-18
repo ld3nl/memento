@@ -8,7 +8,7 @@
 export const generateLifeTableUrl = (
   date: string | null,
   name?: string,
-  view: "table" | "burst" = "table",
+  view: "table" | "burst" = "table"
 ): string => {
   const basePath = `/${view}`;
 
@@ -42,7 +42,7 @@ export const parseDateFromUrl = (pathSegments: string[]): string | null => {
 
 /** Local calendar date from `/yyyy/m/d` segments (not UTC `Date.parse`). */
 export const birthDateFromPathSegments = (
-  pathSegments: string[],
+  pathSegments: string[]
 ): Date | null => {
   const iso = parseDateFromUrl(pathSegments);
   if (!iso) return null;
@@ -75,7 +75,7 @@ export const birthDateFromPathSegments = (
  * Extracts name from URL search params
  */
 export const extractNameFromUrl = (
-  searchParams: URLSearchParams,
+  searchParams: URLSearchParams
 ): string | null => {
   const name = searchParams.get("name");
   return name?.trim() ? name.trim() : null;

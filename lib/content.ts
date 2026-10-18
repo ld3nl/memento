@@ -28,7 +28,7 @@ export type LoadedPost = LoadedContent & {
 function toLoadedContent(
   mod: { default: ComponentType; frontmatter: unknown },
   source: string,
-  label: string,
+  label: string
 ): LoadedContent {
   try {
     const frontmatter = parseFrontmatter(mod.frontmatter);
@@ -71,11 +71,7 @@ export const getBlogPost = cache(
         import(`../content/blog/${slug}.mdx`),
         readFile(path.join(BLOG_DIR, `${slug}.mdx`), "utf8"),
       ]);
-      const loaded = toLoadedContent(
-        mod,
-        source,
-        `content/blog/${slug}.mdx`,
-      );
+      const loaded = toLoadedContent(mod, source, `content/blog/${slug}.mdx`);
 
       if (loaded.frontmatter.draft) {
         return null;
@@ -100,30 +96,30 @@ export const getBlogPost = cache(
 
       throw error;
     }
-  },
+  }
 );
 
 export const listPublishedPosts = cache(async (): Promise<LoadedPost[]> => {
   const slugs = await getBlogSlugs();
-  const posts = await Promise.all(slugs.map((slug) => getBlogPost(slug)));
+  const posts = await Promise.all(slugs.map(slug => getBlogPost(slug)));
 
   return posts
     .filter((post): post is LoadedPost => post !== null)
     .toSorted((left, right) =>
       right.frontmatter.datePublished.localeCompare(
-        left.frontmatter.datePublished,
-      ),
+        left.frontmatter.datePublished
+      )
     );
 });
 
 export function relatedPosts(posts: LoadedPost[], slug: string, limit = 3) {
   return pickRelated(
-    posts.map((post) => ({
+    posts.map(post => ({
       ...post,
       tags: post.frontmatter.tags,
     })),
     slug,
-    limit,
+    limit
   );
 }
 

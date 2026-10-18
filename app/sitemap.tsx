@@ -11,14 +11,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ]);
 
   const aboutDate = new Date(
-    toIsoDateTime(about.frontmatter.dateModified ?? about.frontmatter.datePublished),
+    toIsoDateTime(
+      about.frontmatter.dateModified ?? about.frontmatter.datePublished
+    )
   );
 
   const newestPostDate = posts[0]
     ? new Date(
         toIsoDateTime(
-          posts[0].frontmatter.dateModified ?? posts[0].frontmatter.datePublished,
-        ),
+          posts[0].frontmatter.dateModified ??
+            posts[0].frontmatter.datePublished
+        )
       )
     : fallbackDate;
 
@@ -43,12 +46,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
-  const postRoutes: MetadataRoute.Sitemap = posts.map((post) => ({
+  const postRoutes: MetadataRoute.Sitemap = posts.map(post => ({
     url: `${SITE_URL}/blog/${post.slug}`,
     lastModified: new Date(
       toIsoDateTime(
-        post.frontmatter.dateModified ?? post.frontmatter.datePublished,
-      ),
+        post.frontmatter.dateModified ?? post.frontmatter.datePublished
+      )
     ),
     changeFrequency: "monthly" as const,
     priority: 0.7,
@@ -58,7 +61,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     2006, 2000, 1995, 1990, 1985, 1980, 1975, 1970, 1965,
   ];
   const dynamicRoutes: MetadataRoute.Sitemap = sampleBirthYears.flatMap(
-    (year) => [
+    year => [
       {
         url: `${SITE_URL}/table/${year}/1/1`,
         lastModified: fallbackDate,
@@ -71,7 +74,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         changeFrequency: "monthly" as const,
         priority: 0.6,
       },
-    ],
+    ]
   );
 
   return [...staticRoutes, ...postRoutes, ...dynamicRoutes];

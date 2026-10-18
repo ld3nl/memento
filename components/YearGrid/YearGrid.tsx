@@ -16,13 +16,13 @@ export const YearGrid = ({
 }: YearGridProps) => {
   return (
     <div data-cy="year-grid" className="mx-auto grid w-208 grid-cols-52">
-      {weeks.map((weekIndex) => {
+      {weeks.map(weekIndex => {
         // Determine if the week should be filled using utility function
         const isFilled = shouldWeekBeFilled(
           yearsAlive,
           currentDecadeYear,
           weekIndex,
-          weeksFromLastBday,
+          weeksFromLastBday
         );
 
         // Determine if this is the current week (actively being lived)
@@ -30,7 +30,7 @@ export const YearGrid = ({
           yearsAlive,
           currentDecadeYear,
           weekIndex,
-          weeksFromLastBday,
+          weeksFromLastBday
         );
 
         // Determine if year label should be shown using utility function

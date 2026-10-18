@@ -28,7 +28,7 @@ describe("YearGrid Component", () => {
 
   it("fills all weeks when currentDecadeYear is less than yearsAlive", () => {
     cy.mount(
-      <YearGrid {...defaultProps} currentDecadeYear={25} yearsAlive={30} />,
+      <YearGrid {...defaultProps} currentDecadeYear={25} yearsAlive={30} />
     );
 
     cy.get("[data-cy=year-grid]")
@@ -38,7 +38,7 @@ describe("YearGrid Component", () => {
 
   it("fills no weeks when currentDecadeYear is greater than yearsAlive", () => {
     cy.mount(
-      <YearGrid {...defaultProps} currentDecadeYear={35} yearsAlive={30} />,
+      <YearGrid {...defaultProps} currentDecadeYear={35} yearsAlive={30} />
     );
 
     cy.get("[data-cy=year-grid]").find(".bg-zinc-900").should("have.length", 0);

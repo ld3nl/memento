@@ -17,7 +17,7 @@ jest.mock("../../lib/life-table-utils", () => ({
 }));
 
 jest.mock("../../lib/validation", () => ({
-  isValidDate: jest.fn((date) => !!date && date !== "invalid"),
+  isValidDate: jest.fn(date => !!date && date !== "invalid"),
 }));
 
 // Mock DecadeGrid to simplify testing

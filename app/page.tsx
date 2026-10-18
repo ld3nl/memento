@@ -88,12 +88,12 @@ export default async function Page() {
                 className="mb-4 h-auto w-32 opacity-90 contrast-125 grayscale sm:mb-5 sm:w-36 lg:w-44"
                 priority
               />
-              <h1 className="font-display text-[2.5rem] leading-[0.95] tracking-tight text-zinc-900 italic sm:text-5xl lg:text-6xl xl:text-7xl dark:text-zinc-50">
+              <h1 className="font-display text-display leading-display tracking-tight text-primary italic sm:text-5xl lg:text-6xl xl:text-7xl dark:text-primary">
                 Memento
                 <br />
                 Mori
               </h1>
-              <p className="mt-5 max-w-md text-base leading-relaxed text-zinc-500 sm:mt-6 sm:text-lg dark:text-zinc-400">
+              <p className="mt-5 max-w-md text-base leading-relaxed text-secondary sm:mt-6 sm:text-lg dark:text-secondary">
                 Every week is numbered. Enter your birthdate to see yours.
               </p>
             </div>
@@ -106,13 +106,13 @@ export default async function Page() {
           <div className="flex flex-col gap-4">
             <Link
               href="/about"
-              className="border-accent/30 font-display text-primary hover:border-accent hover:text-accent inline-block w-fit border-b-[3px] pb-1.5 text-xs font-bold tracking-[0.25em] uppercase transition-colors duration-200 sm:text-sm"
+              className="border-accent/30 font-display text-primary hover:border-accent hover:text-accent inline-block w-fit stroke-b pb-1.5 text-xs font-bold tracking-label uppercase transition-colors duration-200 sm:text-sm"
             >
               About this Calendar
             </Link>
             <Link
               href="/blog"
-              className="border-accent/30 font-display text-primary hover:border-accent hover:text-accent inline-block w-fit border-b-[3px] pb-1.5 text-xs font-bold tracking-[0.25em] uppercase transition-colors duration-200 sm:text-sm"
+              className="border-accent/30 font-display text-primary hover:border-accent hover:text-accent inline-block w-fit stroke-b pb-1.5 text-xs font-bold tracking-label uppercase transition-colors duration-200 sm:text-sm"
             >
               Journal
             </Link>
@@ -121,16 +121,14 @@ export default async function Page() {
           <section className="lg:col-start-2" aria-labelledby="how-it-works">
             <h2
               id="how-it-works"
-              className="border-border font-display text-secondary border-b-2 pb-3 text-xs font-bold tracking-[0.25em] uppercase sm:text-[0.6875rem]"
+              className="border-border font-display text-secondary border-b-2 pb-3 text-xs font-bold tracking-label uppercase sm:text-kicker"
             >
               How it works
             </h2>
             <div className="text-secondary mt-5 space-y-4 font-sans text-sm leading-relaxed sm:mt-6 sm:text-base">
               <p>
                 A{" "}
-                <strong className="font-semibold">
-                  Memento Mori calendar
-                </strong>{" "}
+                <strong className="font-semibold">Memento Mori calendar</strong>{" "}
                 is a grid of weeks. You mark the ones already lived. The empty
                 cells are the ones you still have, if you get something like 80
                 years.
@@ -144,7 +142,7 @@ export default async function Page() {
                 The habit behind it is{" "}
                 <Link
                   href="/blog/what-is-memento-mori"
-                  className="text-accent underline decoration-red-600/30 underline-offset-4 hover:decoration-red-600"
+                  className="text-accent underline decoration-accent/30 underline-offset-4 hover:decoration-accent"
                 >
                   memento mori
                 </Link>
@@ -152,7 +150,7 @@ export default async function Page() {
                 stops being a rehearsal. The{" "}
                 <Link
                   href="/blog"
-                  className="text-accent underline decoration-red-600/30 underline-offset-4 hover:decoration-red-600"
+                  className="text-accent underline decoration-accent/30 underline-offset-4 hover:decoration-accent"
                 >
                   journal
                 </Link>{" "}
@@ -169,12 +167,12 @@ export default async function Page() {
         >
           <h2
             id="journal-heading"
-            className="font-display text-xs font-bold tracking-[0.25em] text-zinc-500 uppercase"
+            className="font-display text-xs font-bold tracking-label text-secondary uppercase"
           >
             From the journal
           </h2>
           <ul className="divide-border border-border mt-6 divide-y-2 border-y-2">
-            {featured.map((post) => (
+            {featured.map(post => (
               <li key={post.slug} className="py-6">
                 <p className="text-secondary mb-2 text-sm">
                   <time dateTime={post.frontmatter.datePublished}>
@@ -195,7 +193,7 @@ export default async function Page() {
           </ul>
           <Link
             href="/blog"
-            className="font-display text-accent mt-6 inline-block text-xs font-bold tracking-[0.25em] uppercase"
+            className="font-display text-accent mt-6 inline-block text-xs font-bold tracking-label uppercase"
           >
             All notes
           </Link>

@@ -197,7 +197,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
       lang="en"
       className={`${display.variable} ${body.variable} ${mono.variable} scroll-smooth scheme-light-dark`}
     >
-      <body className="flex min-h-screen flex-col bg-white font-sans text-zinc-900 antialiased dark:bg-zinc-950 dark:text-zinc-50">
+      <body className="flex min-h-screen flex-col bg-surface font-sans text-primary antialiased dark:bg-surface dark:text-primary">
         <a
           href="#main-content"
           className="bg-accent sr-only text-white focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:px-4 focus:py-2"

@@ -10,13 +10,13 @@ export default function NotFound() {
       <div className="mt-8 flex flex-wrap justify-center gap-4">
         <Link
           href="/"
-          className="inline-block border-[3px] border-red-600 px-6 py-3 text-sm font-bold tracking-widest text-red-600 uppercase"
+          className="inline-block stroke border-accent px-6 py-3 text-sm font-bold tracking-widest text-accent uppercase"
         >
           Back to calendar
         </Link>
         <Link
           href="/blog"
-          className="inline-block border-[3px] border-zinc-300 px-6 py-3 text-sm font-bold tracking-widest text-zinc-700 uppercase dark:border-zinc-700 dark:text-zinc-200"
+          className="inline-block stroke border-border px-6 py-3 text-sm font-bold tracking-widest text-quiet uppercase dark:border-border dark:text-quiet"
         >
           Journal
         </Link>

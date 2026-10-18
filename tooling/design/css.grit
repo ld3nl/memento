@@ -1,0 +1,6 @@
+language css
+
+CssDeclarationWithSemicolon() as $declaration where {
+  $declaration <: r"^(?:(?:padding(?:-[a-z]+)?|margin(?:-[a-z]+)?|gap|row-gap|column-gap|font-size|line-height|letter-spacing|border-radius)\s*:\s*[0-9.]+(?:px|rem|em)\s*;|(?:color|background(?:-color)?|border(?:-[a-z]+)?|outline(?:-color)?|fill|stroke|text-decoration-color)\s*:[^;]*(?:#[0-9a-fA-F]{3,8}|(?:rgb|hsl|oklch)a?\().*;)$",
+  register_diagnostic(span=$declaration, message="Use a CSS design token here for colours and measurements, including inside media queries. Run bun run lint:design for details.")
+}

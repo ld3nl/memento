@@ -7,7 +7,7 @@ const REM_TO_PX = 16;
 // At 1440px, size is baseRem * 16px
 export function getItemSizePx(
   viewportWidth: number,
-  baseRem: number = 0.5,
+  baseRem: number = 0.5
 ): number {
   const scale = viewportWidth / REFERENCE_VIEWPORT_WIDTH;
   return baseRem * REM_TO_PX * scale;
@@ -17,7 +17,7 @@ export function getItemSizePx(
 // At 1440px, spacing is baseRem * 16px
 export function getItemSpacingPx(
   viewportWidth: number,
-  baseRem: number = 0.5,
+  baseRem: number = 0.5
 ): number {
   const scale = viewportWidth / REFERENCE_VIEWPORT_WIDTH;
   return baseRem * REM_TO_PX * scale;

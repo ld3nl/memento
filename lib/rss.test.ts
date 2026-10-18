@@ -5,7 +5,7 @@ import { SITE_URL } from "./site";
 describe("rss", () => {
   it("escapes XML entities", () => {
     expect(escapeXml(`A & B <C> "d"`)).toBe(
-      "A &amp; B &lt;C&gt; &quot;d&quot;",
+      "A &amp; B &lt;C&gt; &quot;d&quot;"
     );
   });
 
@@ -19,7 +19,7 @@ describe("rss", () => {
       },
     ]);
 
-    expect(xml).toContain("<rss version=\"2.0\"");
+    expect(xml).toContain('<rss version="2.0"');
     expect(xml).toContain(`${SITE_URL}/blog/steve-jobs-memento-mori`);
     expect(xml).toContain("Steve Jobs &amp; mortality");
     expect(xml).toContain("<atom:link");

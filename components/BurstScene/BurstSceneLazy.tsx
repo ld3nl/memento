@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 import type { BurstSceneProps } from "./BurstScene.types";
 
 const BurstScene = dynamic(
-  () => import("./BurstScene").then((mod) => mod.BurstScene),
+  () => import("./BurstScene").then(mod => mod.BurstScene),
   {
     ssr: false,
     loading: () => (
@@ -12,7 +12,7 @@ const BurstScene = dynamic(
         Loading visualization…
       </p>
     ),
-  },
+  }
 );
 
 export function BurstSceneLazy(props: BurstSceneProps) {

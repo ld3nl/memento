@@ -45,17 +45,19 @@ export const LifeTable = ({ dob }: LifeTableProps) => {
       role="img"
       aria-label="Life calendar of weeks lived"
     >
-      {Array.from({ length: yearsInLifetime }, (_, yearIndex) => (
-        <DecadeGrid
-          key={yearIndex}
-          decadeLength={decadeLength}
-          weeks={weeks}
-          yearsAlive={yearsAlive}
-          yearIndex={yearIndex}
-          weeksFromLastBday={weeksFromBirthday}
-          daysIntoCurrentWeek={daysIntoCurrentWeek}
-        />
-      ))}
+      {Array.from({ length: yearsInLifetime }, (_, yearIndex) => yearIndex).map(
+        yearOfLife => (
+          <DecadeGrid
+            key={yearOfLife}
+            decadeLength={decadeLength}
+            weeks={weeks}
+            yearsAlive={yearsAlive}
+            yearIndex={yearOfLife}
+            weeksFromLastBday={weeksFromBirthday}
+            daysIntoCurrentWeek={daysIntoCurrentWeek}
+          />
+        )
+      )}
     </div>
   );
 };

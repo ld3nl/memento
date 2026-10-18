@@ -9,7 +9,7 @@ export function useElementSize<T extends HTMLElement>() {
   React.useLayoutEffect(() => {
     if (!ref.current) return;
 
-    observer.current = new ResizeObserver((entries) => {
+    observer.current = new ResizeObserver(entries => {
       const entry = entries[0];
       if (entry) {
         // Use contentRect or borderBox as needed.

@@ -13,7 +13,7 @@ declare global {
     interface Chainable {
       mount(
         component: React.ReactNode,
-        options?: MountOptions,
+        options?: MountOptions
       ): Cypress.Chainable<MountReturn>;
     }
   }

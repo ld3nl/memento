@@ -42,11 +42,11 @@ export function ArticleShell({
           />
         ) : null}
         {kicker ? (
-          <p className="font-display mb-4 text-[0.6875rem] font-semibold tracking-[0.25em] text-zinc-500 uppercase">
+          <p className="font-display mb-4 text-kicker font-semibold tracking-label text-secondary uppercase">
             {kicker}
           </p>
         ) : null}
-        <h1 className="font-display text-accent mb-6 text-[2.5rem] leading-tight tracking-tight italic sm:mb-8 sm:text-5xl">
+        <h1 className="font-display text-accent mb-6 text-display leading-tight tracking-tight italic sm:mb-8 sm:text-5xl">
           {title}
         </h1>
         <p className="text-secondary mb-10 text-sm">

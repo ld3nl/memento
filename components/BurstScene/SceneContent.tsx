@@ -1,8 +1,7 @@
-import type { ThreeEvent } from "@react-three/fiber";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as React from "react";
 import * as THREE from "three";
-import type { BurstItem, ItemShape, TooltipData } from "./BurstScene.types";
+import type { BurstItem, ItemShape } from "./BurstScene.types";
 import { CONFIG } from "./config";
 import { fragmentShader } from "./shaders/fragment";
 import { vertexShader } from "./shaders/vertex";
@@ -12,12 +11,12 @@ type SceneContentProps = {
   items: BurstItem[];
   maxDelay: number;
   reduceMotion: boolean;
-  setTooltip: (t: TooltipData | null) => void;
+  selectedIndex: number | null;
   shape: ItemShape;
   boxSize: number;
 };
 
-const HOVER_SCALE = 2.0;
+const HOVER_SCALE = 1.6;
 const HOVER_LERP_SPEED = 0.15;
 
 type BurstUniforms = {
@@ -31,12 +30,7 @@ type BurstUniforms = {
 
 type BurstGpu = {
   uniforms: BurstUniforms;
-  mouseWorld: THREE.Vector2;
-  raycaster: THREE.Raycaster;
-  mouseNDC: THREE.Vector2;
   dummy: THREE.Object3D;
-  hoverPlane: THREE.Plane;
-  hoverHit: THREE.Vector3;
   shaderMaterial: THREE.ShaderMaterial;
 };
 
@@ -52,12 +46,7 @@ function createBurstGpu(): BurstGpu {
 
   return {
     uniforms,
-    mouseWorld: new THREE.Vector2(9999, 9999),
-    raycaster: new THREE.Raycaster(),
-    mouseNDC: new THREE.Vector2(),
     dummy: new THREE.Object3D(),
-    hoverPlane: new THREE.Plane(new THREE.Vector3(0, 0, 1), 0),
-    hoverHit: new THREE.Vector3(),
     shaderMaterial: new THREE.ShaderMaterial({
       vertexShader,
       fragmentShader,
@@ -74,21 +63,14 @@ const InstancedBurstMesh = React.forwardRef<
     items: BurstItem[];
     boxSize: number;
     shaderMaterial: THREE.ShaderMaterial;
-    onPointerMove: (e: ThreeEvent<PointerEvent>) => void;
-    onPointerOut: () => void;
   }
->(({ items, boxSize, shaderMaterial, onPointerMove, onPointerOut }, ref) => {
+>(({ items, boxSize, shaderMaterial }, ref) => {
   const InstancedMesh = "instancedMesh";
   const PlaneGeometry = "planeGeometry";
   const Primitive = "primitive";
 
   return (
-    <InstancedMesh
-      ref={ref}
-      args={[undefined, undefined, items.length]}
-      onPointerMove={onPointerMove}
-      onPointerOut={onPointerOut}
-    >
+    <InstancedMesh ref={ref} args={[undefined, undefined, items.length]}>
       <PlaneGeometry args={[boxSize, boxSize]} />
       <Primitive object={shaderMaterial} attach="material" />
     </InstancedMesh>
@@ -111,7 +93,7 @@ const useGeometrySetup = (
   meshRef: React.RefObject<THREE.InstancedMesh | null>,
   items: BurstItem[],
   reduceMotion: boolean,
-  invalidate: () => void,
+  invalidate: () => void
 ) => {
   React.useLayoutEffect(() => {
     const mesh = meshRef.current;
@@ -148,19 +130,19 @@ const useGeometrySetup = (
 
     mesh.geometry.setAttribute(
       "aFilled",
-      new THREE.InstancedBufferAttribute(aFilled, 1),
+      new THREE.InstancedBufferAttribute(aFilled, 1)
     );
     mesh.geometry.setAttribute(
       "aCurrent",
-      new THREE.InstancedBufferAttribute(aCurrent, 1),
+      new THREE.InstancedBufferAttribute(aCurrent, 1)
     );
     mesh.geometry.setAttribute(
       "aIndex",
-      new THREE.InstancedBufferAttribute(aIndex, 1),
+      new THREE.InstancedBufferAttribute(aIndex, 1)
     );
     mesh.geometry.setAttribute(
       "instanceColor",
-      new THREE.InstancedBufferAttribute(colors, 3),
+      new THREE.InstancedBufferAttribute(colors, 3)
     );
     mesh.instanceMatrix.needsUpdate = true;
 
@@ -172,15 +154,15 @@ export const SceneContent = ({
   items,
   maxDelay,
   reduceMotion,
-  setTooltip,
+  selectedIndex,
   shape,
   boxSize,
 }: SceneContentProps) => {
-  const { clock, invalidate, camera } = useThree();
+  const { clock, invalidate } = useThree();
   const meshRef = React.useRef<THREE.InstancedMesh>(null);
   const hoveredIndexRef = React.useRef<number | null>(null);
-  const [itemScales] = React.useState(
-    () => new Float32Array(items.length).fill(1),
+  const [itemScales] = React.useState(() =>
+    new Float32Array(items.length).fill(1)
   );
   const itemScalesRef = React.useRef(itemScales);
   const [gpu] = React.useState(createBurstGpu);
@@ -207,9 +189,12 @@ export const SceneContent = ({
       }
     };
     kick();
-    const stopAt = window.setTimeout(() => {
-      alive = false;
-    }, maxDelay + CONFIG.ANIMATION_DURATION_MS + 400);
+    const stopAt = window.setTimeout(
+      () => {
+        alive = false;
+      },
+      maxDelay + CONFIG.ANIMATION_DURATION_MS + 400
+    );
     return () => {
       alive = false;
       cancelAnimationFrame(raf);
@@ -223,9 +208,14 @@ export const SceneContent = ({
     };
   }, [gpu]);
 
+  React.useEffect(() => {
+    hoveredIndexRef.current = selectedIndex;
+    invalidate();
+  }, [selectedIndex, invalidate]);
+
   useGeometrySetup(meshRef, items, reduceMotion, invalidate);
 
-  useFrame(({ pointer }) => {
+  useFrame(() => {
     const mesh = meshRef.current;
     const itemScales = itemScalesRef.current;
     const gpu = gpuRef.current;
@@ -239,23 +229,7 @@ export const SceneContent = ({
       hasStartedRef.current = true;
     }
 
-    const {
-      mouseWorld,
-      raycaster,
-      mouseNDC,
-      dummy,
-      hoverPlane,
-      hoverHit,
-      uniforms,
-    } = gpu;
-
-    // Update mouse world position for magnetic effect
-    mouseNDC.set(pointer.x, pointer.y);
-    raycaster.setFromCamera(mouseNDC, camera);
-    const hit = raycaster.ray.intersectPlane(hoverPlane, hoverHit);
-    if (hit) {
-      mouseWorld.set(hit.x, hit.y);
-    }
+    const { dummy, uniforms } = gpu;
 
     const globalTime = clock.elapsedTime * 1000;
     const time = globalTime - startTimeRef.current;
@@ -267,17 +241,11 @@ export const SceneContent = ({
     uniforms.uReduceMotion.value = reduceMotion ? 1.0 : 0.0;
 
     const isAnimationComplete =
-      reduceMotion ||
-      time > maxDelay + CONFIG.ANIMATION_DURATION_MS + 200;
+      reduceMotion || time > maxDelay + CONFIG.ANIMATION_DURATION_MS + 200;
 
     if (isAnimationComplete) {
       animationFinishedRef.current = true;
     }
-    const mouseX = mouseWorld.x;
-    const mouseY = mouseWorld.y;
-    const magneticForce = CONFIG.MAGNETIC_FORCE;
-    const magneticRadius = CONFIG.MAGNETIC_RADIUS;
-    const magneticFalloff = CONFIG.MAGNETIC_FALLOFF;
     const hoveredIdx = hoveredIndexRef.current;
     let activeUpdate = false;
 
@@ -288,9 +256,10 @@ export const SceneContent = ({
       // Calculate hover scale
       const targetHoverScale = i === hoveredIdx ? HOVER_SCALE : 1.0;
       const currentHoverScale = itemScales[i] ?? 1;
-      const newHoverScale =
-        currentHoverScale +
-        (targetHoverScale - currentHoverScale) * HOVER_LERP_SPEED;
+      const newHoverScale = reduceMotion
+        ? targetHoverScale
+        : currentHoverScale +
+          (targetHoverScale - currentHoverScale) * HOVER_LERP_SPEED;
       itemScales[i] = newHoverScale;
 
       if (Math.abs(newHoverScale - targetHoverScale) > 0.01) {
@@ -298,23 +267,8 @@ export const SceneContent = ({
       }
 
       // Base target position
-      let targetX = item.tx;
-      let targetY = -item.ty;
-
-      // Apply magnetic effect
-      if (item.isFilled && (isAnimationComplete || time >= start)) {
-        const dx = mouseX - targetX;
-        const dy = mouseY - targetY;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-
-        if (dist < magneticRadius && dist > 0) {
-          const normalizedDist = dist / magneticRadius;
-          const force = (1 - normalizedDist) ** magneticFalloff * magneticForce;
-          targetX += (dx / dist) * force;
-          targetY += (dy / dist) * force;
-          activeUpdate = true;
-        }
-      }
+      const targetX = item.tx;
+      const targetY = -item.ty;
 
       if (reduceMotion || isAnimationComplete) {
         dummy.position.set(targetX, targetY, 0);
@@ -335,7 +289,7 @@ export const SceneContent = ({
 
       const tLinear = Math.min(
         (time - start) / CONFIG.ANIMATION_DURATION_MS,
-        1.0,
+        1.0
       );
       const t = easeOutCubic(tLinear);
       const baseScale =
@@ -363,39 +317,12 @@ export const SceneContent = ({
     }
   });
 
-  const onMove = (e: ThreeEvent<PointerEvent>) => {
-    const instanceId = e.instanceId;
-    if (instanceId !== undefined && items[instanceId]) {
-      const item = items[instanceId];
-      hoveredIndexRef.current = instanceId;
-      const status = item.isCurrentWeek
-        ? " (Current)"
-        : item.isFilled
-          ? " (Lived)"
-          : "";
-      setTooltip({
-        x: e.clientX,
-        y: e.clientY,
-        text: `Age ${item.yearIndex}, Week ${item.weekIndex} - ${item.dateRangeLabel}${status}`,
-      });
-      invalidate();
-    }
-  };
-
-  const onLeave = () => {
-    hoveredIndexRef.current = null;
-    setTooltip(null);
-    invalidate();
-  };
-
   return (
     <InstancedBurstMesh
       ref={meshRef}
       items={items}
       boxSize={boxSize}
       shaderMaterial={gpu.shaderMaterial}
-      onPointerMove={onMove}
-      onPointerOut={onLeave}
     />
   );
 };

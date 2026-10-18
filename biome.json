@@ -1,67 +1,60 @@
 {
   "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
   "vcs": {
-    "enabled": true,
     "clientKind": "git",
+    "enabled": true,
     "useIgnoreFile": true
   },
-  "files": {
-    "includes": [
-      "**",
-      "!**/node_modules",
-      "!**/.next",
-      "!**/coverage",
-      "!**/storybook-static",
-      "!**/cypress/snapshots",
-      "!**/cypress/downloads",
-      "!**/.agents",
-      "!**/.kiro",
-      "!**/bun.lock",
-      "!**/public/**/*.svg",
-      "!**/content/**/*.mdx"
-    ]
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineEnding": "lf",
+    "lineWidth": 80,
+    "attributePosition": "auto"
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "preset": "recommended"
+    },
+    "domains": {
+      "astro": "none",
+      "react": "recommended",
+      "svelte": "none",
+      "vue": "none",
+      "tailwind": "recommended",
+      "next": "recommended",
+      "test": "recommended",
+      "solid": "none"
+    }
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "double",
+      "jsxQuoteStyle": "double",
+      "semicolons": "always",
+      "trailingCommas": "es5",
+      "arrowParentheses": "asNeeded",
+      "quoteProperties": "preserve"
+    },
+    "linter": {
+      "enabled": true
+    },
+    "assist": {
+      "enabled": true
+    },
+    "parser": {
+      "jsxEverywhere": true
+    }
   },
   "assist": {
     "enabled": true,
     "actions": {
+      "preset": "recommended",
       "source": {
         "organizeImports": "on"
       }
-    }
-  },
-  "linter": {
-    "enabled": true,
-    "domains": {
-      "react": "recommended",
-      "next": "recommended",
-      "test": "recommended"
-    },
-    "rules": {
-      "preset": "recommended",
-      "a11y": {
-        "recommended": true
-      },
-      "suspicious": {
-        "noArrayIndexKey": "off"
-      },
-      "correctness": {
-        "noUnusedImports": "error",
-        "noUnusedVariables": "error",
-        "useExhaustiveDependencies": "error",
-        "useHookAtTopLevel": "error"
-      },
-      "security": {
-        "noDangerouslySetInnerHtml": "warn"
-      }
-    }
-  },
-  "formatter": {
-    "enabled": false
-  },
-  "javascript": {
-    "jsxRuntime": "transparent",
-    "formatter": {
-      "enabled": false
     }
   },
   "css": {
@@ -71,71 +64,55 @@
     "linter": {
       "enabled": true
     },
-    "formatter": {
-      "enabled": false
+    "assist": {
+      "enabled": true
     }
   },
   "json": {
-    "formatter": {
-      "enabled": false
+    "parser": {
+      "allowComments": true
+    },
+    "linter": {
+      "enabled": true
+    },
+    "assist": {
+      "enabled": true
+    }
+  },
+  "html": {
+    "linter": {
+      "enabled": true
+    },
+    "assist": {
+      "enabled": true
     }
   },
   "overrides": [
     {
+      "includes": ["tooling/design/check.test.ts"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noTemplateCurlyInString": "off"
+          }
+        }
+      }
+    }
+  ],
+  "plugins": [
+    {
+      "path": "./tooling/design/classes.grit",
       "includes": [
-        "**/*.test.ts",
-        "**/*.test.tsx",
-        "jest.setup.ts",
-        "bun.setup.ts"
-      ],
-      "javascript": {
-        "globals": ["jest"]
-      },
-      "linter": {
-        "domains": {
-          "test": "recommended"
-        },
-        "rules": {
-          "suspicious": {
-            "noExplicitAny": "off"
-          }
-        }
-      }
+        "**/app/**",
+        "**/components/**",
+        "!**/*.test.tsx",
+        "!**/emails/**",
+        "!**/reference/**"
+      ]
     },
     {
-      "includes": ["cypress/**/*.ts", "cypress/**/*.tsx", "cypress.config.ts"],
-      "javascript": {
-        "globals": [
-          "Cypress",
-          "cy",
-          "expect",
-          "assert",
-          "describe",
-          "it",
-          "before",
-          "beforeEach",
-          "after",
-          "afterEach",
-          "context"
-        ]
-      },
-      "linter": {
-        "rules": {
-          "suspicious": {
-            "noEmptyBlockStatements": "off"
-          }
-        }
-      }
-    },
-    {
-      "includes": ["**/*.stories.ts", "**/*.stories.tsx", "stories/**"],
-      "linter": {
-        "rules": {
-          "suspicious": {
-            "noExplicitAny": "off"
-          }
-        }
-      }
+      "path": "./tooling/design/css.grit",
+      "includes": ["**/app/**/*.css"]
     }
   ]
 }

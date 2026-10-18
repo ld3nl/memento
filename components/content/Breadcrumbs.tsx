@@ -8,15 +8,12 @@ export type BreadcrumbItem = {
 export function Breadcrumbs({ items }: { items: BreadcrumbItem[] }) {
   return (
     <nav aria-label="Breadcrumb" className="mb-8">
-      <ol className="font-display flex flex-wrap items-center gap-2 text-[0.6875rem] font-semibold tracking-[0.2em] text-zinc-500 uppercase">
+      <ol className="font-display flex flex-wrap items-center gap-2 text-kicker font-semibold tracking-label-tight text-secondary uppercase">
         {items.map((item, index) => (
-          <li
-            key={item.href ?? item.name}
-            className="flex items-center gap-2"
-          >
+          <li key={item.href ?? item.name} className="flex items-center gap-2">
             {index > 0 ? <span aria-hidden="true">/</span> : null}
             {item.href ? (
-              <Link href={item.href} className="hover:text-red-600">
+              <Link href={item.href} className="hover:text-accent">
                 {item.name}
               </Link>
             ) : (

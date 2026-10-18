@@ -8,7 +8,7 @@ import { isValid } from "date-fns";
  * Validates if a date input is valid
  */
 export const isValidDate = (
-  date: Date | string | number | null | undefined,
+  date: Date | string | number | null | undefined
 ): boolean => {
   if (!date) return false;
 
@@ -20,7 +20,7 @@ export const isValidDate = (
  * Validates and parses a date input
  */
 export const parseAndValidateDate = (
-  date: Date | string | number,
+  date: Date | string | number
 ): Date | null => {
   if (!date) return null;
 
@@ -33,7 +33,7 @@ export const parseAndValidateDate = (
  */
 export const validateFormData = (
   name: string,
-  date: string | null,
+  date: string | null
 ): {
   isValid: boolean;
   errors: string[];

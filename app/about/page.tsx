@@ -69,10 +69,7 @@ export default async function AboutPage() {
         readingMinutes={readingMinutes}
         image={frontmatter.image}
         imageAlt={frontmatter.imageAlt}
-        breadcrumbs={[
-          { name: "Home", href: "/" },
-          { name: "About" },
-        ]}
+        breadcrumbs={[{ name: "Home", href: "/" }, { name: "About" }]}
         backHref="/"
       >
         <Content />
@@ -83,9 +80,9 @@ export default async function AboutPage() {
             "steve-jobs-memento-mori",
             "famous-stoics-on-mortality",
           ]
-            .map((slug) => posts.find((post) => post.slug === slug))
-            .filter((post) => post !== undefined)
-            .map((post) => ({
+            .map(slug => posts.find(post => post.slug === slug))
+            .filter(post => post !== undefined)
+            .map(post => ({
               slug: post.slug,
               title: post.frontmatter.title,
               description: post.frontmatter.description,

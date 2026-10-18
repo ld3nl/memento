@@ -14,10 +14,12 @@ export function FaqSection({ items }: { items: FaqItem[] }) {
         Questions people ask
       </h2>
       <dl className="mt-6 space-y-8">
-        {items.map((item) => (
+        {items.map(item => (
           <div key={item.question}>
             <dt className="text-primary font-semibold">{item.question}</dt>
-            <dd className="text-secondary mt-2 leading-relaxed">{item.answer}</dd>
+            <dd className="text-secondary mt-2 leading-relaxed">
+              {item.answer}
+            </dd>
           </div>
         ))}
       </dl>

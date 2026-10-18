@@ -29,7 +29,7 @@ export default defineConfig({
           alias: {
             "next/navigation": path.resolve(
               __dirname,
-              "cypress/support/nextNavigationMock.ts",
+              "cypress/support/nextNavigationMock.ts"
             ),
           },
         },

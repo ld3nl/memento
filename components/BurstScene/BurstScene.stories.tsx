@@ -35,7 +35,7 @@ const meta: Meta<typeof BurstScene> = {
     },
   },
   decorators: [
-    (Story) => (
+    Story => (
       <div style={{ width: "100vw", height: "100vh" }}>
         <Story />
       </div>

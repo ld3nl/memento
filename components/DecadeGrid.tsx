@@ -14,7 +14,7 @@ const DecadeGrid = ({
     const currentDecadeYear = calculateDecadeYear(
       decadeIndex,
       yearIndex,
-      decadeLength,
+      decadeLength
     );
 
     return (

@@ -25,7 +25,7 @@ export const dynamicParams = false;
 
 export async function generateStaticParams() {
   const posts = await listPublishedPosts();
-  return posts.map((post) => ({ slug: post.slug }));
+  return posts.map(post => ({ slug: post.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -58,7 +58,7 @@ export default async function BlogPostPage({ params }: Props) {
     notFound();
   }
 
-  const related = relatedPosts(posts, post.slug).map((item) => ({
+  const related = relatedPosts(posts, post.slug).map(item => ({
     slug: item.slug,
     title: item.frontmatter.title,
     description: item.frontmatter.description,

@@ -27,7 +27,7 @@ export function buildRssFeed(posts: RssPost[]): string {
   const lastBuildDate = newest ? toRfc822(newest) : new Date().toUTCString();
 
   const items = posts
-    .map((post) => {
+    .map(post => {
       const url = `${SITE_URL}/blog/${post.slug}`;
       const pubDate = toRfc822(post.datePublished);
 

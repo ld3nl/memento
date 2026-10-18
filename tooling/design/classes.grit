@@ -1,0 +1,7 @@
+or {
+  JsxAttribute() as $value,
+  JsStringLiteralExpression() as $value
+} where {
+  $value <: r".*(?:border-primary|text-\[|leading-\[|tracking-\[|rounded-\[|gap-\[|gap-x-\[|gap-y-\[|p-\[|px-\[|py-\[|pt-\[|pb-\[|pl-\[|pr-\[|m-\[|mx-\[|my-\[|(?:bg|text|border|from|via|to|ring|outline|fill|stroke|decoration)-(?:slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)-[0-9]+|(?:bg|border|from|via|to|ring|outline|fill|stroke|decoration)-\[(?:#|rgb|hsl|oklch)).*",
+  register_diagnostic(span=$value, message="Use Sunchasers design tokens for colours, spacing, typography and radii. Run bun run lint:design for the exact rule.")
+}

@@ -16,7 +16,7 @@ export default function ErrorPage({
       <button
         type="button"
         onClick={() => retry()}
-        className="mt-8 border-[3px] border-red-600 px-6 py-3 text-sm font-bold tracking-widest text-red-600 uppercase"
+        className="mt-8 stroke border-accent px-6 py-3 text-sm font-bold tracking-widest text-accent uppercase"
       >
         Try again
       </button>

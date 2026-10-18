@@ -118,9 +118,7 @@
           "category": "Performance",
           "id": "components/BurstScene/SceneContent.tsx::141:5::react-doctor/rerender-lazy-ref-init::07751987c6eb2691b42fee758bc3ccdb06b3de581a716e082851230aeb41255d",
           "normalizedFilePath": "components/BurstScene/SceneContent.tsx",
-          "tags": [
-            "test-noise"
-          ]
+          "tags": ["test-noise"]
         },
         {
           "filePath": "components/BurstScene/SceneContent.tsx",
@@ -138,9 +136,7 @@
           "category": "Performance",
           "id": "components/BurstScene/SceneContent.tsx::144:5::react-doctor/rerender-lazy-ref-init::901b01d761a88307b7945a5f2a3bee5c16e0fe4abba2ccc3299f7f9b9d26b002",
           "normalizedFilePath": "components/BurstScene/SceneContent.tsx",
-          "tags": [
-            "test-noise"
-          ]
+          "tags": ["test-noise"]
         },
         {
           "filePath": "components/BurstScene/SceneContent.tsx",
@@ -158,10 +154,7 @@
           "category": "Performance",
           "id": "components/BurstScene/SceneContent.tsx::144:5::react-doctor/three-no-object-construction-in-render::5c88fd795a78c744ee4c18d792ea68e2777791f83955310e5410d48c08886908",
           "normalizedFilePath": "components/BurstScene/SceneContent.tsx",
-          "tags": [
-            "three",
-            "webgl"
-          ]
+          "tags": ["three", "webgl"]
         },
         {
           "filePath": "components/BurstScene/SceneContent.tsx",
@@ -179,9 +172,7 @@
           "category": "Performance",
           "id": "components/BurstScene/SceneContent.tsx::146:54::react-doctor/rerender-lazy-ref-init::cc0d8cae5dac6e60b695817bab14a35770dbf3c03de9e8bc0b3a9f97041e1649",
           "normalizedFilePath": "components/BurstScene/SceneContent.tsx",
-          "tags": [
-            "test-noise"
-          ]
+          "tags": ["test-noise"]
         },
         {
           "filePath": "components/BurstScene/SceneContent.tsx",
@@ -199,10 +190,7 @@
           "category": "Performance",
           "id": "components/BurstScene/SceneContent.tsx::146:54::react-doctor/three-no-object-construction-in-render::0ccad074d1ae88280010f494efccebdd57994002ae276ad2b16e802357dfb2c0",
           "normalizedFilePath": "components/BurstScene/SceneContent.tsx",
-          "tags": [
-            "three",
-            "webgl"
-          ]
+          "tags": ["three", "webgl"]
         },
         {
           "filePath": "components/BurstScene/SceneContent.tsx",
@@ -220,9 +208,7 @@
           "category": "Performance",
           "id": "components/BurstScene/SceneContent.tsx::147:51::react-doctor/rerender-lazy-ref-init::901b01d761a88307b7945a5f2a3bee5c16e0fe4abba2ccc3299f7f9b9d26b002",
           "normalizedFilePath": "components/BurstScene/SceneContent.tsx",
-          "tags": [
-            "test-noise"
-          ]
+          "tags": ["test-noise"]
         },
         {
           "filePath": "components/BurstScene/SceneContent.tsx",
@@ -240,10 +226,7 @@
           "category": "Performance",
           "id": "components/BurstScene/SceneContent.tsx::147:51::react-doctor/three-no-object-construction-in-render::5c88fd795a78c744ee4c18d792ea68e2777791f83955310e5410d48c08886908",
           "normalizedFilePath": "components/BurstScene/SceneContent.tsx",
-          "tags": [
-            "three",
-            "webgl"
-          ]
+          "tags": ["three", "webgl"]
         },
         {
           "filePath": "components/BurstScene/SceneContent.tsx",
@@ -261,9 +244,7 @@
           "category": "Performance",
           "id": "components/BurstScene/SceneContent.tsx::148:49::react-doctor/rerender-lazy-ref-init::887576ff143f037b9bed03cc2b2998d411b2054067e79a42d411720e9a88f5da",
           "normalizedFilePath": "components/BurstScene/SceneContent.tsx",
-          "tags": [
-            "test-noise"
-          ]
+          "tags": ["test-noise"]
         },
         {
           "filePath": "components/BurstScene/SceneContent.tsx",
@@ -281,10 +262,7 @@
           "category": "Performance",
           "id": "components/BurstScene/SceneContent.tsx::148:49::react-doctor/three-no-object-construction-in-render::4f0734abd6c87ca74cb94972ba7874ae10c1133afa2b2a627015ae66613c1a4b",
           "normalizedFilePath": "components/BurstScene/SceneContent.tsx",
-          "tags": [
-            "three",
-            "webgl"
-          ]
+          "tags": ["three", "webgl"]
         },
         {
           "filePath": "components/BurstScene/SceneContent.tsx",
@@ -302,9 +280,7 @@
           "category": "Performance",
           "id": "components/BurstScene/SceneContent.tsx::150:5::react-doctor/rerender-lazy-ref-init::f3ad4564282fb2b1e52ed843b13ebba40fe408d6d3baa2c81b6745691c7050a0",
           "normalizedFilePath": "components/BurstScene/SceneContent.tsx",
-          "tags": [
-            "test-noise"
-          ]
+          "tags": ["test-noise"]
         },
         {
           "filePath": "components/BurstScene/SceneContent.tsx",
@@ -322,10 +298,7 @@
           "category": "Performance",
           "id": "components/BurstScene/SceneContent.tsx::150:5::react-doctor/three-no-object-construction-in-render::a58c80425e2e33f7f5b4f9625b0ad5cf17d40db1b169c6202c17482c3f719bd8",
           "normalizedFilePath": "components/BurstScene/SceneContent.tsx",
-          "tags": [
-            "three",
-            "webgl"
-          ]
+          "tags": ["three", "webgl"]
         },
         {
           "filePath": "components/BurstScene/SceneContent.tsx",
@@ -343,10 +316,7 @@
           "category": "Performance",
           "id": "components/BurstScene/SceneContent.tsx::150:21::react-doctor/three-no-object-construction-in-render::68157ccf4cd78da6da7730961d8b4dda066093bafc58c789e8944d1efab5870c",
           "normalizedFilePath": "components/BurstScene/SceneContent.tsx",
-          "tags": [
-            "three",
-            "webgl"
-          ]
+          "tags": ["three", "webgl"]
         },
         {
           "filePath": "components/BurstScene/SceneContent.tsx",
@@ -364,9 +334,7 @@
           "category": "Performance",
           "id": "components/BurstScene/SceneContent.tsx::152:36::react-doctor/rerender-lazy-ref-init::8205ca7f194c4778eec4c173e27c8025f4141ceda46d074d97ad2badd8d496e1",
           "normalizedFilePath": "components/BurstScene/SceneContent.tsx",
-          "tags": [
-            "test-noise"
-          ]
+          "tags": ["test-noise"]
         },
         {
           "filePath": "components/BurstScene/SceneContent.tsx",
@@ -384,10 +352,7 @@
           "category": "Performance",
           "id": "components/BurstScene/SceneContent.tsx::152:36::react-doctor/three-no-object-construction-in-render::68157ccf4cd78da6da7730961d8b4dda066093bafc58c789e8944d1efab5870c",
           "normalizedFilePath": "components/BurstScene/SceneContent.tsx",
-          "tags": [
-            "three",
-            "webgl"
-          ]
+          "tags": ["three", "webgl"]
         },
         {
           "filePath": "components/BurstScene/SceneContent.tsx",
@@ -477,9 +442,7 @@
           "category": "Bugs",
           "id": "components/Form/Form.tsx::134:7::react-doctor/no-prevent-default::0fc34f6b4d32bcf96326f8d56359be2fb14865da60a123bdda86f1f755307522",
           "normalizedFilePath": "components/Form/Form.tsx",
-          "tags": [
-            "test-noise"
-          ]
+          "tags": ["test-noise"]
         },
         {
           "filePath": "components/PopOver/index.tsx",
@@ -548,9 +511,7 @@
           "category": "Performance",
           "id": "lib/content.ts::54:10::react-doctor/js-combine-iterations::354e0e3bad85305452c7b6059e78ce48326c2e08520d75ec84e337a14e9a7f9e",
           "normalizedFilePath": "lib/content.ts",
-          "tags": [
-            "test-noise"
-          ]
+          "tags": ["test-noise"]
         },
         {
           "filePath": "lib/site.ts",
@@ -804,9 +765,7 @@
       "category": "Performance",
       "id": "components/BurstScene/SceneContent.tsx::141:5::react-doctor/rerender-lazy-ref-init::07751987c6eb2691b42fee758bc3ccdb06b3de581a716e082851230aeb41255d",
       "normalizedFilePath": "components/BurstScene/SceneContent.tsx",
-      "tags": [
-        "test-noise"
-      ]
+      "tags": ["test-noise"]
     },
     {
       "filePath": "components/BurstScene/SceneContent.tsx",
@@ -824,9 +783,7 @@
       "category": "Performance",
       "id": "components/BurstScene/SceneContent.tsx::144:5::react-doctor/rerender-lazy-ref-init::901b01d761a88307b7945a5f2a3bee5c16e0fe4abba2ccc3299f7f9b9d26b002",
       "normalizedFilePath": "components/BurstScene/SceneContent.tsx",
-      "tags": [
-        "test-noise"
-      ]
+      "tags": ["test-noise"]
     },
     {
       "filePath": "components/BurstScene/SceneContent.tsx",
@@ -844,10 +801,7 @@
       "category": "Performance",
       "id": "components/BurstScene/SceneContent.tsx::144:5::react-doctor/three-no-object-construction-in-render::5c88fd795a78c744ee4c18d792ea68e2777791f83955310e5410d48c08886908",
       "normalizedFilePath": "components/BurstScene/SceneContent.tsx",
-      "tags": [
-        "three",
-        "webgl"
-      ]
+      "tags": ["three", "webgl"]
     },
     {
       "filePath": "components/BurstScene/SceneContent.tsx",
@@ -865,9 +819,7 @@
       "category": "Performance",
       "id": "components/BurstScene/SceneContent.tsx::146:54::react-doctor/rerender-lazy-ref-init::cc0d8cae5dac6e60b695817bab14a35770dbf3c03de9e8bc0b3a9f97041e1649",
       "normalizedFilePath": "components/BurstScene/SceneContent.tsx",
-      "tags": [
-        "test-noise"
-      ]
+      "tags": ["test-noise"]
     },
     {
       "filePath": "components/BurstScene/SceneContent.tsx",
@@ -885,10 +837,7 @@
       "category": "Performance",
       "id": "components/BurstScene/SceneContent.tsx::146:54::react-doctor/three-no-object-construction-in-render::0ccad074d1ae88280010f494efccebdd57994002ae276ad2b16e802357dfb2c0",
       "normalizedFilePath": "components/BurstScene/SceneContent.tsx",
-      "tags": [
-        "three",
-        "webgl"
-      ]
+      "tags": ["three", "webgl"]
     },
     {
       "filePath": "components/BurstScene/SceneContent.tsx",
@@ -906,9 +855,7 @@
       "category": "Performance",
       "id": "components/BurstScene/SceneContent.tsx::147:51::react-doctor/rerender-lazy-ref-init::901b01d761a88307b7945a5f2a3bee5c16e0fe4abba2ccc3299f7f9b9d26b002",
       "normalizedFilePath": "components/BurstScene/SceneContent.tsx",
-      "tags": [
-        "test-noise"
-      ]
+      "tags": ["test-noise"]
     },
     {
       "filePath": "components/BurstScene/SceneContent.tsx",
@@ -926,10 +873,7 @@
       "category": "Performance",
       "id": "components/BurstScene/SceneContent.tsx::147:51::react-doctor/three-no-object-construction-in-render::5c88fd795a78c744ee4c18d792ea68e2777791f83955310e5410d48c08886908",
       "normalizedFilePath": "components/BurstScene/SceneContent.tsx",
-      "tags": [
-        "three",
-        "webgl"
-      ]
+      "tags": ["three", "webgl"]
     },
     {
       "filePath": "components/BurstScene/SceneContent.tsx",
@@ -947,9 +891,7 @@
       "category": "Performance",
       "id": "components/BurstScene/SceneContent.tsx::148:49::react-doctor/rerender-lazy-ref-init::887576ff143f037b9bed03cc2b2998d411b2054067e79a42d411720e9a88f5da",
       "normalizedFilePath": "components/BurstScene/SceneContent.tsx",
-      "tags": [
-        "test-noise"
-      ]
+      "tags": ["test-noise"]
     },
     {
       "filePath": "components/BurstScene/SceneContent.tsx",
@@ -967,10 +909,7 @@
       "category": "Performance",
       "id": "components/BurstScene/SceneContent.tsx::148:49::react-doctor/three-no-object-construction-in-render::4f0734abd6c87ca74cb94972ba7874ae10c1133afa2b2a627015ae66613c1a4b",
       "normalizedFilePath": "components/BurstScene/SceneContent.tsx",
-      "tags": [
-        "three",
-        "webgl"
-      ]
+      "tags": ["three", "webgl"]
     },
     {
       "filePath": "components/BurstScene/SceneContent.tsx",
@@ -988,9 +927,7 @@
       "category": "Performance",
       "id": "components/BurstScene/SceneContent.tsx::150:5::react-doctor/rerender-lazy-ref-init::f3ad4564282fb2b1e52ed843b13ebba40fe408d6d3baa2c81b6745691c7050a0",
       "normalizedFilePath": "components/BurstScene/SceneContent.tsx",
-      "tags": [
-        "test-noise"
-      ]
+      "tags": ["test-noise"]
     },
     {
       "filePath": "components/BurstScene/SceneContent.tsx",
@@ -1008,10 +945,7 @@
       "category": "Performance",
       "id": "components/BurstScene/SceneContent.tsx::150:5::react-doctor/three-no-object-construction-in-render::a58c80425e2e33f7f5b4f9625b0ad5cf17d40db1b169c6202c17482c3f719bd8",
       "normalizedFilePath": "components/BurstScene/SceneContent.tsx",
-      "tags": [
-        "three",
-        "webgl"
-      ]
+      "tags": ["three", "webgl"]
     },
     {
       "filePath": "components/BurstScene/SceneContent.tsx",
@@ -1029,10 +963,7 @@
       "category": "Performance",
       "id": "components/BurstScene/SceneContent.tsx::150:21::react-doctor/three-no-object-construction-in-render::68157ccf4cd78da6da7730961d8b4dda066093bafc58c789e8944d1efab5870c",
       "normalizedFilePath": "components/BurstScene/SceneContent.tsx",
-      "tags": [
-        "three",
-        "webgl"
-      ]
+      "tags": ["three", "webgl"]
     },
     {
       "filePath": "components/BurstScene/SceneContent.tsx",
@@ -1050,9 +981,7 @@
       "category": "Performance",
       "id": "components/BurstScene/SceneContent.tsx::152:36::react-doctor/rerender-lazy-ref-init::8205ca7f194c4778eec4c173e27c8025f4141ceda46d074d97ad2badd8d496e1",
       "normalizedFilePath": "components/BurstScene/SceneContent.tsx",
-      "tags": [
-        "test-noise"
-      ]
+      "tags": ["test-noise"]
     },
     {
       "filePath": "components/BurstScene/SceneContent.tsx",
@@ -1070,10 +999,7 @@
       "category": "Performance",
       "id": "components/BurstScene/SceneContent.tsx::152:36::react-doctor/three-no-object-construction-in-render::68157ccf4cd78da6da7730961d8b4dda066093bafc58c789e8944d1efab5870c",
       "normalizedFilePath": "components/BurstScene/SceneContent.tsx",
-      "tags": [
-        "three",
-        "webgl"
-      ]
+      "tags": ["three", "webgl"]
     },
     {
       "filePath": "components/BurstScene/SceneContent.tsx",
@@ -1163,9 +1089,7 @@
       "category": "Bugs",
       "id": "components/Form/Form.tsx::134:7::react-doctor/no-prevent-default::0fc34f6b4d32bcf96326f8d56359be2fb14865da60a123bdda86f1f755307522",
       "normalizedFilePath": "components/Form/Form.tsx",
-      "tags": [
-        "test-noise"
-      ]
+      "tags": ["test-noise"]
     },
     {
       "filePath": "components/PopOver/index.tsx",
@@ -1234,9 +1158,7 @@
       "category": "Performance",
       "id": "lib/content.ts::54:10::react-doctor/js-combine-iterations::354e0e3bad85305452c7b6059e78ce48326c2e08520d75ec84e337a14e9a7f9e",
       "normalizedFilePath": "lib/content.ts",
-      "tags": [
-        "test-noise"
-      ]
+      "tags": ["test-noise"]
     },
     {
       "filePath": "lib/site.ts",

@@ -9,7 +9,7 @@ export default function BlogPostNotFound() {
       </p>
       <Link
         href="/blog"
-        className="mt-8 inline-block border-[3px] border-red-600 px-6 py-3 text-sm font-bold tracking-widest text-red-600 uppercase"
+        className="mt-8 inline-block stroke border-accent px-6 py-3 text-sm font-bold tracking-widest text-accent uppercase"
       >
         Back to the journal
       </Link>

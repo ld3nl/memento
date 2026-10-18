@@ -6,11 +6,7 @@ import { JsonLd } from "../../components/content/JsonLd";
 import { listPublishedPosts } from "../../lib/content";
 import { formatContentDate } from "../../lib/content-meta";
 import { contentMetadata } from "../../lib/content-metadata";
-import {
-  blogJsonLd,
-  breadcrumbJsonLd,
-  graphJsonLd,
-} from "../../lib/json-ld";
+import { blogJsonLd, breadcrumbJsonLd, graphJsonLd } from "../../lib/json-ld";
 import { SITE_URL } from "../../lib/site";
 
 export const metadata: Metadata = {
@@ -41,11 +37,11 @@ export default async function BlogIndexPage() {
 
   const jsonLd = graphJsonLd([
     blogJsonLd(
-      posts.map((post) => ({
+      posts.map(post => ({
         title: post.frontmatter.title,
         description: post.frontmatter.description,
         slug: post.slug,
-      })),
+      }))
     ),
     breadcrumbJsonLd([
       { name: "Home", path: "/" },
@@ -61,10 +57,10 @@ export default async function BlogIndexPage() {
         <Breadcrumbs
           items={[{ name: "Home", href: "/" }, { name: "Journal" }]}
         />
-        <p className="font-display mb-4 text-[0.6875rem] font-semibold tracking-[0.25em] text-zinc-500 uppercase">
+        <p className="font-display mb-4 text-kicker font-semibold tracking-label text-secondary uppercase">
           Journal
         </p>
-        <h1 className="font-display text-accent mb-6 text-[2.5rem] leading-tight tracking-tight italic sm:text-5xl">
+        <h1 className="font-display text-accent mb-6 text-display leading-tight tracking-tight italic sm:text-5xl">
           Notes on a finite life
         </h1>
         <p className="text-primary mb-10 max-w-xl text-base leading-relaxed">
@@ -72,7 +68,7 @@ export default async function BlogIndexPage() {
           arithmetic of a life in weeks. Written to be used, not collected.
         </p>
         <ul className="divide-border border-border divide-y-2 border-y-2">
-          {posts.map((post) => (
+          {posts.map(post => (
             <li key={post.slug} className="py-8 first:pt-8">
               <p className="text-secondary mb-2 text-sm">
                 <time dateTime={post.frontmatter.datePublished}>
@@ -96,7 +92,7 @@ export default async function BlogIndexPage() {
         <p className="mt-10">
           <Link
             href="/feed.xml"
-            className="font-display text-secondary hover:text-accent text-[0.6875rem] font-semibold tracking-[0.2em] uppercase"
+            className="font-display text-secondary hover:text-accent text-kicker font-semibold tracking-label-tight uppercase"
           >
             RSS feed
           </Link>

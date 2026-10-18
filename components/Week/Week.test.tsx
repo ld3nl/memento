@@ -11,13 +11,13 @@ describe("Week", () => {
   it("applies filled styling when isFilled is true", () => {
     const { container } = render(<Week weekIndex={1} isFilled={true} />);
     const weekElement = container.firstChild;
-    expect(weekElement).toHaveClass("bg-zinc-900");
+    expect(weekElement).toHaveClass("bg-week");
   });
 
   it("does not apply filled styling when isFilled is false", () => {
     const { container } = render(<Week weekIndex={1} isFilled={false} />);
     const weekElement = container.firstChild;
-    expect(weekElement).not.toHaveClass("bg-zinc-900");
+    expect(weekElement).not.toHaveClass("bg-week");
   });
 
   it("displays year label when yearsAlive is provided", () => {
@@ -45,7 +45,7 @@ describe("Week", () => {
         isFilled={false}
         isCurrentWeek={true}
         currentDayOfWeek={3}
-      />,
+      />
     );
     const weekElement = container.firstChild;
     expect(weekElement).toHaveClass("current-week");
@@ -59,7 +59,7 @@ describe("Week", () => {
         isFilled={false}
         isCurrentWeek={true}
         currentDayOfWeek={4}
-      />,
+      />
     );
     const fillDiv = container.querySelector('[aria-hidden="true"]');
     expect(fillDiv).toBeInTheDocument();
@@ -69,7 +69,7 @@ describe("Week", () => {
 
   it("applies custom className when provided", () => {
     const { container } = render(
-      <Week weekIndex={1} isFilled={false} className="custom-class" />,
+      <Week weekIndex={1} isFilled={false} className="custom-class" />
     );
     const weekElement = container.firstChild;
     expect(weekElement).toHaveClass("custom-class");

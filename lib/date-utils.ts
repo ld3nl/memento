@@ -18,7 +18,7 @@ import { parseAndValidateDate } from "./validation";
  */
 export const calculateFullAge = (
   dob: string | Date,
-  format: string = DEFAULT_DATE_FORMAT,
+  format: string = DEFAULT_DATE_FORMAT
 ): { years: number; months: number; days: number } | null => {
   const birthDate =
     typeof dob === "string" ? parse(dob, format, new Date()) : dob;
@@ -63,7 +63,7 @@ export const calculateYearsAlive = (dob: string | Date): number | null => {
  * Calculates weeks since the last birthday
  */
 export const calculateWeeksFromLastBirthday = (
-  dob: string | Date,
+  dob: string | Date
 ): number | null => {
   const dobDate = parseAndValidateDate(dob);
   if (!dobDate) return null;

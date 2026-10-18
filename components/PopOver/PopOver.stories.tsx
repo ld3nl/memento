@@ -93,7 +93,7 @@ export const WithCustomQuote: Story = {
 };
 
 export const MultipleWeeks: Story = {
-  args: {} as any,
+  args: { label: "", children: null },
   render: () => (
     <div className="flex gap-3">
       <Popover label="">
@@ -128,7 +128,7 @@ export const MultipleWeeks: Story = {
 };
 
 export const MilestoneYearWithEvents: Story = {
-  args: {} as any,
+  args: { label: "", children: null },
   render: () => {
     // Milestone year: year 50, with 26 weeks completed, currently on week 27 day 4
     const weeks = Array.from({ length: 52 }, (_, i) => i + 1);
@@ -186,7 +186,7 @@ export const MilestoneYearWithEvents: Story = {
 
     return (
       <div data-cy="year-grid" className="mx-auto grid w-208 grid-cols-52">
-        {weeks.map((weekIndex) => {
+        {weeks.map(weekIndex => {
           const isFilled = weekIndex <= weeksFromLastBday;
           const isCurrentWeek = weekIndex === weeksFromLastBday + 1;
           // Year 50 is milestone (divisible by 5), show label at week 52
@@ -238,7 +238,7 @@ export const MilestoneYearWithEvents: Story = {
 };
 
 export const EdgePositioning: Story = {
-  args: {} as any,
+  args: { label: "", children: null },
   render: () => (
     <div className="grid h-[600px] w-[800px] grid-cols-3 grid-rows-3 gap-4">
       {/* Top row */}
@@ -305,12 +305,12 @@ export const EdgePositioning: Story = {
 };
 
 export const AllPositions: Story = {
-  args: {} as any,
+  args: { label: "", children: null },
   render: () => (
     <div className="flex flex-col gap-8 p-8">
       <div className="text-center">
         <h2 className="mb-4 text-lg font-bold">All 9 Position Options</h2>
-        <p className="text-sm text-zinc-400">
+        <p className="text-sm text-secondary">
           Click each week to test positioning. Trigger stays visible.
         </p>
       </div>
@@ -371,7 +371,7 @@ export const AllPositions: Story = {
 };
 
 export const AutoPositioning: Story = {
-  args: {} as any,
+  args: { label: "", children: null },
   render: () => (
     <div className="grid h-[600px] w-[800px] grid-cols-3 grid-rows-3 gap-4">
       {/* Top row - auto should position below */}

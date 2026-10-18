@@ -57,7 +57,7 @@ describe("common utilities (deprecated)", () => {
     });
 
     it("logs error for null date", () => {
-      const result = getYearsAlive(null as any);
+      const result = getYearsAlive(null);
       expect(result).toBeUndefined();
       expect(consoleSpy).toHaveBeenCalledWith("Enter valid date");
     });

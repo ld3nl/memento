@@ -69,9 +69,9 @@ A short [link](/blog) and some **words**.
         { slug: "d", tags: ["memento mori", "practice"] },
       ],
       "a",
-      2,
+      2
     );
 
-    expect(related.map((item) => item.slug)).toEqual(["b", "d"]);
+    expect(related.map(item => item.slug)).toEqual(["b", "d"]);
   });
 });

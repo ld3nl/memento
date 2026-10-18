@@ -6,8 +6,49 @@
   --font-mono: var(--font-jetbrains);
   --color-primary: light-dark(var(--color-zinc-900), var(--color-zinc-50));
   --color-secondary: light-dark(var(--color-zinc-500), var(--color-zinc-400));
+  --color-quiet: light-dark(var(--color-zinc-700), var(--color-zinc-200));
   --color-accent: var(--color-red-600);
+  --spacing-popover: 0.625rem;
+  --color-mark: var(--color-amber-500);
   --color-border: light-dark(var(--color-zinc-200), var(--color-zinc-700));
+  --color-line: light-dark(var(--color-zinc-200), var(--color-zinc-800));
+  --color-surface: light-dark(#fff, var(--color-zinc-950));
+  --color-surface-raised: light-dark(
+    var(--color-zinc-100),
+    var(--color-zinc-900)
+  );
+  --color-panel: light-dark(#fff, var(--color-zinc-900));
+  --color-card: var(--color-zinc-950);
+  --color-week: light-dark(var(--color-zinc-900), var(--color-red-600));
+  --color-week-muted: light-dark(var(--color-zinc-900), var(--color-zinc-700));
+  --text-tick: 0.625rem;
+  --text-tick-lg: 0.8125rem;
+  --text-kicker: 0.6875rem;
+  --text-display: 2.5rem;
+  --text-card-title: 27px;
+  --text-card-mark: 40px;
+  --text-card-body: 15px;
+  --text-card-caption: 13px;
+  --leading-display: 0.95;
+  --tracking-label: 0.25em;
+  --tracking-label-tight: 0.2em;
+  --tracking-mark: 1.75px;
+  --tracking-mark-tight: 1.5px;
+  --tracking-card: -0.03em;
+  --tracking-tick: 0.14em;
+  --tracking-tick-soft: 0.02em;
+}
+
+@utility stroke {
+  border-width: 3px;
+}
+
+@utility stroke-l {
+  border-left-width: 3px;
+}
+
+@utility stroke-b {
+  border-bottom-width: 3px;
 }
 
 /* CSS Anchor Positioning: custom property for dynamic anchor names */
@@ -19,39 +60,39 @@
 /* Popover positioning classes with anchor positioning */
 .popover-left-top {
   position-area: top span-left;
-  margin-bottom: 0.625rem;
-  margin-right: 0.625rem;
+  margin-bottom: var(--spacing-popover);
+  margin-right: var(--spacing-popover);
 }
 
 .popover-right-top {
   position-area: top span-right;
-  margin-bottom: 0.625rem;
-  margin-left: 0.625rem;
+  margin-bottom: var(--spacing-popover);
+  margin-left: var(--spacing-popover);
 }
 
 .popover-left-center {
   position-area: left;
-  margin-right: 0.625rem;
+  margin-right: var(--spacing-popover);
   inset-block: anchor(center);
   translate: 0 -50%;
 }
 
 .popover-right-center {
   position-area: right;
-  margin-left: 0.625rem;
+  margin-left: var(--spacing-popover);
   inset-block: anchor(center);
   translate: 0 -50%;
 }
 
 .popover-left-bottom {
   position-area: bottom span-left;
-  margin-top: 0.625rem;
-  margin-right: 0.625rem;
+  margin-top: var(--spacing-popover);
+  margin-right: var(--spacing-popover);
 }
 
 .popover-center-top {
   position-area: top;
-  margin-bottom: 0.625rem;
+  margin-bottom: var(--spacing-popover);
   inset-inline-start: anchor(center);
   translate: -50% 0;
 }
@@ -65,15 +106,15 @@
 
 .popover-center-bottom {
   position-area: bottom;
-  margin-top: 0.625rem;
+  margin-top: var(--spacing-popover);
   inset-inline-start: anchor(center);
   translate: -50% 0;
 }
 
 .popover-right-bottom {
   position-area: bottom span-right;
-  margin-top: 0.625rem;
-  margin-left: 0.625rem;
+  margin-top: var(--spacing-popover);
+  margin-left: var(--spacing-popover);
 }
 
 /* Auto positioning with viewport-aware fallbacks.
@@ -87,7 +128,7 @@
  */
 .popover-auto {
   position-area: right center;
-  margin: 0.625rem;
+  margin: var(--spacing-popover);
   position-try-fallbacks:
     left center,
     top center,

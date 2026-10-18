@@ -39,10 +39,10 @@ export async function generateMetadata({
         value === undefined
           ? []
           : Array.isArray(value)
-            ? value.map((item) => [key, item] as [string, string])
-            : [[key, value] as [string, string]],
-      ),
-    ),
+            ? value.map(item => [key, item] as [string, string])
+            : [[key, value] as [string, string]]
+      )
+    )
   );
 
   if (!birthDate) {
@@ -112,10 +112,10 @@ const ViewPage = async ({ params, searchParams }: Props) => {
         value === undefined
           ? []
           : Array.isArray(value)
-            ? value.map((item) => [key, item] as [string, string])
-            : [[key, value] as [string, string]],
-      ),
-    ),
+            ? value.map(item => [key, item] as [string, string])
+            : [[key, value] as [string, string]]
+      )
+    )
   );
 
   const ageData = calculateFullAge(birthDate);
@@ -156,14 +156,14 @@ const ViewPage = async ({ params, searchParams }: Props) => {
         <div className="mb-8 flex justify-end">
           <Link
             href={`/${otherView}/${urlPath}${nameQuery}`}
-            className="border-border font-display text-primary rounded-full border px-4 py-2 text-sm font-medium hover:border-red-600"
+            className="border-border font-display text-primary rounded-full border px-4 py-2 text-sm font-medium hover:border-accent"
           >
             Switch to {otherView === "table" ? "table" : "burst"} view
           </Link>
         </div>
-        <h1 className="font-display mb-10 text-center text-3xl leading-tight tracking-tight text-zinc-900 italic sm:mb-12 sm:text-4xl lg:text-5xl dark:text-zinc-50">
+        <h1 className="font-display mb-10 text-center text-3xl leading-tight tracking-tight text-primary italic sm:mb-12 sm:text-4xl lg:text-5xl dark:text-primary">
           {name ? `${name}’s life in weeks` : "Your Life in Weeks"}
-          <span className="mt-2 block font-sans text-sm font-semibold tracking-[0.25em] text-zinc-500 uppercase sm:text-base dark:text-zinc-400">
+          <span className="mt-2 block font-sans text-sm font-semibold tracking-label text-secondary uppercase sm:text-base dark:text-secondary">
             {view === "table" ? "Table View" : "Burst View"}
           </span>
         </h1>
@@ -181,28 +181,28 @@ const ViewPage = async ({ params, searchParams }: Props) => {
           </div>
         )}
 
-        <section className="mx-auto mt-16 max-w-3xl border-t-2 border-red-600/20 px-4 pt-16 sm:mt-20 sm:pt-20">
-          <div className="border-l-[3px] border-red-600 pl-6 sm:pl-8">
-            <div className="font-mono text-5xl font-bold text-red-600 tabular-nums sm:text-6xl lg:text-7xl">
+        <section className="mx-auto mt-16 max-w-3xl border-t-2 border-accent/20 px-4 pt-16 sm:mt-20 sm:pt-20">
+          <div className="stroke-l border-accent pl-6 sm:pl-8">
+            <div className="font-mono text-5xl font-bold text-accent tabular-nums sm:text-6xl lg:text-7xl">
               {weeksLived.toLocaleString()}
             </div>
-            <div className="font-display mt-3 text-xs font-semibold tracking-[0.25em] text-zinc-500 uppercase sm:text-sm dark:text-zinc-400">
+            <div className="font-display mt-3 text-xs font-semibold tracking-label text-secondary uppercase sm:text-sm dark:text-secondary">
               Weeks lived
             </div>
 
             {weeksRemaining > 0 && (
               <>
-                <div className="mt-10 font-mono text-4xl font-bold text-zinc-900 tabular-nums sm:mt-12 sm:text-5xl lg:text-6xl dark:text-zinc-50">
+                <div className="mt-10 font-mono text-4xl font-bold text-primary tabular-nums sm:mt-12 sm:text-5xl lg:text-6xl dark:text-primary">
                   {weeksRemaining.toLocaleString()}
                 </div>
-                <div className="font-display mt-3 text-xs font-semibold tracking-[0.25em] text-zinc-500 uppercase sm:text-sm dark:text-zinc-400">
+                <div className="font-display mt-3 text-xs font-semibold tracking-label text-secondary uppercase sm:text-sm dark:text-secondary">
                   Weeks remaining (est.)
                 </div>
               </>
             )}
           </div>
 
-          <p className="mt-12 font-sans text-base leading-relaxed text-zinc-500 sm:mt-16 sm:text-lg dark:text-zinc-400">
+          <p className="mt-12 font-sans text-base leading-relaxed text-secondary sm:mt-16 sm:text-lg dark:text-secondary">
             Each square is a week. The filled ones are gone. Make the empty ones
             count.
           </p>

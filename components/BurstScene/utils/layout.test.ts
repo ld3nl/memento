@@ -49,10 +49,8 @@ describe("BurstScene layout utilities", () => {
       });
 
       // First year (index 0) should have filled weeks
-      const firstYearItems = result.items.filter(
-        (item) => item.yearIndex === 0,
-      );
-      firstYearItems.forEach((item) => {
+      const firstYearItems = result.items.filter(item => item.yearIndex === 0);
+      firstYearItems.forEach(item => {
         expect(item.isFilled).toBe(true);
       });
     });
@@ -66,9 +64,9 @@ describe("BurstScene layout utilities", () => {
 
       // Items beyond week 5 of year 0 should not be filled
       const futureItems = result.items.filter(
-        (item) => item.yearIndex === 0 && item.weekIndex > 5,
+        item => item.yearIndex === 0 && item.weekIndex > 5
       );
-      futureItems.forEach((item) => {
+      futureItems.forEach(item => {
         expect(item.isFilled).toBe(false);
       });
     });
@@ -81,9 +79,7 @@ describe("BurstScene layout utilities", () => {
       });
 
       // Week 11 of year 0 should be current
-      const currentWeekItems = result.items.filter(
-        (item) => item.isCurrentWeek,
-      );
+      const currentWeekItems = result.items.filter(item => item.isCurrentWeek);
       expect(currentWeekItems.length).toBe(1);
       expect(currentWeekItems[0].weekIndex).toBe(11);
       expect(currentWeekItems[0].yearIndex).toBe(0);
@@ -91,14 +87,14 @@ describe("BurstScene layout utilities", () => {
 
     it("assigns unique IDs to all items", () => {
       const result = computeBurstItems(defaultParams);
-      const ids = result.items.map((item) => item.id);
+      const ids = result.items.map(item => item.id);
       const uniqueIds = new Set(ids);
       expect(uniqueIds.size).toBe(ids.length);
     });
 
     it("assigns colors to all items", () => {
       const result = computeBurstItems(defaultParams);
-      result.items.forEach((item) => {
+      result.items.forEach(item => {
         expect(item.color).toBeDefined();
         expect(item.color.isColor).toBe(true);
       });
@@ -108,7 +104,7 @@ describe("BurstScene layout utilities", () => {
       const result = computeBurstItems(defaultParams);
 
       expect(result.items[0].dateRangeLabel).toBe("Jan 15-21, 1990");
-      result.items.forEach((item) => {
+      result.items.forEach(item => {
         expect(item.dateRangeLabel).toEqual(expect.any(String));
       });
     });
@@ -124,7 +120,7 @@ describe("BurstScene layout utilities", () => {
 
     it("calculates delay values", () => {
       const result = computeBurstItems(defaultParams);
-      result.items.forEach((item) => {
+      result.items.forEach(item => {
         expect(typeof item.delayMs).toBe("number");
         expect(item.delayMs).toBeGreaterThanOrEqual(0);
         expect(item.delayMs).toBeLessThanOrEqual(result.maxDelay);
@@ -150,7 +146,7 @@ describe("BurstScene layout utilities", () => {
 
     it("positions items with tx and ty coordinates", () => {
       const result = computeBurstItems(defaultParams);
-      result.items.forEach((item) => {
+      result.items.forEach(item => {
         expect(typeof item.tx).toBe("number");
         expect(typeof item.ty).toBe("number");
       });
@@ -158,14 +154,14 @@ describe("BurstScene layout utilities", () => {
 
     it("assigns rotation values to items", () => {
       const result = computeBurstItems(defaultParams);
-      result.items.forEach((item) => {
+      result.items.forEach(item => {
         expect(typeof item.rotation).toBe("number");
       });
     });
 
     it("winds weeks along a spiral instead of concentric rings", () => {
       const result = computeBurstItems(defaultParams);
-      const radii = result.items.map((item) => Math.hypot(item.tx, item.ty));
+      const radii = result.items.map(item => Math.hypot(item.tx, item.ty));
 
       expect(radii[0]).toBeCloseTo(0, 5);
 
@@ -173,7 +169,7 @@ describe("BurstScene layout utilities", () => {
         expect(radii[i]).toBeGreaterThanOrEqual(radii[i - 1] - 1e-9);
       }
 
-      const uniqueRadii = new Set(radii.slice(1).map((r) => r.toFixed(3)));
+      const uniqueRadii = new Set(radii.slice(1).map(r => r.toFixed(3)));
       expect(uniqueRadii.size).toBeGreaterThan(result.items.length * 0.8);
 
       const first = result.items[1];
@@ -181,11 +177,11 @@ describe("BurstScene layout utilities", () => {
       const quarter = result.items[Math.floor(result.items.length / 4)];
       expect(Math.hypot(first.tx, first.ty)).toBeGreaterThan(0);
       expect(Math.hypot(first.tx, first.ty)).toBeLessThan(
-        Math.hypot(quarter.tx, quarter.ty),
+        Math.hypot(quarter.tx, quarter.ty)
       );
       expect(Math.hypot(last.tx, last.ty)).toBeCloseTo(
         defaultParams.maxRadius,
-        0,
+        0
       );
     });
   });

@@ -77,7 +77,7 @@ const components = {
       {children}
     </blockquote>
   ),
-  hr: (props) => <hr className="border-border my-12 border-t-2" {...props} />,
+  hr: props => <hr className="border-border my-12 border-t-2" {...props} />,
   code: ({ children, ...props }) => (
     <code
       className="font-mono text-[0.9em] text-zinc-700 dark:text-zinc-300"

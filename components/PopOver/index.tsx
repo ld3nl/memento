@@ -61,9 +61,7 @@ export default function Popover({
   const triggerRef = useRef<HTMLButtonElement>(null);
   const [open, setOpen] = useState(false);
 
-  const handleBeforeToggle = (
-    event: React.ToggleEvent<HTMLDialogElement>,
-  ) => {
+  const handleBeforeToggle = (event: React.ToggleEvent<HTMLDialogElement>) => {
     onBeforeToggle?.(event);
   };
 
@@ -111,19 +109,18 @@ export default function Popover({
         aria-haspopup="dialog"
         aria-controls={popoverId}
         className={cn(
-          "relative size-2 cursor-pointer border text-zinc-500 transition-colors outline-none",
+          "relative size-2 cursor-pointer border text-secondary transition-colors outline-none",
           {
-            "border-zinc-950 bg-zinc-950 dark:border-red-700 dark:bg-red-700":
+            "border-border bg-card dark:border-accent dark:bg-accent": isFilled,
+            "border-accent dark:border-accent": !isFilled,
+            "hover:border-accent hover:bg-accent dark:hover:border-accent dark:hover:bg-accent":
               isFilled,
-            "border-red-600 dark:border-red-500": !isFilled,
-            "hover:border-red-600 hover:bg-red-600 dark:hover:border-red-500 dark:hover:bg-red-500":
-              isFilled,
-            "hover:border-red-700 hover:bg-red-600/10 dark:hover:border-red-400 dark:hover:bg-red-500/10":
+            "hover:border-accent hover:bg-accent/10 dark:hover:border-accent dark:hover:bg-accent/10":
               !isFilled,
             "ml-auto": weekIndex && weekIndex > 26,
           },
-          "focus-visible:ring-2 focus-visible:ring-red-600/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:text-zinc-400 dark:focus-visible:ring-offset-zinc-950",
-          triggerClassName,
+          "focus-visible:ring-2 focus-visible:ring-accent/50 focus-visible:ring-offset-2 focus-visible:ring-offset-surface dark:text-secondary dark:focus-visible:ring-offset-surface",
+          triggerClassName
         )}
         style={{ anchorName }}
       >
@@ -154,7 +151,7 @@ export default function Popover({
           position === "left_bottom" && "popover-left-bottom",
           position === "center_bottom" && "popover-center-bottom",
           position === "right_bottom" && "popover-right-bottom",
-          className,
+          className
         )}
       >
         {children}

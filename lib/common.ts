@@ -19,7 +19,7 @@ export const calculateFullAge = (dob: string | Date, format = "yyyy-MM-dd") => {
 /**
  * @deprecated Use getFormattedAge from date-utils instead
  */
-export const getYearsAlive = (dob: string | Date) => {
+export const getYearsAlive = (dob: string | Date | null) => {
   if (!dob || dob === "") {
     console.error("Enter valid date");
     return;

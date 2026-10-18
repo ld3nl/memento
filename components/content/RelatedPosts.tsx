@@ -21,11 +21,11 @@ export function RelatedPosts({
         Keep reading
       </h2>
       <ul className="mt-6 space-y-6">
-        {posts.map((post) => (
+        {posts.map(post => (
           <li key={post.slug}>
             <Link
               href={`/blog/${post.slug}`}
-              className="font-display text-primary text-xl italic hover:text-red-600"
+              className="font-display text-primary text-xl italic hover:text-accent"
             >
               {post.title}
             </Link>

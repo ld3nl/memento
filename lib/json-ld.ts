@@ -32,9 +32,7 @@ export function organizationJsonLd() {
   };
 }
 
-export function breadcrumbJsonLd(
-  items: Array<{ name: string; path: string }>,
-) {
+export function breadcrumbJsonLd(items: Array<{ name: string; path: string }>) {
   return {
     "@type": "BreadcrumbList",
     itemListElement: items.map((item, index) => ({
@@ -131,12 +129,10 @@ export function aboutPageJsonLd({
   };
 }
 
-export function faqJsonLd(
-  items: Array<{ question: string; answer: string }>,
-) {
+export function faqJsonLd(items: Array<{ question: string; answer: string }>) {
   return {
     "@type": "FAQPage",
-    mainEntity: items.map((item) => ({
+    mainEntity: items.map(item => ({
       "@type": "Question",
       name: item.question,
       acceptedAnswer: {
@@ -148,7 +144,7 @@ export function faqJsonLd(
 }
 
 export function blogJsonLd(
-  posts: Array<{ title: string; description: string; slug: string }>,
+  posts: Array<{ title: string; description: string; slug: string }>
 ) {
   return {
     "@type": "Blog",
@@ -157,7 +153,7 @@ export function blogJsonLd(
       "Notes on memento mori, Stoic practice, and seeing a whole life in weeks.",
     url: `${SITE_URL}/blog`,
     publisher: organizationJsonLd(),
-    blogPost: posts.map((post) => ({
+    blogPost: posts.map(post => ({
       "@type": "BlogPosting",
       headline: post.title,
       description: post.description,

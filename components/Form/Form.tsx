@@ -23,15 +23,15 @@ function calculateWeeksLived(birthdate: string) {
 function SubmitButton() {
   const form = useFormContext();
   return (
-    <form.Subscribe selector={(state) => [state.canSubmit, state.isSubmitting]}>
+    <form.Subscribe selector={state => [state.canSubmit, state.isSubmitting]}>
       {([canSubmit, isSubmitting]) => (
         <button
           className={cn(
-            "font-display min-h-[52px] w-full cursor-pointer rounded-none border-[3px] border-red-600 bg-white px-6 py-4 text-sm font-bold tracking-[0.25em] text-red-600 uppercase shadow-lg shadow-red-600/10 transition-all duration-200 hover:bg-red-600 hover:text-white hover:shadow-xl hover:shadow-red-600/20 focus:ring-4 focus:ring-red-600/40 focus:outline-none active:scale-[0.98] sm:w-auto sm:min-w-[240px] sm:px-8 sm:text-base dark:bg-zinc-900",
+            "font-display min-h-[52px] w-full cursor-pointer rounded-none stroke border-accent bg-surface px-6 py-4 text-sm font-bold tracking-label text-accent uppercase shadow-lg shadow-red-600/10 transition-all duration-200 hover:bg-accent hover:text-white hover:shadow-xl hover:shadow-red-600/20 focus:ring-4 focus:ring-accent/40 focus:outline-none active:scale-[0.98] sm:w-auto sm:min-w-[240px] sm:px-8 sm:text-base dark:bg-surface-raised",
             {
-              "cursor-not-allowed opacity-40 hover:bg-white hover:text-red-600 hover:shadow-lg dark:hover:bg-zinc-900":
+              "cursor-not-allowed opacity-40 hover:bg-surface hover:text-accent hover:shadow-lg dark:hover:bg-week":
                 !canSubmit,
-            },
+            }
           )}
           type="submit"
           disabled={!canSubmit}
@@ -91,7 +91,7 @@ const Form = () => {
     let cancelled = false;
 
     const loadSavedData = async () => {
-      const savedData = await FormStorage.loadFormData().catch((error) => {
+      const savedData = await FormStorage.loadFormData().catch(error => {
         console.error("Failed to load saved form data:", error);
         return null;
       });
@@ -119,7 +119,7 @@ const Form = () => {
     <div className="flex flex-col justify-center">
       <form
         data-cy={"bday-form"}
-        action={async (formData) => {
+        action={async formData => {
           const date = String(formData.get("date") ?? "");
           const name = String(formData.get("name") ?? "");
           const persist = formData.get("saveData") === "on";
@@ -141,12 +141,12 @@ const Form = () => {
         noValidate
       >
         <form.AppField name="name">
-          {(field) => (
+          {field => (
             <field.LabeledInput
               labelString="Name"
               inputId="inline-name"
               placeholder="Enter your name (optional)"
-              onValueChange={(name) =>
+              onValueChange={name =>
                 void saveValues({ ...form.state.values, name })
               }
             />
@@ -154,13 +154,13 @@ const Form = () => {
         </form.AppField>
 
         <form.AppField name="date">
-          {(field) => (
+          {field => (
             <>
               <field.LabeledInput
                 labelString="Birthdate"
                 inputId="birthday"
                 inputType="date"
-                onValueChange={(date) => {
+                onValueChange={date => {
                   void saveValues({ ...form.state.values, date });
                   setWeeksLived(calculateWeeksLived(date));
                 }}
@@ -169,26 +169,26 @@ const Form = () => {
                 !field.state.meta.errors.length &&
                 weeksLived !== null && (
                   <div className="mt-6 sm:mt-8">
-                    <div className="border-[3px] border-red-600 bg-white p-6 shadow-2xl shadow-red-600/10 sm:p-7 lg:p-8 dark:bg-zinc-900">
+                    <div className="stroke border-accent bg-surface p-6 shadow-2xl shadow-red-600/10 sm:p-7 lg:p-8 dark:bg-surface-raised">
                       <div
                         data-cy="age"
-                        className="font-mono text-5xl font-bold tracking-tight text-red-600 tabular-nums sm:text-6xl lg:text-7xl"
+                        className="font-mono text-5xl font-bold tracking-tight text-accent tabular-nums sm:text-6xl lg:text-7xl"
                       >
                         {weeksLived.toLocaleString()}
                       </div>
-                      <div className="font-display mt-3 text-[0.6875rem] font-semibold tracking-[0.25em] text-zinc-500 uppercase sm:mt-4 dark:text-zinc-400">
+                      <div className="font-display mt-3 text-kicker font-semibold tracking-label text-secondary uppercase sm:mt-4 dark:text-secondary">
                         Weeks lived
                       </div>
                       {field.state.value && (
                         <div
                           data-cy="age-copy"
-                          className="font-display mt-4 border-t border-zinc-200 pt-4 text-sm leading-relaxed text-zinc-500 italic dark:border-zinc-800 dark:text-zinc-400"
+                          className="font-display mt-4 border-t border-line pt-4 text-sm leading-relaxed text-secondary italic dark:border-line dark:text-secondary"
                         >
                           {getFormattedAge(field.state.value)}
                         </div>
                       )}
                       {overEighty && (
-                        <p className="mt-3 text-sm text-zinc-500 dark:text-zinc-400">
+                        <p className="mt-3 text-sm text-secondary dark:text-secondary">
                           The grid visualizes 80 years. Extra years are not
                           drawn, but you can still open the calendar.
                         </p>
@@ -200,16 +200,16 @@ const Form = () => {
           )}
         </form.AppField>
 
-        <label className="flex cursor-pointer items-start gap-3 py-2 text-sm leading-snug text-zinc-500 select-none hover:text-zinc-900 sm:text-base dark:text-zinc-400 dark:hover:text-zinc-50">
+        <label className="flex cursor-pointer items-start gap-3 py-2 text-sm leading-snug text-secondary select-none hover:text-primary sm:text-base dark:text-secondary dark:hover:text-primary">
           <span className="relative mt-0.5 inline-flex h-5 w-5 flex-shrink-0">
             <input
               id="save-data-checkbox"
-              className="peer h-5 w-5 cursor-pointer appearance-none rounded-none border-2 border-zinc-200 bg-white checked:border-red-600 checked:bg-red-600 focus-visible:ring-4 focus-visible:ring-red-600/20 focus-visible:outline-none dark:border-zinc-700 dark:bg-zinc-900"
+              className="peer h-5 w-5 cursor-pointer appearance-none rounded-none border-2 border-line bg-surface checked:border-accent checked:bg-accent focus-visible:ring-4 focus-visible:ring-accent/20 focus-visible:outline-none dark:border-border dark:bg-surface-raised"
               type="checkbox"
               name="saveData"
               value="on"
               checked={saveData}
-              onChange={async (e) => {
+              onChange={async e => {
                 const isChecked = e.target.checked;
                 setSaveData(isChecked);
 

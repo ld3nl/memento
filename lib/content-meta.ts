@@ -85,7 +85,7 @@ export function countMdxWords(source: string): number {
 
 export function estimateReadingMinutes(
   wordCount: number,
-  wordsPerMinute = WORDS_PER_MINUTE,
+  wordsPerMinute = WORDS_PER_MINUTE
 ): number {
   if (wordCount <= 0) {
     return 1;
@@ -105,10 +105,10 @@ export function toIsoDateTime(isoDate: string): string {
 export function pickRelated<T extends { slug: string; tags: string[] }>(
   items: T[],
   slug: string,
-  limit = 3,
+  limit = 3
 ): T[] {
-  const current = items.find((item) => item.slug === slug);
-  const others = items.filter((item) => item.slug !== slug);
+  const current = items.find(item => item.slug === slug);
+  const others = items.filter(item => item.slug !== slug);
 
   if (!current) {
     return others.slice(0, limit);
@@ -118,10 +118,8 @@ export function pickRelated<T extends { slug: string; tags: string[] }>(
 
   return others
     .toSorted((left, right) => {
-      const leftScore = left.tags.filter((tag) => currentTags.has(tag)).length;
-      const rightScore = right.tags.filter((tag) =>
-        currentTags.has(tag),
-      ).length;
+      const leftScore = left.tags.filter(tag => currentTags.has(tag)).length;
+      const rightScore = right.tags.filter(tag => currentTags.has(tag)).length;
       if (rightScore !== leftScore) {
         return rightScore - leftScore;
       }

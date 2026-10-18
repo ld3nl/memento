@@ -6,13 +6,13 @@ export const dynamic = "force-static";
 export async function GET() {
   const posts = await listPublishedPosts();
   const xml = buildRssFeed(
-    posts.map((post) => ({
+    posts.map(post => ({
       title: post.frontmatter.title,
       description: post.frontmatter.description,
       slug: post.slug,
       datePublished: post.frontmatter.datePublished,
       dateModified: post.frontmatter.dateModified,
-    })),
+    }))
   );
 
   return new Response(xml, {

@@ -8,7 +8,7 @@ import { DECADE_LENGTH, WEEKS_PER_YEAR, YEARS_IN_LIFETIME } from "./constants";
  * Generates an array of week indices
  */
 export const generateWeekIndices = (
-  count: number = WEEKS_PER_YEAR,
+  count: number = WEEKS_PER_YEAR
 ): readonly number[] => {
   return Array.from({ length: count }, (_, i) => i + 1);
 };
@@ -28,7 +28,7 @@ export const generateDecadeConfig = () => ({
 export const calculateDecadeYear = (
   decadeIndex: number,
   yearIndex: number,
-  decadeLength: number = DECADE_LENGTH,
+  decadeLength: number = DECADE_LENGTH
 ): number => {
   return decadeIndex + 1 + yearIndex * decadeLength;
 };

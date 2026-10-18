@@ -21,7 +21,7 @@ const LabeledInput = ({
     <>
       <div className="flex flex-col space-y-2 sm:space-y-3">
         <label
-          className="font-display text-xs font-semibold tracking-[0.25em] text-zinc-500 uppercase transition-colors sm:text-[0.6875rem] dark:text-zinc-400"
+          className="font-display text-xs font-semibold tracking-label text-secondary uppercase transition-colors sm:text-kicker dark:text-secondary"
           htmlFor={inputId}
           data-cy={`${inputId}-label`}
         >
@@ -29,10 +29,10 @@ const LabeledInput = ({
         </label>
         <input
           className={cn(
-            "min-h-[48px] w-full appearance-none rounded-none border-2 bg-zinc-100 px-4 py-3.5 font-sans text-base leading-tight text-zinc-900 shadow-sm transition-colors duration-200 placeholder:text-zinc-400 focus:ring-4 focus:outline-none sm:min-h-[52px] sm:px-5 sm:text-lg dark:bg-zinc-900 dark:text-zinc-50 dark:placeholder:text-zinc-500",
+            "min-h-[48px] w-full appearance-none rounded-none border-2 bg-surface-raised px-4 py-3.5 font-sans text-base leading-tight text-primary shadow-sm transition-colors duration-200 placeholder:text-secondary focus:ring-4 focus:outline-none sm:min-h-[52px] sm:px-5 sm:text-lg dark:bg-surface-raised dark:text-primary dark:placeholder:text-secondary",
             field.state.meta.isTouched && field.state.meta.errors.length > 0
-              ? "border-red-600 focus:border-red-600 focus:ring-red-600/30"
-              : "border-zinc-200 hover:border-zinc-300 focus:border-red-600 focus:ring-red-600/20 dark:border-zinc-700 dark:hover:border-zinc-600",
+              ? "border-accent focus:border-accent focus:ring-accent/30"
+              : "border-line hover:border-border focus:border-accent focus:ring-accent/20 dark:border-border dark:hover:border-border"
           )}
           id={inputId}
           type={inputType}
@@ -40,7 +40,7 @@ const LabeledInput = ({
           name={field.name}
           value={field.state.value ?? ""}
           onBlur={field.handleBlur}
-          onChange={(e) => {
+          onChange={e => {
             const value = e.target.value;
             field.handleChange(value);
             onValueChange?.(value);
@@ -55,8 +55,8 @@ const LabeledInput = ({
       </div>
       {field.state.meta.isTouched && field.state.meta.errors.length > 0 ? (
         <div id={`${inputId}-error`} role="alert" className="mt-2 sm:mt-3">
-          <div className="text-sm font-medium text-red-600 sm:text-base">
-            {field.state.meta.errors.map((error) => {
+          <div className="text-sm font-medium text-accent sm:text-base">
+            {field.state.meta.errors.map(error => {
               const errorMessage =
                 typeof error === "string"
                   ? error
@@ -71,8 +71,8 @@ const LabeledInput = ({
                   : error?.issues && error.issues.length > 0
                     ? error.issues
                         .map(
-                          (issue) =>
-                            `${issue?.path?.join(".") ?? "field"}:${issue?.message ?? ""}`,
+                          issue =>
+                            `${issue?.path?.join(".") ?? "field"}:${issue?.message ?? ""}`
                         )
                         .join("|")
                     : errorMessage;
