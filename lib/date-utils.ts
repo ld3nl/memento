@@ -6,8 +6,16 @@ import {
   intervalToDuration,
   parse,
 } from "date-fns";
-import { DEFAULT_DATE_FORMAT } from "./constants";
+import {
+  DECADE_LENGTH,
+  DEFAULT_DATE_FORMAT,
+  WEEKS_PER_YEAR,
+  YEARS_IN_LIFETIME,
+} from "./constants";
 import { parseAndValidateDate } from "./validation";
+
+const LIFETIME_YEARS = YEARS_IN_LIFETIME * DECADE_LENGTH;
+const LIFETIME_WEEKS = LIFETIME_YEARS * WEEKS_PER_YEAR;
 
 /**
  * Date calculation utilities
@@ -57,6 +65,39 @@ export const calculateYearsAlive = (dob: string | Date): number | null => {
 
   // Subtract 1 to account for current year
   return differenceInCalendarISOWeekYears(new Date(), dobDate) - 1;
+};
+
+/**
+ * Weeks painted as filled on the 52-week life calendar, plus the empty
+ * squares left in an 80-year grid. A calendar year is not 52 weeks, so this
+ * is the square count, not the raw elapsed time.
+ */
+export const calculateLifeWeeks = (
+  dob: string | Date
+): {
+  weeksLived: number;
+  weeksRemaining: number;
+  beyondGrid: boolean;
+} | null => {
+  const yearsAlive = calculateYearsAlive(dob);
+  const weeksFromBirthday = calculateWeeksFromLastBirthday(dob);
+  if (yearsAlive === null || weeksFromBirthday === null) return null;
+
+  if (yearsAlive >= LIFETIME_YEARS) {
+    return { weeksLived: LIFETIME_WEEKS, weeksRemaining: 0, beyondGrid: true };
+  }
+
+  const weeksIntoYear =
+    yearsAlive >= 0
+      ? Math.min(WEEKS_PER_YEAR, Math.max(0, weeksFromBirthday))
+      : 0;
+  const weeksLived = Math.max(yearsAlive, 0) * WEEKS_PER_YEAR + weeksIntoYear;
+
+  return {
+    weeksLived,
+    weeksRemaining: LIFETIME_WEEKS - weeksLived,
+    beyondGrid: false,
+  };
 };
 
 /**

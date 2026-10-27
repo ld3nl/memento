@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { cacheLife } from "next/cache";
 import { ArticleShell } from "../../components/content/ArticleShell";
 import { FaqSection } from "../../components/content/FaqSection";
 import { JsonLd } from "../../components/content/JsonLd";
@@ -13,7 +14,11 @@ import {
   graphJsonLd,
 } from "../../lib/json-ld";
 
+export const ensureStatic = "navigation";
+
 export async function generateMetadata(): Promise<Metadata> {
+  "use cache";
+  cacheLife("max");
   const about = await getAboutPage();
 
   return contentMetadata({
@@ -28,6 +33,8 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function AboutPage() {
+  "use cache";
+  cacheLife("max");
   const [about, posts] = await Promise.all([
     getAboutPage(),
     listPublishedPosts(),

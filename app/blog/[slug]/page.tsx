@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import { cacheLife } from "next/cache";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 import { ArticleShell } from "../../../components/content/ArticleShell";
 import { FaqSection } from "../../../components/content/FaqSection";
 import { JsonLd } from "../../../components/content/JsonLd";
@@ -16,12 +18,13 @@ import {
   faqJsonLd,
   graphJsonLd,
 } from "../../../lib/json-ld";
+import BlogLoading from "../loading";
 
 type Props = {
   params: Promise<{ slug: string }>;
 };
 
-export const dynamicParams = false;
+export const ensureStatic = "navigation";
 
 export async function generateStaticParams() {
   const posts = await listPublishedPosts();
@@ -29,6 +32,8 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  "use cache";
+  cacheLife("max");
   const { slug } = await params;
   const post = await getBlogPost(slug);
 
@@ -47,7 +52,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   });
 }
 
-export default async function BlogPostPage({ params }: Props) {
+export default function BlogPostPage({ params }: Props) {
+  return (
+    <Suspense fallback={<BlogLoading />}>
+      <CachedBlogPost params={params} />
+    </Suspense>
+  );
+}
+
+async function CachedBlogPost({ params }: Props) {
+  "use cache";
+  cacheLife("max");
   const { slug } = await params;
   const [post, posts] = await Promise.all([
     getBlogPost(slug),

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { cacheLife } from "next/cache";
 import Image from "next/image";
 import Link from "next/link";
 import { JsonLd } from "../components/content/JsonLd";
@@ -6,6 +7,8 @@ import Form from "../components/Form/Form";
 import { listPublishedPosts } from "../lib/content";
 import { formatContentDate } from "../lib/content-meta";
 import { OG_IMAGE, SITE_NAME, SITE_URL } from "../lib/site";
+
+export const ensureStatic = "navigation";
 
 export const metadata: Metadata = {
   alternates: {
@@ -17,6 +20,8 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
+  "use cache";
+  cacheLife("max");
   const posts = await listPublishedPosts();
   const featured = posts.slice(0, 3);
 

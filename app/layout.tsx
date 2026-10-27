@@ -195,6 +195,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html
       lang="en"
+      data-scroll-behavior="smooth"
       className={`${display.variable} ${body.variable} ${mono.variable} scroll-smooth scheme-light-dark`}
     >
       <body className="flex min-h-screen flex-col bg-surface font-sans text-primary antialiased dark:bg-surface dark:text-primary">

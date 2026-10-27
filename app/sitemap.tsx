@@ -1,9 +1,12 @@
 import type { MetadataRoute } from "next";
+import { cacheLife } from "next/cache";
 import { getAboutPage, listPublishedPosts } from "../lib/content";
 import { toIsoDateTime } from "../lib/content-meta";
 import { SITE_UPDATED, SITE_URL } from "../lib/site";
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+async function buildSitemap(): Promise<MetadataRoute.Sitemap> {
+  "use cache";
+  cacheLife("max");
   const fallbackDate = new Date(toIsoDateTime(SITE_UPDATED));
   const [about, posts] = await Promise.all([
     getAboutPage(),
@@ -78,4 +81,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   );
 
   return [...staticRoutes, ...postRoutes, ...dynamicRoutes];
+}
+
+export default function sitemap() {
+  return buildSitemap();
 }

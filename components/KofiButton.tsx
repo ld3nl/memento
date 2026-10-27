@@ -6,11 +6,12 @@ interface KofiButtonProps {
   size?: "small" | "medium" | "large";
 }
 
-const sizeClasses = {
-  small: "h-8",
-  medium: "h-9",
-  large: "h-12",
-};
+/** Display height in CSS pixels. Width follows the 580×146 file. */
+const displayHeight = {
+  small: 32,
+  medium: 36,
+  large: 48,
+} as const;
 
 export const KofiButton = ({
   className = "",
@@ -26,10 +27,9 @@ export const KofiButton = ({
       <Image
         src="/kofi4.png"
         alt="Buy Me a Coffee at ko-fi.com"
-        width={size === "small" ? 120 : size === "medium" ? 150 : 180}
-        height={size === "small" ? 32 : size === "medium" ? 36 : 48}
-        style={{ height: "auto", width: "auto" }}
-        className={sizeClasses[size]}
+        width={580}
+        height={146}
+        style={{ width: "auto", height: displayHeight[size] }}
         priority={false}
       />
     </Link>

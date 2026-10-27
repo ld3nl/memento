@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { cacheLife } from "next/cache";
 import Link from "next/link";
 import BackButton from "../../components/BackButton";
 import { Breadcrumbs } from "../../components/content/Breadcrumbs";
@@ -8,6 +9,8 @@ import { formatContentDate } from "../../lib/content-meta";
 import { contentMetadata } from "../../lib/content-metadata";
 import { blogJsonLd, breadcrumbJsonLd, graphJsonLd } from "../../lib/json-ld";
 import { SITE_URL } from "../../lib/site";
+
+export const ensureStatic = "navigation";
 
 export const metadata: Metadata = {
   ...contentMetadata({
@@ -33,6 +36,8 @@ export const metadata: Metadata = {
 };
 
 export default async function BlogIndexPage() {
+  "use cache";
+  cacheLife("max");
   const posts = await listPublishedPosts();
 
   const jsonLd = graphJsonLd([

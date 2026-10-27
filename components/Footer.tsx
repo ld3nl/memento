@@ -1,9 +1,16 @@
+import { cacheLife } from "next/cache";
 import Image from "next/image";
 import Link from "next/link";
 import { KofiButton } from "./KofiButton";
 
-export const Footer = () => {
-  const currentYear = new Date().getFullYear();
+async function copyrightYear() {
+  "use cache";
+  cacheLife("max");
+  return new Date().getFullYear();
+}
+
+export const Footer = async () => {
+  const currentYear = await copyrightYear();
 
   return (
     <footer className="mt-auto border-t-2 border-line bg-surface py-10 sm:py-12 dark:border-line dark:bg-surface print:hidden">

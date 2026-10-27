@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { connection } from "next/server";
+import { Suspense } from "react";
 import BackButton from "../../../components/BackButton";
 import { BurstSceneLazy } from "../../../components/BurstScene/BurstSceneLazy";
 import { LifeTable } from "../../../components/LifeTable/LifeTable";
-import { calculateFullAge } from "../../../lib/date-utils";
+import { calculateFullAge, calculateLifeWeeks } from "../../../lib/date-utils";
 import { serializeJsonLd } from "../../../lib/json-ld";
 import { OG_IMAGE, SITE_URL } from "../../../lib/site";
 import {
@@ -27,6 +29,7 @@ export async function generateMetadata({
   params,
   searchParams,
 }: Props): Promise<Metadata> {
+  await connection();
   const awaitedParams = await params;
   const view = awaitedParams.view;
   const dateParams = awaitedParams.params ?? [];
@@ -54,7 +57,7 @@ export async function generateMetadata({
 
   const ageData = calculateFullAge(birthDate);
   const age = ageData?.years ?? 0;
-  const weeksLived = age * 52 + Math.floor((ageData?.days ?? 0) / 7);
+  const weeksLived = calculateLifeWeeks(birthDate)?.weeksLived ?? 0;
   const potentialYearsLeft = Math.max(80 - age, 0);
   const viewTitle = view === "burst" ? "Burst View" : "Table View";
   const canonicalUrl = `${SITE_URL}/${view}/${urlPath}`;
@@ -89,7 +92,18 @@ export async function generateMetadata({
   };
 }
 
-const ViewPage = async ({ params, searchParams }: Props) => {
+function CalendarFallback() {
+  return (
+    <div className="group m-auto p-4 sm:p-6 lg:p-8">
+      <p className="text-center text-sm text-secondary">
+        Preparing your calendar…
+      </p>
+    </div>
+  );
+}
+
+const ViewContent = async ({ params, searchParams }: Props) => {
+  await connection();
   const awaitedParams = await params;
   const view = awaitedParams.view;
   const dateParams = awaitedParams.params ?? [];
@@ -118,10 +132,9 @@ const ViewPage = async ({ params, searchParams }: Props) => {
     )
   );
 
-  const ageData = calculateFullAge(birthDate);
-  const age = ageData?.years ?? 0;
-  const weeksLived = age * 52 + Math.floor((ageData?.days ?? 0) / 7);
-  const weeksRemaining = Math.max((80 - age) * 52, 0);
+  const lifeWeeks = calculateLifeWeeks(birthDate);
+  const weeksLived = lifeWeeks?.weeksLived ?? 0;
+  const weeksRemaining = lifeWeeks?.weeksRemaining ?? 0;
   const otherView: ViewMode = view === "table" ? "burst" : "table";
   const nameQuery = name ? `?name=${encodeURIComponent(name)}` : "";
 
@@ -169,7 +182,13 @@ const ViewPage = async ({ params, searchParams }: Props) => {
         </h1>
 
         {view === "table" ? (
-          <LifeTable dob={birthDate} />
+          <div className="life-table-fit">
+            <div className="life-table-frame">
+              <div className="life-table-scale">
+                <LifeTable dob={birthDate} />
+              </div>
+            </div>
+          </div>
         ) : (
           <div className="relative h-[80vh] w-full">
             <BurstSceneLazy
@@ -212,4 +231,10 @@ const ViewPage = async ({ params, searchParams }: Props) => {
   );
 };
 
-export default ViewPage;
+export default function ViewPage(props: Props) {
+  return (
+    <Suspense fallback={<CalendarFallback />}>
+      <ViewContent {...props} />
+    </Suspense>
+  );
+}

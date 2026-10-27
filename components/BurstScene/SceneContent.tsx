@@ -170,37 +170,14 @@ export const SceneContent = ({
 
   const { startTimeRef, animationFinishedRef, hasStartedRef } =
     useAnimationState();
+  const itemsIdentityRef = React.useRef(items);
 
-  React.useEffect(() => {
-    itemScalesRef.current = new Float32Array(items.length).fill(1);
-  }, [items.length]);
-
-  // biome-ignore lint/correctness/useExhaustiveDependencies: restart the intro when the week set changes, not only its length
   React.useEffect(() => {
     hasStartedRef.current = false;
     animationFinishedRef.current = false;
-    let raf = 0;
-    let alive = true;
-    const kick = () => {
-      if (!alive) return;
-      invalidate();
-      if (!animationFinishedRef.current) {
-        raf = requestAnimationFrame(kick);
-      }
-    };
-    kick();
-    const stopAt = window.setTimeout(
-      () => {
-        alive = false;
-      },
-      maxDelay + CONFIG.ANIMATION_DURATION_MS + 400
-    );
-    return () => {
-      alive = false;
-      cancelAnimationFrame(raf);
-      clearTimeout(stopAt);
-    };
-  }, [items, invalidate, maxDelay]);
+    itemScalesRef.current = new Float32Array(items.length).fill(1);
+    invalidate();
+  }, [items, invalidate, hasStartedRef, animationFinishedRef]);
 
   React.useEffect(() => {
     return () => {
@@ -217,8 +194,16 @@ export const SceneContent = ({
 
   useFrame(() => {
     const mesh = meshRef.current;
-    const itemScales = itemScalesRef.current;
     const gpu = gpuRef.current;
+
+    if (itemsIdentityRef.current !== items) {
+      itemsIdentityRef.current = items;
+      hasStartedRef.current = false;
+      animationFinishedRef.current = false;
+      itemScalesRef.current = new Float32Array(items.length).fill(1);
+    }
+
+    const itemScales = itemScalesRef.current;
 
     if (!mesh || !itemScales || !gpu) {
       return;

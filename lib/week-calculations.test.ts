@@ -4,6 +4,8 @@
  */
 
 import {
+  calculateFullAge,
+  calculateLifeWeeks,
   calculateWeeksFromLastBirthday,
   calculateYearsAlive,
   getCurrentDayOfWeek,
@@ -133,6 +135,33 @@ describe("Week Calculations - Comprehensive DOB Tests", () => {
         // differenceInCalendarWeeks counts calendar week boundaries crossed
         expect(weeksFromBday).toBeGreaterThanOrEqual(0);
         expect(weeksFromBday).toBeLessThanOrEqual(1);
+      });
+
+      it("matches the reported home and table counts for 17 Dec 1987", () => {
+        jest.setSystemTime(new Date(2026, 9, 26, 12, 0, 0));
+
+        const dob = new Date(1987, 11, 17);
+        const age = calculateFullAge(dob);
+        const life = calculateLifeWeeks(dob);
+
+        expect(age).toMatchObject({ years: 38, months: 10, days: 9 });
+        // 38 filled years plus 45 weeks of the current year. Raw elapsed time
+        // is 2,027, and years * 52 + leftover days is 1,977.
+        expect(life).toEqual({
+          weeksLived: 2021,
+          weeksRemaining: 2139,
+          beyondGrid: false,
+        });
+      });
+
+      it("fills the whole grid once the 80th year is complete", () => {
+        jest.setSystemTime(new Date(2026, 9, 26, 12, 0, 0));
+        const life = calculateLifeWeeks(new Date(1940, 0, 1));
+        expect(life).toEqual({
+          weeksLived: 80 * 52,
+          weeksRemaining: 0,
+          beyondGrid: true,
+        });
       });
 
       it("correctly calculates for someone turning 30 today", () => {

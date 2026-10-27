@@ -3,20 +3,21 @@
 import { createFormHook } from "@tanstack/react-form-nextjs";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { getFormattedAge } from "../../lib/date-utils";
+import { calculateLifeWeeks, getFormattedAge } from "../../lib/date-utils";
 import { FormStorage } from "../../lib/storage";
-import { generateLifeTableUrl } from "../../lib/url-utils";
+import {
+  birthDateFromPathSegments,
+  generateLifeTableUrl,
+} from "../../lib/url-utils";
 import { cn } from "../../lib/utils";
 import LabeledInput from "./fields/LabeledInput";
 import { fieldContext, formContext, useFormContext } from "./form-hook";
 import { formSchema } from "./schema";
 
-function calculateWeeksLived(birthdate: string) {
-  if (!birthdate) return null;
-  const birth = new Date(birthdate);
-  const now = new Date();
-  const msPerWeek = 1000 * 60 * 60 * 24 * 7;
-  return Math.floor((now.getTime() - birth.getTime()) / msPerWeek);
+function lifeWeeksForInput(birthdate: string) {
+  const birth = birthDateFromPathSegments(birthdate.split("-"));
+  if (!birth) return null;
+  return calculateLifeWeeks(birth);
 }
 
 // Create SubmitButton component using useFormContext
@@ -61,6 +62,7 @@ const Form = () => {
   const router = useRouter();
   const [saveData, setSaveData] = useState(false);
   const [weeksLived, setWeeksLived] = useState<number | null>(null);
+  const [beyondGrid, setBeyondGrid] = useState(false);
 
   const form = useAppForm({
     defaultValues: {
@@ -103,7 +105,9 @@ const Form = () => {
       setSaveData(savedData.saveData || false);
 
       if (savedData.date) {
-        setWeeksLived(calculateWeeksLived(savedData.date));
+        const life = lifeWeeksForInput(savedData.date);
+        setWeeksLived(life?.weeksLived ?? null);
+        setBeyondGrid(life?.beyondGrid ?? false);
       }
     };
 
@@ -113,7 +117,7 @@ const Form = () => {
     };
   }, [form]);
 
-  const overEighty = weeksLived !== null && weeksLived > 81 * 52;
+  const overEighty = beyondGrid;
 
   return (
     <div className="flex flex-col justify-center">
@@ -162,7 +166,9 @@ const Form = () => {
                 inputType="date"
                 onValueChange={date => {
                   void saveValues({ ...form.state.values, date });
-                  setWeeksLived(calculateWeeksLived(date));
+                  const life = lifeWeeksForInput(date);
+                  setWeeksLived(life?.weeksLived ?? null);
+                  setBeyondGrid(life?.beyondGrid ?? false);
                 }}
               />
               {field.state.value &&

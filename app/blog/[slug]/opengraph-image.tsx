@@ -1,4 +1,5 @@
-import { getBlogPost } from "../../../lib/content";
+import { cacheLife } from "next/cache";
+import { getBlogPost, listPublishedPosts } from "../../../lib/content";
 import {
   contentOgImage,
   OG_CONTENT_TYPE,
@@ -13,12 +14,25 @@ type Props = {
   params: Promise<{ slug: string }>;
 };
 
-export default async function BlogPostOgImage({ params }: Props) {
-  const { slug } = await params;
+export async function generateStaticParams() {
+  const posts = await listPublishedPosts();
+  return posts.map(post => ({ slug: post.slug }));
+}
+
+async function ogCopy(slug: string) {
+  "use cache";
+  cacheLife("max");
   const post = await getBlogPost(slug);
 
-  return contentOgImage({
+  return {
     title: post?.frontmatter.title ?? "Memento Mori",
     kicker: post?.frontmatter.kicker ?? "Journal",
-  });
+  };
+}
+
+export default async function BlogPostOgImage({ params }: Props) {
+  const { slug } = await params;
+  const copy = await ogCopy(slug);
+
+  return contentOgImage(copy);
 }

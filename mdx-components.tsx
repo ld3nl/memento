@@ -2,6 +2,7 @@ import type { MDXComponents } from "mdx/types";
 import Link from "next/link";
 import { ContentImage } from "./components/content/ContentImage";
 import { PullQuote } from "./components/content/PullQuote";
+import { ScrollTable } from "./components/content/ScrollTable";
 import { TryCalendar } from "./components/content/TryCalendar";
 
 const linkClassName =
@@ -10,6 +11,7 @@ const linkClassName =
 const components = {
   ContentImage,
   PullQuote,
+  ScrollTable,
   TryCalendar,
   h1: ({ children, id, ...props }) => (
     <h1
@@ -63,6 +65,37 @@ const components = {
     <li className="leading-relaxed" {...props}>
       {children}
     </li>
+  ),
+  table: ({ children, ...props }) => (
+    <div className="my-8 overflow-x-auto">
+      <table className="w-full border-collapse text-sm" {...props}>
+        {children}
+      </table>
+    </div>
+  ),
+  caption: ({ children, ...props }) => (
+    <caption
+      className="caption-top mb-3 text-left text-sm text-secondary"
+      {...props}
+    >
+      {children}
+    </caption>
+  ),
+  th: ({ children, className = "", ...props }) => (
+    <th
+      className={`border-border border-b-2 py-2 pr-4 font-semibold text-primary ${className}`}
+      {...props}
+    >
+      {children}
+    </th>
+  ),
+  td: ({ children, className = "", ...props }) => (
+    <td
+      className={`border-border border-b py-2 pr-4 text-primary ${className}`}
+      {...props}
+    >
+      {children}
+    </td>
   ),
   strong: ({ children, ...props }) => (
     <strong className="text-primary font-semibold" {...props}>

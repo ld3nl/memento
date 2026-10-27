@@ -1,5 +1,7 @@
+import { DECADE_LENGTH, WEEKS_PER_YEAR, YEARS_IN_LIFETIME } from "./constants";
 import {
   calculateFullAge,
+  calculateLifeWeeks,
   calculateWeeksFromLastBirthday,
   calculateYearsAlive,
   getFormattedAge,
@@ -127,6 +129,34 @@ describe("date utilities", () => {
       const birthDate = new Date("1990-01-15");
       const result = calculateWeeksFromLastBirthday(birthDate);
       expect(result).toBeGreaterThan(20);
+    });
+  });
+
+  describe("calculateLifeWeeks", () => {
+    it("counts filled calendar squares, including months since the birthday", () => {
+      const dob = new Date(1990, 0, 15);
+      const yearsAlive = calculateYearsAlive(dob);
+      const weeksFromBirthday = calculateWeeksFromLastBirthday(dob);
+      const life = calculateLifeWeeks(dob);
+      const age = calculateFullAge(dob);
+
+      expect(yearsAlive).toBe(33);
+      expect(life).toEqual({
+        weeksLived:
+          (yearsAlive ?? 0) * WEEKS_PER_YEAR + (weeksFromBirthday ?? 0),
+        weeksRemaining:
+          YEARS_IN_LIFETIME * DECADE_LENGTH * WEEKS_PER_YEAR -
+          ((yearsAlive ?? 0) * WEEKS_PER_YEAR + (weeksFromBirthday ?? 0)),
+        beyondGrid: false,
+      });
+      // years * 52 + leftover days drops the months and must not be reused
+      expect(life?.weeksLived).not.toBe(
+        (age?.years ?? 0) * WEEKS_PER_YEAR + Math.floor((age?.days ?? 0) / 7)
+      );
+    });
+
+    it("returns null for an invalid date", () => {
+      expect(calculateLifeWeeks("not-a-date")).toBeNull();
     });
   });
 });

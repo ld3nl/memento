@@ -1,11 +1,13 @@
+import { cacheLife } from "next/cache";
 import { listPublishedPosts } from "../../lib/content";
 import { buildRssFeed } from "../../lib/rss";
 
-export const dynamic = "force-static";
-
-export async function GET() {
+async function rssDocument() {
+  "use cache";
+  cacheLife("hours");
   const posts = await listPublishedPosts();
-  const xml = buildRssFeed(
+
+  return buildRssFeed(
     posts.map(post => ({
       title: post.frontmatter.title,
       description: post.frontmatter.description,
@@ -14,6 +16,10 @@ export async function GET() {
       dateModified: post.frontmatter.dateModified,
     }))
   );
+}
+
+export async function GET() {
+  const xml = await rssDocument();
 
   return new Response(xml, {
     headers: {
