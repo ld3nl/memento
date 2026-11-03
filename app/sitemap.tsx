@@ -60,27 +60,7 @@ async function buildSitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
-  const sampleBirthYears = [
-    2006, 2000, 1995, 1990, 1985, 1980, 1975, 1970, 1965,
-  ];
-  const dynamicRoutes: MetadataRoute.Sitemap = sampleBirthYears.flatMap(
-    year => [
-      {
-        url: `${SITE_URL}/table/${year}/1/1`,
-        lastModified: fallbackDate,
-        changeFrequency: "monthly" as const,
-        priority: 0.6,
-      },
-      {
-        url: `${SITE_URL}/burst/${year}/1/1`,
-        lastModified: fallbackDate,
-        changeFrequency: "monthly" as const,
-        priority: 0.6,
-      },
-    ]
-  );
-
-  return [...staticRoutes, ...postRoutes, ...dynamicRoutes];
+  return [...staticRoutes, ...postRoutes];
 }
 
 export default function sitemap() {

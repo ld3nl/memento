@@ -8,7 +8,7 @@ describe("MDX content pages", () => {
 
   it("lists journal notes and opens a stoic post", () => {
     cy.visit("/blog");
-    cy.contains("h1", "Notes on a finite life");
+    cy.contains("h1", "Notes on life, time, and Stoicism");
     cy.contains("Steve Jobs and the Morning Question").click();
     cy.location("pathname").should("eq", "/blog/steve-jobs-memento-mori");
     cy.contains("h1", "Steve Jobs and the Morning Question");

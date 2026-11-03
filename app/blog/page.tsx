@@ -14,9 +14,9 @@ export const ensureStatic = "navigation";
 
 export const metadata: Metadata = {
   ...contentMetadata({
-    title: "Journal",
+    title: "Stoicism and Life in Weeks",
     description:
-      "Notes on Stoicism, Steve Jobs's morning question, and how a life in weeks makes mortality useful instead of decorative.",
+      "Read about memento mori, Stoicism, and life in weeks, with simple ways to make time for what matters to you.",
     path: "/blog",
     keywords: [
       "memento mori",
@@ -66,11 +66,11 @@ export default async function BlogIndexPage() {
           Journal
         </p>
         <h1 className="font-display text-accent mb-6 text-display leading-tight tracking-tight italic sm:text-5xl">
-          Notes on a finite life
+          Notes on life, time, and Stoicism
         </h1>
         <p className="text-primary mb-10 max-w-xl text-base leading-relaxed">
-          Stoicism, memento mori, Steve Jobs's last-day question, and the
-          arithmetic of a life in weeks. Written to be used, not collected.
+          Thoughts on memento mori, Stoicism, and life in weeks. A place to
+          reflect on how you spend your time and what matters to you.
         </p>
         <ul className="divide-border border-border divide-y-2 border-y-2">
           {posts.map(post => (

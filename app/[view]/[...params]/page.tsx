@@ -35,6 +35,11 @@ export async function generateMetadata({
   const dateParams = awaitedParams.params ?? [];
   const birthDate = birthDateFromPathSegments(dateParams);
   const urlPath = dateParams.join("/");
+
+  if (!isViewMode(view) || !birthDate) {
+    notFound();
+  }
+
   const query = await searchParams;
   const name = extractNameFromUrl(
     new URLSearchParams(
@@ -48,13 +53,6 @@ export async function generateMetadata({
     )
   );
 
-  if (!birthDate) {
-    return {
-      title: "Your Life in Weeks - Memento Mori",
-      description: "Visualize your life in weeks with Memento Mori.",
-    };
-  }
-
   const ageData = calculateFullAge(birthDate);
   const age = ageData?.years ?? 0;
   const weeksLived = calculateLifeWeeks(birthDate)?.weeksLived ?? 0;
@@ -64,10 +62,19 @@ export async function generateMetadata({
   const titleName = name ? `${name} · ` : "";
 
   return {
-    title: `${titleName}Your Life in Weeks - Age ${age} - ${viewTitle} - Memento Mori`,
+    title: `${titleName}Your Life in Weeks - Age ${age} - ${viewTitle}`,
     description: `How many weeks have you lived? At ${age} years old, you've lived approximately ${weeksLived} weeks. Visualize your life ${view === "burst" ? "as a radial burst" : "in a table grid"} with ${potentialYearsLeft} years potentially remaining. Make every week count.`,
     alternates: {
       canonical: canonicalUrl,
+    },
+    // Personal calendars stay shareable without becoming search landing pages.
+    robots: {
+      index: false,
+      follow: true,
+      googleBot: {
+        index: false,
+        follow: true,
+      },
     },
     openGraph: {
       title: `${titleName}Your Life in Weeks - Age ${age} - ${viewTitle}`,

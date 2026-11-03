@@ -10,12 +10,31 @@ import { OG_IMAGE, SITE_NAME, SITE_URL } from "../lib/site";
 
 export const ensureStatic = "navigation";
 
+const pageTitle = "Life in Weeks Calculator | Memento Mori";
+const pageDescription =
+  "See your life in weeks with a free Memento Mori calendar. Enter your birthdate to count the weeks you've lived and explore an 80-year calendar. No account needed.";
+
 export const metadata: Metadata = {
+  title: { absolute: pageTitle },
+  description: pageDescription,
   alternates: {
     canonical: SITE_URL,
     types: {
       "application/rss+xml": `${SITE_URL}/feed.xml`,
     },
+  },
+  openGraph: {
+    title: pageTitle,
+    description: pageDescription,
+    url: SITE_URL,
+    siteName: SITE_NAME,
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: pageTitle,
+    description: pageDescription,
   },
 };
 
@@ -41,7 +60,7 @@ export default async function Page() {
           priceCurrency: "USD",
         },
         description:
-          "A Memento Mori calendar is a visual tool used to track life in weeks, helping users reflect on mortality and prioritize time.",
+          "A free calendar that shows your life in weeks, using an 80-year span as a rough guide.",
         featureList:
           "Calculate life in weeks, Visual grid of 80 years, Persistent bookmarkable URL",
         screenshot: OG_IMAGE,
@@ -94,12 +113,14 @@ export default async function Page() {
                 priority
               />
               <h1 className="font-display text-display leading-display tracking-tight text-primary italic sm:text-5xl lg:text-6xl xl:text-7xl dark:text-primary">
-                Memento
+                Your life
                 <br />
-                Mori
+                in weeks
               </h1>
               <p className="mt-5 max-w-md text-base leading-relaxed text-secondary sm:mt-6 sm:text-lg dark:text-secondary">
-                Every week is numbered. Enter your birthdate to see yours.
+                Enter your birthdate to see how many weeks you&apos;ve lived.
+                Take a moment to think about how you&apos;d like to spend the
+                weeks ahead.
               </p>
             </div>
           </div>
@@ -134,32 +155,44 @@ export default async function Page() {
               <p>
                 A{" "}
                 <strong className="font-semibold">Memento Mori calendar</strong>{" "}
-                is a grid of weeks. You mark the ones already lived. The empty
-                cells are the ones you still have, if you get something like 80
-                years.
+                shows your life as a grid of weeks. Each square is one week in
+                an 80-year life. The filled squares show the weeks you&apos;ve
+                lived.
               </p>
               <p>
-                Enter a birthdate. The result is a bookmarkable 80-year picture,
-                as a table or a burst. It will not tell you what to value. It
-                will make the container visible.
+                You can see your calendar as a grid or a circle, then save its
+                link to come back later. It&apos;s free, and you don&apos;t need
+                an account.
               </p>
               <p>
-                The habit behind it is{" "}
+                The 80-year span is a rough guide, not a prediction of how long
+                you&apos;ll live. Read{" "}
+                <Link
+                  href="/blog/life-in-weeks"
+                  className="text-accent underline decoration-accent/30 underline-offset-4 hover:decoration-accent"
+                >
+                  how the life in weeks calendar works
+                </Link>
+                .
+              </p>
+              <p>
+                {"The name "}
                 <Link
                   href="/blog/what-is-memento-mori"
                   className="text-accent underline decoration-accent/30 underline-offset-4 hover:decoration-accent"
                 >
                   memento mori
                 </Link>
-                : remember that you will die, closely enough that this week
-                stops being a rehearsal. The{" "}
+                {
+                  " means “remember that you will die.” It’s a reminder to make time for the people and things that matter to you. Our "
+                }
                 <Link
                   href="/blog"
                   className="text-accent underline decoration-accent/30 underline-offset-4 hover:decoration-accent"
                 >
                   journal
                 </Link>{" "}
-                has the longer notes on Stoics, Steve Jobs, and the practice.
+                has more on this idea and ways to use it in everyday life.
               </p>
             </div>
           </section>
