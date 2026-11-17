@@ -10,6 +10,7 @@ import {
   birthDateFromPathSegments,
   generateLifeTableUrl,
 } from "../../lib/url-utils";
+import { clearWeekNotes } from "../../lib/week-notes";
 import { breakpoints } from "../../styles/breakpoints.stylex";
 import { kicker } from "../../styles/recipes/kicker.stylex";
 import { tokens } from "../../styles/tokens.stylex";
@@ -513,6 +514,7 @@ const Form = () => {
                 } else {
                   try {
                     await FormStorage.clearFormData();
+                    await clearWeekNotes();
                   } catch (error) {
                     console.error("Failed to clear form data:", error);
                   }

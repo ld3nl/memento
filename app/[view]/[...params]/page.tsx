@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { connection } from "next/server";
-import { Suspense, type ReactNode } from "react";
+import { type ReactNode, Suspense } from "react";
 import BackButton from "../../../components/BackButton";
 import { BurstSceneLazy } from "../../../components/BurstScene/BurstSceneLazy";
 import { CalendarHeading } from "../../../components/CalendarHeading";

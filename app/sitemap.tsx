@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { cacheLife } from "next/cache";
 import { getAboutPage, listPublishedPosts } from "../lib/content";
 import { toIsoDateTime } from "../lib/content-meta";
+import { listLives } from "../lib/lives";
 import { SITE_UPDATED, SITE_URL } from "../lib/site";
 
 async function buildSitemap(): Promise<MetadataRoute.Sitemap> {
@@ -60,7 +61,14 @@ async function buildSitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
-  return [...staticRoutes, ...postRoutes];
+  const lifeRoutes: MetadataRoute.Sitemap = listLives().map(life => ({
+    url: `${SITE_URL}/lives/${life.slug}`,
+    lastModified: new Date(toIsoDateTime(life.updated)),
+    changeFrequency: "yearly" as const,
+    priority: 0.6,
+  }));
+
+  return [...staticRoutes, ...postRoutes, ...lifeRoutes];
 }
 
 export default function sitemap() {

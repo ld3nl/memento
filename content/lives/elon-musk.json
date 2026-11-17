@@ -1,0 +1,292 @@
+{
+  "slug": "elon-musk",
+  "name": "Elon Musk",
+  "born": "1971-06-28",
+  "birthplace": "Pretoria, South Africa",
+  "source": "https://grokipedia.com/page/Elon_Musk",
+  "sourceName": "Grokipedia",
+  "updated": "2026-11-16",
+  "essay": "/blog/elon-musk-in-weeks",
+  "summary": "Born 28 June 1971 in Pretoria. Each color is a chapter. Open a week for the events inside it.",
+  "marks": [
+    {
+      "kind": "chapter",
+      "label": "Pretoria",
+      "color": "olive",
+      "start": "1971-06-28",
+      "end": "1988-12-31",
+      "startPrecision": "day",
+      "endPrecision": "year"
+    },
+    {
+      "kind": "chapter",
+      "label": "Canada",
+      "color": "indigo",
+      "start": "1989-01-01",
+      "end": "1990-08-31",
+      "startPrecision": "year",
+      "endPrecision": "month"
+    },
+    {
+      "kind": "chapter",
+      "label": "Queen's",
+      "color": "blue",
+      "start": "1990-09-01",
+      "end": "1992-08-31",
+      "startPrecision": "month",
+      "endPrecision": "month"
+    },
+    {
+      "kind": "chapter",
+      "label": "Penn",
+      "color": "violet",
+      "start": "1992-09-01",
+      "end": "1995-05-31",
+      "startPrecision": "month",
+      "endPrecision": "month"
+    },
+    {
+      "kind": "chapter",
+      "label": "Zip2",
+      "color": "amber",
+      "start": "1995-06-01",
+      "end": "1999-02-28",
+      "startPrecision": "month",
+      "endPrecision": "month"
+    },
+    {
+      "kind": "chapter",
+      "label": "X.com",
+      "color": "cyan",
+      "start": "1999-03-01",
+      "end": "2001-01-31",
+      "startPrecision": "month",
+      "endPrecision": "month"
+    },
+    {
+      "kind": "chapter",
+      "label": "PayPal",
+      "color": "teal",
+      "start": "2001-02-01",
+      "end": "2002-05-05",
+      "startPrecision": "month",
+      "endPrecision": "day"
+    },
+    {
+      "kind": "chapter",
+      "label": "SpaceX",
+      "color": "orange",
+      "start": "2002-05-06",
+      "end": "2004-01-31",
+      "startPrecision": "day",
+      "endPrecision": "month"
+    },
+    {
+      "kind": "chapter",
+      "label": "Tesla",
+      "color": "green",
+      "start": "2004-02-01",
+      "end": "2016-12-16",
+      "startPrecision": "month",
+      "endPrecision": "day"
+    },
+    {
+      "kind": "chapter",
+      "label": "Neuralink",
+      "color": "rose",
+      "start": "2016-12-17",
+      "end": "2022-10-26",
+      "startPrecision": "day",
+      "endPrecision": "day"
+    },
+    {
+      "kind": "chapter",
+      "label": "X",
+      "color": "copper",
+      "start": "2022-10-27",
+      "end": "2023-03-08",
+      "startPrecision": "day",
+      "endPrecision": "day"
+    },
+    {
+      "kind": "chapter",
+      "label": "xAI",
+      "color": "graphite",
+      "start": "2023-03-09",
+      "end": "2026-09-28",
+      "startPrecision": "day",
+      "endPrecision": "day"
+    },
+    {
+      "kind": "event",
+      "label": "Zip2 sold",
+      "color": "amber",
+      "start": "1999-02-01",
+      "end": "1999-02-28",
+      "startPrecision": "month",
+      "endPrecision": "month"
+    },
+    {
+      "kind": "event",
+      "label": "Removed as CEO",
+      "color": "cyan",
+      "start": "2000-09-01",
+      "end": "2000-09-30",
+      "startPrecision": "month",
+      "endPrecision": "month"
+    },
+    {
+      "kind": "event",
+      "label": "PayPal sold",
+      "color": "teal",
+      "start": "2002-10-01",
+      "end": "2002-10-31",
+      "startPrecision": "month",
+      "endPrecision": "month"
+    },
+    {
+      "kind": "event",
+      "label": "Falcon 1 orbit",
+      "color": "orange",
+      "start": "2008-09-28",
+      "end": "2008-09-28",
+      "startPrecision": "day",
+      "endPrecision": "day"
+    },
+    {
+      "kind": "event",
+      "label": "Tesla CEO",
+      "color": "green",
+      "start": "2008-10-01",
+      "end": "2008-10-31",
+      "startPrecision": "month",
+      "endPrecision": "month"
+    },
+    {
+      "kind": "event",
+      "label": "NASA cargo contract",
+      "color": "orange",
+      "start": "2008-12-23",
+      "end": "2008-12-23",
+      "startPrecision": "day",
+      "endPrecision": "day"
+    },
+    {
+      "kind": "event",
+      "label": "Booster landing",
+      "color": "orange",
+      "start": "2015-12-21",
+      "end": "2015-12-21",
+      "startPrecision": "day",
+      "endPrecision": "day"
+    },
+    {
+      "kind": "event",
+      "label": "OpenAI founded",
+      "color": "fuchsia",
+      "start": "2015-12-11",
+      "end": "2015-12-11",
+      "startPrecision": "day",
+      "endPrecision": "day"
+    },
+    {
+      "kind": "event",
+      "label": "Boring Company",
+      "color": "rose",
+      "start": "2016-12-17",
+      "end": "2016-12-17",
+      "startPrecision": "day",
+      "endPrecision": "day"
+    },
+    {
+      "kind": "event",
+      "label": "Shanghai production",
+      "color": "green",
+      "start": "2019-12-01",
+      "end": "2019-12-31",
+      "startPrecision": "month",
+      "endPrecision": "month"
+    },
+    {
+      "kind": "event",
+      "label": "Twitter acquired",
+      "color": "copper",
+      "start": "2022-10-27",
+      "end": "2022-10-27",
+      "startPrecision": "day",
+      "endPrecision": "day"
+    },
+    {
+      "kind": "event",
+      "label": "xAI incorporated",
+      "color": "graphite",
+      "start": "2023-03-09",
+      "end": "2023-03-09",
+      "startPrecision": "day",
+      "endPrecision": "day"
+    },
+    {
+      "kind": "event",
+      "label": "xAI announced",
+      "color": "graphite",
+      "start": "2023-07-12",
+      "end": "2023-07-12",
+      "startPrecision": "day",
+      "endPrecision": "day"
+    },
+    {
+      "kind": "event",
+      "label": "Rebranded to X",
+      "color": "copper",
+      "start": "2023-07-23",
+      "end": "2023-07-23",
+      "startPrecision": "day",
+      "endPrecision": "day"
+    },
+    {
+      "kind": "event",
+      "label": "Neuralink implant",
+      "color": "rose",
+      "start": "2024-01-01",
+      "end": "2024-01-31",
+      "startPrecision": "month",
+      "endPrecision": "month"
+    },
+    {
+      "kind": "event",
+      "label": "Booster catch",
+      "color": "orange",
+      "start": "2024-10-01",
+      "end": "2024-10-31",
+      "startPrecision": "month",
+      "endPrecision": "month"
+    },
+    {
+      "kind": "event",
+      "label": "Grokipedia",
+      "color": "graphite",
+      "start": "2025-10-27",
+      "end": "2025-10-27",
+      "startPrecision": "day",
+      "endPrecision": "day"
+    },
+    {
+      "kind": "event",
+      "label": "SpaceX buys xAI",
+      "color": "graphite",
+      "start": "2026-02-01",
+      "end": "2026-02-28",
+      "startPrecision": "month",
+      "endPrecision": "month"
+    },
+    {
+      "kind": "event",
+      "label": "Starship orbit",
+      "color": "orange",
+      "start": "2026-09-28",
+      "end": "2026-09-28",
+      "startPrecision": "day",
+      "endPrecision": "day"
+    }
+  ]
+}

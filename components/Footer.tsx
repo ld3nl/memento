@@ -216,6 +216,7 @@ export const Footer = async () => {
           <FooterLink href="/">Home</FooterLink>
           <FooterLink href="/about">About</FooterLink>
           <FooterLink href="/blog">Journal</FooterLink>
+          <FooterLink href="/lives/elon-musk">Elon Musk</FooterLink>
           <FooterLink href="/table/1990/1/1">Example: 1990</FooterLink>
           <FooterLink href="/burst/1985/6/15">Burst View</FooterLink>
         </nav>

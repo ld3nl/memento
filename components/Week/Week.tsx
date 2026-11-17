@@ -1,7 +1,11 @@
 import * as stylex from "@stylexjs/stylex";
+import { type KeyboardEvent, useContext } from "react";
+import { EMPTY_WEEK_SPANS, inkPaint } from "../../lib/week-notes";
 import { breakpoints } from "../../styles/breakpoints.stylex";
 import { tokens } from "../../styles/tokens.stylex";
 import type { WeekProps } from "./Week.types";
+import { WeekInspectContext } from "./week-inspect";
+import { WeekNotesContext } from "./week-notes-context";
 
 type YearTick = "origin" | "decade" | "mark";
 
@@ -34,6 +38,9 @@ const styles = stylex.create({
     },
     printColorAdjust: "exact",
     WebkitPrintColorAdjust: "exact",
+  },
+  hit: {
+    cursor: "pointer",
   },
   emptyBorder: {
     borderColor: {
@@ -125,14 +132,29 @@ export const Week = ({
   className,
   isCurrentWeek,
   currentDayOfWeek,
+  lifeYear,
+  tabStop,
 }: WeekProps) => {
   const yearTick = yearTickFor(yearsAlive);
+  const inspect = useContext(WeekInspectContext);
+  const weekNotes = useContext(WeekNotesContext);
+  const inspectable = lifeYear !== undefined && inspect !== null;
+  const marks =
+    inspectable && lifeYear !== undefined
+      ? (weekNotes?.marksFor(lifeYear, weekIndex) ?? EMPTY_WEEK_SPANS)
+      : EMPTY_WEEK_SPANS;
+  const noteHover =
+    marks.length > 0 && lifeYear !== undefined
+      ? (weekNotes?.hoverFor(lifeYear, weekIndex) ?? null)
+      : null;
+  const markColor = marks[0]?.color;
   const fillPercentage = currentWeekFill(isCurrentWeek, currentDayOfWeek);
   const showFill = Boolean(isCurrentWeek && currentDayOfWeek);
   const isLived = Boolean(isFilled || isCurrentWeek);
 
   const stylexProps = stylex.props(
     styles.cell,
+    inspectable && styles.hit,
     !isLived && styles.emptyBorder,
     Boolean(isFilled && !isCurrentWeek) && styles.filled,
     weekIndex > 26 && styles.secondHalf
@@ -146,14 +168,26 @@ export const Week = ({
     .filter(Boolean)
     .join(" ");
 
-  return (
-    <div
-      {...stylexProps}
-      className={markerClasses}
-      {...(yearsAlive ? { title: yearsAlive, "data-tick": yearTick } : {})}
-      {...(showFill ? { "data-current-week-day": currentDayOfWeek } : {})}
-    >
-      {showFill ? (
+  const shared = {
+    ...stylexProps,
+    className: markerClasses,
+    ...(markColor
+      ? {
+          style: { ...stylexProps.style, backgroundColor: inkPaint(markColor) },
+        }
+      : {}),
+    ...(noteHover
+      ? { title: noteHover }
+      : yearsAlive
+        ? { title: yearsAlive }
+        : {}),
+    ...(yearsAlive ? { "data-tick": yearTick } : {}),
+    ...(showFill ? { "data-current-week-day": currentDayOfWeek } : {}),
+  };
+
+  const inner = (
+    <>
+      {showFill && !markColor ? (
         <div
           {...stylex.props(styles.fillBar)}
           style={{ ["--week-fill" as string]: `${fillPercentage}%` }}
@@ -171,6 +205,69 @@ export const Week = ({
           {yearsAlive}
         </span>
       ) : null}
+    </>
+  );
+
+  return (
+    <div
+      {...shared}
+      {...(inspectable
+        ? {
+            tabIndex: isCurrentWeek || tabStop ? 0 : -1,
+            "data-life-year": lifeYear,
+            "data-week-index": weekIndex,
+            onClick: () => inspect(lifeYear, weekIndex),
+            onKeyDown: moveWeekFocus,
+          }
+        : {})}
+    >
+      {inner}
     </div>
   );
 };
+
+function moveWeekFocus(event: KeyboardEvent<HTMLDivElement>) {
+  const table = event.currentTarget.closest<HTMLElement>(
+    "[data-cy='life-table']"
+  );
+  if (!table) return;
+
+  const current = event.currentTarget;
+  if (event.key === "Enter" || event.key === " ") {
+    event.preventDefault();
+    current.click();
+    return;
+  }
+
+  const row = current.closest<HTMLElement>("[data-cy='year-grid']");
+  if (!row) return;
+  const rows = [
+    ...table.querySelectorAll<HTMLElement>("[data-cy='year-grid']"),
+  ];
+  const rowIndex = rows.indexOf(row);
+  const cells = [...row.querySelectorAll<HTMLDivElement>("[data-week-index]")];
+  const col = cells.indexOf(current);
+
+  let next: HTMLDivElement | undefined;
+  if (event.key === "ArrowRight") next = cells[col + 1];
+  else if (event.key === "ArrowLeft") next = cells[col - 1];
+  else if (event.key === "ArrowDown") {
+    next =
+      rows[rowIndex + 1]?.querySelectorAll<HTMLDivElement>("[data-week-index]")[
+        col
+      ];
+  } else if (event.key === "ArrowUp") {
+    next =
+      rows[rowIndex - 1]?.querySelectorAll<HTMLDivElement>("[data-week-index]")[
+        col
+      ];
+  } else if (event.key === "Home") next = cells[0];
+  else if (event.key === "End") next = cells[cells.length - 1];
+  else return;
+
+  if (!next || next === current) return;
+  event.preventDefault();
+  current.tabIndex = -1;
+  next.tabIndex = 0;
+  next.focus();
+}

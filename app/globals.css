@@ -318,6 +318,10 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
    letter page. Do NOT put break-inside:avoid on the table alone — that
    orphans the title on page 1 and shoves the grid to page 2. */
 @media print {
+  .life-table-fit {
+    color-scheme: light;
+  }
+
   .calendar-print {
     break-inside: avoid;
     page-break-inside: avoid;

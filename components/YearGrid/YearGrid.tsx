@@ -1,4 +1,9 @@
 import * as stylex from "@stylexjs/stylex";
+import {
+  DECADE_LENGTH,
+  WEEKS_PER_YEAR,
+  YEARS_IN_LIFETIME,
+} from "../../lib/constants";
 import { Week } from "../Week/Week";
 import {
   isCurrentWeek as isCurrentWeekFn,
@@ -53,6 +58,12 @@ export const YearGrid = ({
             isFilled={isFilled}
             isCurrentWeek={isCurrentWeek}
             currentDayOfWeek={isCurrentWeek ? daysIntoCurrentWeek : undefined}
+            lifeYear={currentDecadeYear}
+            tabStop={
+              yearsAlive >= YEARS_IN_LIFETIME * DECADE_LENGTH &&
+              currentDecadeYear === YEARS_IN_LIFETIME * DECADE_LENGTH &&
+              weekIndex === WEEKS_PER_YEAR
+            }
             {...(showYearLabel ? { yearsAlive: `${currentDecadeYear}` } : {})}
           />
         );

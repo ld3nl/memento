@@ -14,6 +14,9 @@ import { kicker } from "../styles/recipes/kicker.stylex";
 import { textLink } from "../styles/recipes/textLink.stylex";
 import { tokens } from "../styles/tokens.stylex";
 
+/** Quoted once, outside the markup, so the boot script stays a constant. */
+const SAVED_DATE_BOOT_KEY = JSON.stringify(FORM_DATA_STORAGE_KEY);
+
 const styles = stylex.create({
   hero: {
     width: "100%",
@@ -400,10 +403,11 @@ export default async function Page() {
               </p>
             </div>
           </div>
+          {/* Runs while the HTML is parsing, before the preview can push content. */}
           <script
-            // Runs while the HTML is parsing, before the preview can push content.
+            // biome-ignore lint/security/noDangerouslySetInnerHtml: boot script interpolates a constant storage key, not user HTML.
             dangerouslySetInnerHTML={{
-              __html: `(function(){try{var raw=localStorage.getItem(${JSON.stringify(FORM_DATA_STORAGE_KEY)});if(!raw)return;var data=JSON.parse(raw);if(data&&typeof data.date==="string"&&data.date)document.documentElement.setAttribute("data-memento-saved","");}catch(e){}})();`,
+              __html: `(function(){try{var raw=localStorage.getItem(${SAVED_DATE_BOOT_KEY});if(!raw)return;var data=JSON.parse(raw);if(data&&typeof data.date==="string"&&data.date)document.documentElement.setAttribute("data-memento-saved","");}catch(e){}})();`,
             }}
           />
           <Form />
