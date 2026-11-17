@@ -17,6 +17,26 @@ describe("life share image", () => {
     expect(grid[79]?.[51]).toBe("#3f3f46");
   });
 
+  it("paints a lived week with no chapter in red", () => {
+    if (!life) throw new Error("missing life");
+    const grid = paintLifeGrid(life, new Date(2026, 10, 16));
+    const dob = new Date(1971, 5, 28);
+    let found = false;
+
+    for (let year = 1; year <= 80 && !found; year++) {
+      for (let week = 1; week <= 52; week++) {
+        const days = lifeWeekDays(dob, year, week);
+        if (days.startDay > "2026-09-28" && days.startDay <= "2026-11-16") {
+          expect(grid[year - 1]?.[week - 1]).toBe("#dc2626");
+          found = true;
+          break;
+        }
+      }
+    }
+
+    expect(found).toBe(true);
+  });
+
   it("keeps the chapter color on a week that also has an event", () => {
     if (!life) throw new Error("missing life");
     const grid = paintLifeGrid(life);

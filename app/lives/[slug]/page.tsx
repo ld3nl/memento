@@ -14,7 +14,7 @@ import {
   breadcrumbJsonLd,
   graphJsonLd,
 } from "../../../lib/json-ld";
-import { LIFE_OG_SIZE } from "../../../lib/life-og";
+import { LIFE_OG_CONTENT_TYPE, LIFE_OG_SIZE } from "../../../lib/life-og";
 import { getLife, lifeSpans, listLives } from "../../../lib/lives";
 import {
   formatSpanRange,
@@ -192,10 +192,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     ],
     ogType: "website",
     image: {
-      url: absoluteUrl(`/lives/${life.slug}/og.png`),
+      url: absoluteUrl(`/lives/${life.slug}/og.jpg`),
       width: LIFE_OG_SIZE.width,
       height: LIFE_OG_SIZE.height,
       alt: `${life.name}, life in weeks`,
+      type: LIFE_OG_CONTENT_TYPE,
     },
   });
 }

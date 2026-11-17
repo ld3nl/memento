@@ -27,6 +27,7 @@ export function contentMetadata({
     width: number;
     height: number;
     alt: string;
+    type?: string;
   };
 }): Metadata {
   const url = absoluteUrl(path);
@@ -36,7 +37,7 @@ export function contentMetadata({
         width: image.width,
         height: image.height,
         alt: image.alt,
-        type: "image/png",
+        type: image.type ?? "image/png",
       }
     : undefined;
 
