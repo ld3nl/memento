@@ -42,7 +42,7 @@ bun run build
 ## Tech Stack
 
 - Next.js 16 + React 19 + TypeScript
-- Tailwind CSS for styling
+- StyleX for styling (migrated from Tailwind CSS 4; see `taiwindcss_4x_implementation_notes_prior_stylex.md`)
 - Biome for linting and formatting
 - Jest for testing
 - date-fns for date utilities

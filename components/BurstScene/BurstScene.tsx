@@ -1,6 +1,7 @@
 "use client";
 
 import { Canvas } from "@react-three/fiber";
+import * as stylex from "@stylexjs/stylex";
 import * as React from "react";
 import {
   calculateWeeksFromLastBirthday,
@@ -8,6 +9,8 @@ import {
 } from "../../lib/date-utils";
 import { generateDecadeConfig } from "../../lib/life-table-utils";
 import { isValidDate } from "../../lib/validation";
+import { breakpoints } from "../../styles/breakpoints.stylex";
+import { tokens } from "../../styles/tokens.stylex";
 import type { BurstItem, BurstSceneProps, ItemShape } from "./BurstScene.types";
 import {
   CONFIG,
@@ -139,18 +142,203 @@ function weekStateLabel(item: BurstItem | undefined) {
   return "Week ahead";
 }
 
+const styles = stylex.create({
+  panel: {
+    display: "flex",
+    height: "100%",
+    width: "100%",
+    flexDirection: "column",
+    overflow: "hidden",
+    borderRadius: "1rem",
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderColor: tokens.border,
+    backgroundColor: tokens.surface,
+  },
+  header: {
+    display: "flex",
+    flexWrap: "wrap",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: "0.75rem",
+    borderBottomWidth: 1,
+    borderBottomStyle: "solid",
+    borderBottomColor: tokens.border,
+    paddingBlock: "0.75rem",
+    paddingInline: {
+      default: "1rem",
+      [breakpoints.sm]: "1.5rem",
+    },
+  },
+  title: {
+    marginTop: 0,
+    marginBottom: 0,
+    fontFamily: tokens.fontDisplay,
+    fontSize: "1.25rem",
+    lineHeight: "calc(1.75 / 1.25)",
+    color: tokens.primary,
+  },
+  help: {
+    marginTop: 0,
+    marginBottom: 0,
+    fontSize: "0.75rem",
+    lineHeight: "calc(1 / 0.75)",
+    color: tokens.secondary,
+  },
+  thisWeek: {
+    borderRadius: 9999,
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderColor: {
+      default: tokens.border,
+      ":hover": tokens.accent,
+    },
+    paddingBlock: "0.5rem",
+    paddingInline: "1rem",
+    fontFamily: "inherit",
+    fontSize: "0.75rem",
+    lineHeight: "calc(1 / 0.75)",
+    fontWeight: "inherit",
+    color: tokens.primary,
+    backgroundColor: "transparent",
+    outlineStyle: {
+      default: null,
+      ":focus-visible": "solid",
+    },
+    outlineWidth: {
+      default: null,
+      ":focus-visible": 2,
+    },
+    outlineColor: {
+      default: null,
+      ":focus-visible": tokens.accent,
+    },
+  },
+  stage: {
+    position: "relative",
+    minHeight: 0,
+    flexGrow: 1,
+    flexShrink: 1,
+    flexBasis: "0%",
+  },
+  hit: {
+    position: "absolute",
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    touchAction: "pan-y",
+  },
+  marker: {
+    pointerEvents: "none",
+    position: "absolute",
+    height: "1.25rem",
+    width: "1.25rem",
+    transform: "translate(-50%, -50%)",
+    borderRadius: 9999,
+    borderWidth: 2,
+    borderStyle: "solid",
+    borderColor: tokens.quiet,
+    backgroundColor: `color-mix(in oklab, ${tokens.surface} 30%, transparent)`,
+    outlineWidth: 1,
+    outlineStyle: "solid",
+    outlineColor: tokens.surface,
+  },
+  explorer: {
+    borderTopWidth: 1,
+    borderTopStyle: "solid",
+    borderTopColor: tokens.border,
+    backgroundColor: tokens.surfaceRaised,
+    paddingBlock: "1rem",
+    paddingInline: {
+      default: "1rem",
+      [breakpoints.sm]: "1.5rem",
+    },
+  },
+  explorerMeta: {
+    display: "flex",
+    flexWrap: "wrap",
+    alignItems: "baseline",
+    justifyContent: "space-between",
+    columnGap: "1rem",
+    rowGap: "0.25rem",
+    marginBottom: "0.75rem",
+  },
+  metaLabel: {
+    marginTop: 0,
+    marginBottom: 0,
+    fontSize: "0.75rem",
+    lineHeight: "calc(1 / 0.75)",
+    color: tokens.secondary,
+  },
+  metaDate: {
+    marginTop: "0.25rem",
+    marginBottom: 0,
+    fontFamily: tokens.fontMono,
+    fontSize: {
+      default: "0.875rem",
+      [breakpoints.sm]: "1rem",
+    },
+    lineHeight: {
+      default: "calc(1.25 / 0.875)",
+      [breakpoints.sm]: 1.5,
+    },
+    color: tokens.primary,
+  },
+  slider: {
+    display: "block",
+    height: "2rem",
+    width: "100%",
+    cursor: "pointer",
+    accentColor: tokens.accent,
+    outlineStyle: {
+      default: null,
+      ":focus-visible": "solid",
+    },
+    outlineWidth: {
+      default: null,
+      ":focus-visible": 2,
+    },
+    outlineColor: {
+      default: null,
+      ":focus-visible": tokens.accent,
+    },
+  },
+  sliderScale: {
+    display: "flex",
+    justifyContent: "space-between",
+    fontSize: "0.75rem",
+    lineHeight: "calc(1 / 0.75)",
+    color: tokens.secondary,
+  },
+});
+
+function WeekMarker({ tx, ty }: { tx: number; ty: number }) {
+  const markerProps = stylex.props(styles.marker);
+  return (
+    <div
+      {...markerProps}
+      style={{
+        ...markerProps.style,
+        left: `calc(50% + ${tx}px)`,
+        top: `calc(50% + ${ty}px)`,
+      }}
+    />
+  );
+}
+
 function BurstHeader({ onThisWeek }: { onThisWeek: () => void }) {
   return (
-    <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border px-4 py-3 sm:px-6">
+    <div {...stylex.props(styles.header)}>
       <div>
-        <p className="font-display text-xl text-primary">Follow your weeks</p>
-        <p id="burst-help" className="text-xs text-secondary">
+        <p {...stylex.props(styles.title)}>Follow your weeks</p>
+        <p id="burst-help" {...stylex.props(styles.help)}>
           Move over the spiral or use the slider to explore.
         </p>
       </div>
       <button
         type="button"
-        className="rounded-full border border-border px-4 py-2 text-xs text-primary hover:border-accent focus-visible:outline-2 focus-visible:outline-accent"
+        {...stylex.props(styles.thisWeek)}
         onClick={onThisWeek}
       >
         This week
@@ -177,7 +365,7 @@ function BurstStage({
   onInspect: (event: React.PointerEvent<HTMLDivElement>) => void;
 }) {
   return (
-    <div ref={containerRef} className="relative min-h-0 flex-1">
+    <div ref={containerRef} {...stylex.props(styles.stage)}>
       {layout ? (
         <>
           <Canvas
@@ -197,19 +385,13 @@ function BurstStage({
             />
           </Canvas>
           <div
-            className="absolute inset-0 touch-pan-y"
+            {...stylex.props(styles.hit)}
             aria-hidden="true"
             onPointerMove={onInspect}
             onPointerDown={onInspect}
           />
           {activeItem ? (
-            <div
-              className="pointer-events-none absolute h-5 w-5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-quiet bg-surface/30 outline outline-surface"
-              style={{
-                left: `calc(50% + ${activeItem.tx}px)`,
-                top: `calc(50% + ${activeItem.ty}px)`,
-              }}
-            />
+            <WeekMarker tx={activeItem.tx} ty={activeItem.ty} />
           ) : null}
         </>
       ) : null}
@@ -232,18 +414,18 @@ function BurstExplorer({
   const yearSpan = Math.ceil((layout?.items.length ?? 4160) / 52);
 
   return (
-    <div className="border-t border-border bg-surface-raised px-4 py-4 sm:px-6">
-      <div className="mb-3 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+    <div {...stylex.props(styles.explorer)}>
+      <div {...stylex.props(styles.explorerMeta)}>
         <div>
-          <p className="text-xs text-secondary">
+          <p {...stylex.props(styles.metaLabel)}>
             {weekStateLabel(activeItem)} · Age {activeItem?.yearIndex ?? 0} ·
             Week {activeItem?.weekIndex ?? 1}
           </p>
-          <p className="mt-1 font-mono text-sm text-primary sm:text-base">
+          <p {...stylex.props(styles.metaDate)}>
             {activeItem?.dateRangeLabel ?? "Preparing your spiral…"}
           </p>
         </div>
-        <span className="text-xs text-secondary">One dot. One week.</span>
+        <span {...stylex.props(styles.metaLabel)}>One dot. One week.</span>
       </div>
       <input
         type="range"
@@ -258,9 +440,9 @@ function BurstExplorer({
         max={sliderMax}
         value={activeIndex}
         onChange={event => onSelect(Number(event.target.value))}
-        className="block h-8 w-full cursor-pointer accent-accent focus-visible:outline-2 focus-visible:outline-accent"
+        {...stylex.props(styles.slider)}
       />
-      <div className="flex justify-between text-xs text-secondary">
+      <div {...stylex.props(styles.sliderScale)}>
         <span>Birth · spiral center</span>
         <span>{yearSpan} years · outer edge</span>
       </div>
@@ -321,10 +503,7 @@ export function BurstScene({
   }
 
   return (
-    <section
-      className="flex h-full w-full flex-col overflow-hidden rounded-2xl border border-border bg-surface"
-      aria-label="Life in a spiral"
-    >
+    <section {...stylex.props(styles.panel)} aria-label="Life in a spiral">
       <BurstHeader
         onThisWeek={() => setSelectedIndex(chosenWeekIndex(null, currentIndex))}
       />

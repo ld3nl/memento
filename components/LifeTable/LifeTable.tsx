@@ -1,3 +1,4 @@
+import * as stylex from "@stylexjs/stylex";
 import {
   calculateWeeksFromLastBirthday,
   calculateYearsAlive,
@@ -7,6 +8,14 @@ import { generateDecadeConfig } from "../../lib/life-table-utils";
 import { isValidDate } from "../../lib/validation";
 import DecadeGrid from "../DecadeGrid";
 import type { LifeTableProps } from "./LifeTable.types";
+
+const styles = stylex.create({
+  root: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "1rem",
+  },
+});
 
 export const LifeTable = ({ dob }: LifeTableProps) => {
   // Validate input DOB
@@ -40,7 +49,7 @@ export const LifeTable = ({ dob }: LifeTableProps) => {
 
   return (
     <div
-      className="flex flex-col gap-4"
+      {...stylex.props(styles.root)}
       data-cy="life-table"
       role="img"
       aria-label="Life calendar of weeks lived"

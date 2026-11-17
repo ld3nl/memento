@@ -1,4 +1,7 @@
-import { cn } from "../../../lib/utils";
+import * as stylex from "@stylexjs/stylex";
+import { breakpoints } from "../../../styles/breakpoints.stylex";
+import { kicker } from "../../../styles/recipes/kicker.stylex";
+import { tokens } from "../../../styles/tokens.stylex";
 import { useFieldContext } from "../form-hook";
 
 interface LabeledInputProps {
@@ -9,6 +12,97 @@ interface LabeledInputProps {
   onValueChange?: (value: string) => void;
 }
 
+const styles = stylex.create({
+  field: {
+    display: "flex",
+    flexDirection: "column",
+    width: "100%",
+    gap: {
+      default: "0.5rem",
+      [breakpoints.sm]: "0.75rem",
+    },
+  },
+  label: {
+    fontSize: {
+      default: "0.75rem",
+      [breakpoints.sm]: tokens.kicker,
+    },
+    lineHeight: "calc(1 / 0.75)",
+    transitionProperty:
+      "color, background-color, border-color, outline-color, text-decoration-color, fill, stroke",
+    transitionDuration: "150ms",
+    transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
+  },
+  input: {
+    minHeight: {
+      default: "3rem",
+      [breakpoints.sm]: "3.25rem",
+    },
+    width: "100%",
+    appearance: "none",
+    borderRadius: 0,
+    borderWidth: 2,
+    borderStyle: "solid",
+    borderColor: {
+      default: tokens.border,
+      ":hover": tokens.border,
+      ":focus": tokens.accent,
+    },
+    backgroundColor: tokens.surfaceRaised,
+    paddingInline: {
+      default: "1rem",
+      [breakpoints.sm]: "1.25rem",
+    },
+    paddingBlock: "0.875rem",
+    /* Match Tailwind font-sans exactly (no extra generic fallback). */
+    fontFamily: "var(--font-inter)",
+    fontSize: {
+      default: "1rem",
+      [breakpoints.sm]: "1.125rem",
+    },
+    lineHeight: 1.25,
+    color: tokens.primary,
+    boxShadow: {
+      default: "0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)",
+      ":focus": `0 0 0 4px color-mix(in oklab, ${tokens.accent} 20%, transparent), 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)`,
+    },
+    outlineStyle: {
+      default: null,
+      ":focus": "none",
+    },
+    transitionProperty:
+      "color, background-color, border-color, outline-color, text-decoration-color, fill, stroke",
+    transitionDuration: "200ms",
+    transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
+    "::placeholder": {
+      color: tokens.secondary,
+    },
+  },
+  inputError: {
+    borderColor: {
+      default: tokens.accent,
+      ":hover": tokens.accent,
+      ":focus": tokens.accent,
+    },
+    boxShadow: {
+      default: null,
+      ":focus": `0 0 0 4px color-mix(in oklab, ${tokens.accent} 30%, transparent), 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)`,
+    },
+  },
+  errorText: {
+    fontSize: {
+      default: "0.875rem",
+      [breakpoints.sm]: "1rem",
+    },
+    lineHeight: {
+      default: "calc(1.25 / 0.875)",
+      [breakpoints.sm]: 1.5,
+    },
+    fontWeight: 500,
+    color: tokens.accent,
+  },
+});
+
 const LabeledInput = ({
   labelString,
   inputId,
@@ -17,23 +111,21 @@ const LabeledInput = ({
   onValueChange,
 }: LabeledInputProps) => {
   const field = useFieldContext<string>();
+  const invalid = field.state.meta.errors.length > 0;
+  const hasError = field.state.meta.isTouched && invalid;
+
   return (
     <>
-      <div className="flex flex-col space-y-2 sm:space-y-3">
+      <div {...stylex.props(styles.field)}>
         <label
-          className="font-display text-xs font-semibold tracking-label text-secondary uppercase transition-colors sm:text-kicker dark:text-secondary"
+          {...stylex.props(kicker.base, styles.label)}
           htmlFor={inputId}
           data-cy={`${inputId}-label`}
         >
           {labelString}
         </label>
         <input
-          className={cn(
-            "min-h-[48px] w-full appearance-none rounded-none border-2 bg-surface-raised px-4 py-3.5 font-sans text-base leading-tight text-primary shadow-sm transition-colors duration-200 placeholder:text-secondary focus:ring-4 focus:outline-none sm:min-h-[52px] sm:px-5 sm:text-lg dark:bg-surface-raised dark:text-primary dark:placeholder:text-secondary",
-            field.state.meta.isTouched && field.state.meta.errors.length > 0
-              ? "border-accent focus:border-accent focus:ring-accent/30"
-              : "border-line hover:border-border focus:border-accent focus:ring-accent/20 dark:border-border dark:hover:border-border"
-          )}
+          {...stylex.props(styles.input, hasError && styles.inputError)}
           id={inputId}
           type={inputType}
           data-cy={`${inputId}-input`}
@@ -47,15 +139,13 @@ const LabeledInput = ({
           }}
           placeholder={placeholder}
           autoComplete={inputType === "date" ? "bday" : "name"}
-          aria-invalid={field.state.meta.errors.length > 0}
-          aria-describedby={
-            field.state.meta.errors.length > 0 ? `${inputId}-error` : undefined
-          }
+          aria-invalid={invalid}
+          aria-describedby={invalid ? `${inputId}-error` : undefined}
         />
       </div>
-      {field.state.meta.isTouched && field.state.meta.errors.length > 0 ? (
-        <div id={`${inputId}-error`} role="alert" className="mt-2 sm:mt-3">
-          <div className="text-sm font-medium text-accent sm:text-base">
+      {hasError ? (
+        <div id={`${inputId}-error`} role="alert">
+          <div {...stylex.props(styles.errorText)}>
             {field.state.meta.errors.map(error => {
               const errorMessage =
                 typeof error === "string"

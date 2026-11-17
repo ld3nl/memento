@@ -1,8 +1,88 @@
 // components/PopOver/PopOver.stories.tsx
 import type { Meta, StoryObj } from "@storybook/react";
+import * as stylex from "@stylexjs/stylex";
+import { tokens } from "../../styles/tokens.stylex";
 import { Week } from "../Week/Week";
 import Popover from "./";
 import { MementoCard } from "./MementoCard";
+
+const styles = stylex.create({
+  row: {
+    display: "flex",
+    gap: "0.75rem",
+  },
+  yearGrid: {
+    marginInline: "auto",
+    display: "grid",
+    width: "52rem",
+    gridTemplateColumns: "repeat(52, minmax(0, 1fr))",
+  },
+  frame: {
+    display: "grid",
+    height: "37.5rem",
+    width: "50rem",
+    gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
+    gridTemplateRows: "repeat(3, minmax(0, 1fr))",
+    gap: "1rem",
+  },
+  cell: {
+    display: "flex",
+  },
+  alignStart: {
+    alignItems: "flex-start",
+  },
+  alignCenter: {
+    alignItems: "center",
+  },
+  alignEnd: {
+    alignItems: "flex-end",
+  },
+  justifyStart: {
+    justifyContent: "flex-start",
+  },
+  justifyCenter: {
+    justifyContent: "center",
+  },
+  justifyEnd: {
+    justifyContent: "flex-end",
+  },
+  stack: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "2rem",
+    padding: "2rem",
+  },
+  center: {
+    textAlign: "center",
+  },
+  heading: {
+    marginTop: 0,
+    marginBottom: "1rem",
+    fontSize: "1.125rem",
+    lineHeight: "calc(1.75 / 1.125)",
+    fontWeight: 700,
+  },
+  hint: {
+    margin: 0,
+    fontSize: "0.875rem",
+    lineHeight: "calc(1.25 / 0.875)",
+    color: tokens.secondary,
+  },
+  cluster: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  groups: {
+    display: "flex",
+    gap: "2rem",
+  },
+  column: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "1rem",
+  },
+});
 
 const meta = {
   title: "UI/Popover",
@@ -95,7 +175,7 @@ export const WithCustomQuote: Story = {
 export const MultipleWeeks: Story = {
   args: { label: "", children: null },
   render: () => (
-    <div className="flex gap-3">
+    <div {...stylex.props(styles.row)}>
       <Popover label="">
         <MementoCard weekNumber="WEEK 1,164" age="Age 22 years, 4 months" />
       </Popover>
@@ -185,7 +265,7 @@ export const MilestoneYearWithEvents: Story = {
     ]);
 
     return (
-      <div data-cy="year-grid" className="mx-auto grid w-208 grid-cols-52">
+      <div data-cy="year-grid" {...stylex.props(styles.yearGrid)}>
         {weeks.map(weekIndex => {
           const isFilled = weekIndex <= weeksFromLastBday;
           const isCurrentWeek = weekIndex === weeksFromLastBday + 1;
@@ -240,53 +320,62 @@ export const MilestoneYearWithEvents: Story = {
 export const EdgePositioning: Story = {
   args: { label: "", children: null },
   render: () => (
-    <div className="grid h-[600px] w-[800px] grid-cols-3 grid-rows-3 gap-4">
-      {/* Top row */}
-      <div className="flex items-start justify-start">
+    <div {...stylex.props(styles.frame)}>
+      <div
+        {...stylex.props(styles.cell, styles.alignStart, styles.justifyStart)}
+      >
         <Popover label="" position="right_bottom">
           <MementoCard weekNumber="WEEK 1" age="Age 0 years, 0 months" />
         </Popover>
       </div>
-      <div className="flex items-start justify-center">
+      <div
+        {...stylex.props(styles.cell, styles.alignStart, styles.justifyCenter)}
+      >
         <Popover label="" position="center_bottom">
           <MementoCard weekNumber="WEEK 261" age="Age 5 years, 0 months" />
         </Popover>
       </div>
-      <div className="flex items-start justify-end">
+      <div {...stylex.props(styles.cell, styles.alignStart, styles.justifyEnd)}>
         <Popover label="" position="left_bottom">
           <MementoCard weekNumber="WEEK 521" age="Age 10 years, 0 months" />
         </Popover>
       </div>
 
-      {/* Middle row */}
-      <div className="flex items-center justify-start">
+      <div
+        {...stylex.props(styles.cell, styles.alignCenter, styles.justifyStart)}
+      >
         <Popover label="" position="right_center">
           <MementoCard weekNumber="WEEK 781" age="Age 15 years, 0 months" />
         </Popover>
       </div>
-      <div className="flex items-center justify-center">
+      <div
+        {...stylex.props(styles.cell, styles.alignCenter, styles.justifyCenter)}
+      >
         <Popover label="" position="right_center">
           <MementoCard weekNumber="WEEK 1,041" age="Age 20 years, 0 months" />
         </Popover>
       </div>
-      <div className="flex items-center justify-end">
+      <div
+        {...stylex.props(styles.cell, styles.alignCenter, styles.justifyEnd)}
+      >
         <Popover label="" position="left_center">
           <MementoCard weekNumber="WEEK 1,301" age="Age 25 years, 0 months" />
         </Popover>
       </div>
 
-      {/* Bottom row */}
-      <div className="flex items-end justify-start">
+      <div {...stylex.props(styles.cell, styles.alignEnd, styles.justifyStart)}>
         <Popover label="" position="right_top">
           <MementoCard weekNumber="WEEK 1,561" age="Age 30 years, 0 months" />
         </Popover>
       </div>
-      <div className="flex items-end justify-center">
+      <div
+        {...stylex.props(styles.cell, styles.alignEnd, styles.justifyCenter)}
+      >
         <Popover label="" position="center_top">
           <MementoCard weekNumber="WEEK 1,821" age="Age 35 years, 0 months" />
         </Popover>
       </div>
-      <div className="flex items-end justify-end">
+      <div {...stylex.props(styles.cell, styles.alignEnd, styles.justifyEnd)}>
         <Popover label="" position="left_top">
           <MementoCard weekNumber="WEEK 2,081" age="Age 40 years, 0 months" />
         </Popover>
@@ -307,18 +396,17 @@ export const EdgePositioning: Story = {
 export const AllPositions: Story = {
   args: { label: "", children: null },
   render: () => (
-    <div className="flex flex-col gap-8 p-8">
-      <div className="text-center">
-        <h2 className="mb-4 text-lg font-bold">All 9 Position Options</h2>
-        <p className="text-sm text-secondary">
+    <div {...stylex.props(styles.stack)}>
+      <div {...stylex.props(styles.center)}>
+        <h2 {...stylex.props(styles.heading)}>All 9 Position Options</h2>
+        <p {...stylex.props(styles.hint)}>
           Click each week to test positioning. Trigger stays visible.
         </p>
       </div>
 
-      <div className="flex items-center justify-center">
-        <div className="flex gap-8">
-          {/* Left positions */}
-          <div className="flex flex-col gap-4">
+      <div {...stylex.props(styles.cluster)}>
+        <div {...stylex.props(styles.groups)}>
+          <div {...stylex.props(styles.column)}>
             <Popover label="" position="left_top">
               <MementoCard weekNumber="WEEK 100" age="Age 1 year, 11 months" />
             </Popover>
@@ -330,8 +418,7 @@ export const AllPositions: Story = {
             </Popover>
           </div>
 
-          {/* Center positions */}
-          <div className="flex flex-col gap-4">
+          <div {...stylex.props(styles.column)}>
             <Popover label="" position="center_top">
               <MementoCard weekNumber="WEEK 400" age="Age 7 years, 8 months" />
             </Popover>
@@ -343,8 +430,7 @@ export const AllPositions: Story = {
             </Popover>
           </div>
 
-          {/* Right positions */}
-          <div className="flex flex-col gap-4">
+          <div {...stylex.props(styles.column)}>
             <Popover label="" position="right_top">
               <MementoCard weekNumber="WEEK 700" age="Age 13 years, 5 months" />
             </Popover>
@@ -373,53 +459,62 @@ export const AllPositions: Story = {
 export const AutoPositioning: Story = {
   args: { label: "", children: null },
   render: () => (
-    <div className="grid h-[600px] w-[800px] grid-cols-3 grid-rows-3 gap-4">
-      {/* Top row - auto should position below */}
-      <div className="flex items-start justify-start">
+    <div {...stylex.props(styles.frame)}>
+      <div
+        {...stylex.props(styles.cell, styles.alignStart, styles.justifyStart)}
+      >
         <Popover label="" position="auto">
           <MementoCard weekNumber="WEEK 1" age="Age 0 years, 0 months" />
         </Popover>
       </div>
-      <div className="flex items-start justify-center">
+      <div
+        {...stylex.props(styles.cell, styles.alignStart, styles.justifyCenter)}
+      >
         <Popover label="" position="auto">
           <MementoCard weekNumber="WEEK 261" age="Age 5 years, 0 months" />
         </Popover>
       </div>
-      <div className="flex items-start justify-end">
+      <div {...stylex.props(styles.cell, styles.alignStart, styles.justifyEnd)}>
         <Popover label="" position="auto">
           <MementoCard weekNumber="WEEK 521" age="Age 10 years, 0 months" />
         </Popover>
       </div>
 
-      {/* Middle row - auto should try right, then left */}
-      <div className="flex items-center justify-start">
+      <div
+        {...stylex.props(styles.cell, styles.alignCenter, styles.justifyStart)}
+      >
         <Popover label="" position="auto">
           <MementoCard weekNumber="WEEK 781" age="Age 15 years, 0 months" />
         </Popover>
       </div>
-      <div className="flex items-center justify-center">
+      <div
+        {...stylex.props(styles.cell, styles.alignCenter, styles.justifyCenter)}
+      >
         <Popover label="" position="auto">
           <MementoCard weekNumber="WEEK 1,041" age="Age 20 years, 0 months" />
         </Popover>
       </div>
-      <div className="flex items-center justify-end">
+      <div
+        {...stylex.props(styles.cell, styles.alignCenter, styles.justifyEnd)}
+      >
         <Popover label="" position="auto">
           <MementoCard weekNumber="WEEK 1,301" age="Age 25 years, 0 months" />
         </Popover>
       </div>
 
-      {/* Bottom row - auto should position above */}
-      <div className="flex items-end justify-start">
+      <div {...stylex.props(styles.cell, styles.alignEnd, styles.justifyStart)}>
         <Popover label="" position="auto">
           <MementoCard weekNumber="WEEK 1,561" age="Age 30 years, 0 months" />
         </Popover>
       </div>
-      <div className="flex items-end justify-center">
+      <div
+        {...stylex.props(styles.cell, styles.alignEnd, styles.justifyCenter)}
+      >
         <Popover label="" position="auto">
           <MementoCard weekNumber="WEEK 1,821" age="Age 35 years, 0 months" />
         </Popover>
       </div>
-      <div className="flex items-end justify-end">
+      <div {...stylex.props(styles.cell, styles.alignEnd, styles.justifyEnd)}>
         <Popover label="" position="auto">
           <MementoCard weekNumber="WEEK 2,081" age="Age 40 years, 0 months" />
         </Popover>

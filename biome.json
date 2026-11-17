@@ -16,14 +16,22 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "preset": "recommended"
+      "preset": "recommended",
+      "suspicious": {
+        "noUnknownAtRules": {
+          "level": "error",
+          "options": {
+            "ignore": ["stylex"]
+          }
+        }
+      }
     },
     "domains": {
       "astro": "none",
       "react": "recommended",
       "svelte": "none",
       "vue": "none",
-      "tailwind": "recommended",
+      "tailwind": "none",
       "next": "recommended",
       "test": "recommended",
       "solid": "none"
@@ -59,7 +67,7 @@
   },
   "css": {
     "parser": {
-      "tailwindDirectives": true
+      "tailwindDirectives": false
     },
     "linter": {
       "enabled": true
@@ -87,32 +95,5 @@
       "enabled": true
     }
   },
-  "overrides": [
-    {
-      "includes": ["tooling/design/check.test.ts"],
-      "linter": {
-        "rules": {
-          "suspicious": {
-            "noTemplateCurlyInString": "off"
-          }
-        }
-      }
-    }
-  ],
-  "plugins": [
-    {
-      "path": "./tooling/design/classes.grit",
-      "includes": [
-        "**/app/**",
-        "**/components/**",
-        "!**/*.test.tsx",
-        "!**/emails/**",
-        "!**/reference/**"
-      ]
-    },
-    {
-      "path": "./tooling/design/css.grit",
-      "includes": ["**/app/**/*.css"]
-    }
-  ]
+  "overrides": []
 }

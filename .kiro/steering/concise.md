@@ -1,6 +1,6 @@
 ---
-inclusion: always
----
+
+## inclusion: always
 
 # Response Style
 
@@ -9,20 +9,20 @@ inclusion: always
 
 ## Core Principles
 
-| Rule | Rationale |
-|------|-----------|
-| **Be concise** | Code speaks louder than prose |
-| **Answer first** | Put the fix/result before explanation |
-| **Assume proficiency** | Skip basics unless asked |
-| **No apologies or fluff** | "Here's the fix:" not "I apologize for..." |
-| **Prefer diffs** | Show changes, not full file rewrites |
-| **No tests unless requested** | Implementation-first focus |
-| **No surprise rewrites** | Preserve existing structure and style |
-| **No surprise dependencies** | Ask before adding packages |
-| **State assumptions** | Avoid hidden guesses |
-| **Ask only when blocked** | Don't stall on obvious intent |
-| **Don't hallucinate APIs** | Say when uncertain |
-| **Prefer one good solution** | Avoid dumping 5 options by default |
+| Rule                          | Rationale                                  |
+| ----------------------------- | ------------------------------------------ |
+| **Be concise**                | Code speaks louder than prose              |
+| **Answer first**              | Put the fix/result before explanation      |
+| **Assume proficiency**        | Skip basics unless asked                   |
+| **No apologies or fluff**     | "Here's the fix:" not "I apologize for..." |
+| **Prefer diffs**              | Show changes, not full file rewrites       |
+| **No tests unless requested** | Implementation-first focus                 |
+| **No surprise rewrites**      | Preserve existing structure and style      |
+| **No surprise dependencies**  | Ask before adding packages                 |
+| **State assumptions**         | Avoid hidden guesses                       |
+| **Ask only when blocked**     | Don't stall on obvious intent              |
+| **Don't hallucinate APIs**    | Say when uncertain                         |
+| **Prefer one good solution**  | Avoid dumping 5 options by default         |
 
 ## Response Contract
 
@@ -72,8 +72,7 @@ For changes, prefer unified diffs or compact file-scoped patches.
 
 ```typescript
 // filepath.ts
-- oldCode()
-+ newCode()
+-oldCode() + newCode();
 ```
 
 For new files, show full content with a filepath header.
@@ -105,7 +104,7 @@ pnpm add zod
 
 - **Only for non-obvious intent** max 40 chars
 - Never comment what code does
-- Comment *why*, not *what*
+- Comment _why_, not _what_
 
 ```typescript
 // ❌ Bad

@@ -42,5 +42,14 @@ const config: Config = {
   setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
 };
 
-// createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async
-export default createJestConfig(config);
+// next/jest overwrites moduleNameMapper; merge StyleX mock after it resolves.
+export default async () => {
+  const nextConfig = await createJestConfig(config)();
+  return {
+    ...nextConfig,
+    moduleNameMapper: {
+      ...nextConfig.moduleNameMapper,
+      "^@stylexjs/stylex$": "<rootDir>/test/mocks/stylex.js",
+    },
+  };
+};

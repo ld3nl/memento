@@ -1,4 +1,6 @@
+import * as stylex from "@stylexjs/stylex";
 import Image from "next/image";
+import { breakpoints } from "../../styles/breakpoints.stylex";
 
 type ContentImageProps = {
   src: string;
@@ -9,11 +11,44 @@ type ContentImageProps = {
   float?: "left" | "right";
 };
 
-const floatClassName = {
-  left: "float-left me-4 mb-6 w-40 rounded-none opacity-90 grayscale sm:me-6 sm:w-48 lg:w-56",
-  right:
-    "float-right ms-4 mb-6 w-40 rounded-none opacity-90 grayscale sm:ms-6 sm:w-48 lg:w-56",
-};
+const styles = stylex.create({
+  image: {
+    borderRadius: 0,
+    opacity: 0.9,
+    filter: "grayscale(100%)",
+  },
+  block: {
+    marginBottom: {
+      default: "2rem",
+      [breakpoints.sm]: "2.5rem",
+    },
+    height: "auto",
+    width: "100%",
+  },
+  floated: {
+    marginBottom: "1.5rem",
+    height: "auto",
+    width: {
+      default: "10rem",
+      [breakpoints.sm]: "12rem",
+      [breakpoints.lg]: "14rem",
+    },
+  },
+  left: {
+    float: "left",
+    marginInlineEnd: {
+      default: "1rem",
+      [breakpoints.sm]: "1.5rem",
+    },
+  },
+  right: {
+    float: "right",
+    marginInlineStart: {
+      default: "1rem",
+      [breakpoints.sm]: "1.5rem",
+    },
+  },
+});
 
 export function ContentImage({
   src,
@@ -23,6 +58,13 @@ export function ContentImage({
   priority = false,
   float,
 }: ContentImageProps) {
+  const imageProps = stylex.props(
+    styles.image,
+    float ? styles.floated : styles.block,
+    float === "left" && styles.left,
+    float === "right" && styles.right
+  );
+
   return (
     <Image
       src={src}
@@ -30,11 +72,8 @@ export function ContentImage({
       width={width}
       height={height}
       priority={priority}
-      className={
-        float
-          ? floatClassName[float]
-          : "mb-8 h-auto w-full rounded-none opacity-90 grayscale sm:mb-10"
-      }
+      className={imageProps.className}
+      style={imageProps.style}
       sizes={
         float
           ? "(max-width: 640px) 45vw, 224px"

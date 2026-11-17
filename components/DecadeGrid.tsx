@@ -1,6 +1,15 @@
+import * as stylex from "@stylexjs/stylex";
 import { calculateDecadeYear } from "../lib/life-table-utils";
 import type { DecadeGridProps } from "../lib/types";
 import { YearGrid } from "./YearGrid/YearGrid";
+
+const styles = stylex.create({
+  root: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "0.5rem",
+  },
+});
 
 const DecadeGrid = ({
   decadeLength,
@@ -30,7 +39,7 @@ const DecadeGrid = ({
   });
 
   return (
-    <div data-cy="decade-grid" className="flex flex-col gap-2">
+    <div data-cy="decade-grid" {...stylex.props(styles.root)}>
       {decadeYears}
     </div>
   );

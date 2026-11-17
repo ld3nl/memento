@@ -1,3 +1,4 @@
+import * as stylex from "@stylexjs/stylex";
 import { Week } from "../Week/Week";
 import {
   isCurrentWeek as isCurrentWeekFn,
@@ -5,6 +6,15 @@ import {
   shouldWeekBeFilled,
 } from "./utils";
 import type { YearGridProps } from "./YearGrid.types";
+
+const styles = stylex.create({
+  root: {
+    display: "grid",
+    marginInline: "auto",
+    width: "52rem",
+    gridTemplateColumns: "repeat(52, minmax(0, 1fr))",
+  },
+});
 
 // YearGrid component to display a grid of weeks for a year
 export const YearGrid = ({
@@ -15,7 +25,7 @@ export const YearGrid = ({
   daysIntoCurrentWeek,
 }: YearGridProps) => {
   return (
-    <div data-cy="year-grid" className="mx-auto grid w-208 grid-cols-52">
+    <div data-cy="year-grid" {...stylex.props(styles.root)}>
       {weeks.map(weekIndex => {
         // Determine if the week should be filled using utility function
         const isFilled = shouldWeekBeFilled(

@@ -1,7 +1,11 @@
+"use client";
+
+import * as stylex from "@stylexjs/stylex";
 import Image from "next/image";
 import Link from "next/link";
 
 interface KofiButtonProps {
+  /** Escape hatch for tests / one-off markers. Not for Tailwind strings. */
   className?: string;
   size?: "small" | "medium" | "large";
 }
@@ -13,16 +17,35 @@ const displayHeight = {
   large: 48,
 } as const;
 
+const styles = stylex.create({
+  link: {
+    display: "inline-block",
+    transitionProperty: "transform",
+    transitionDuration: "150ms",
+    transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
+    transform: {
+      default: "scale(1)",
+      ":hover": "scale(1.05)",
+    },
+  },
+});
+
 export const KofiButton = ({
   className = "",
   size = "medium",
 }: KofiButtonProps) => {
+  const stylexProps = stylex.props(styles.link);
+  const mergedClassName = [stylexProps.className, className]
+    .filter(Boolean)
+    .join(" ");
+
   return (
     <Link
       href="https://ko-fi.com/P5P81RSX2O"
       target="_blank"
       rel="noopener noreferrer"
-      className={`inline-block transition-transform hover:scale-105 ${className}`}
+      {...stylexProps}
+      className={mergedClassName}
     >
       <Image
         src="/kofi4.png"

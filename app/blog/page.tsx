@@ -1,3 +1,4 @@
+import * as stylex from "@stylexjs/stylex";
 import type { Metadata } from "next";
 import { cacheLife } from "next/cache";
 import Link from "next/link";
@@ -9,6 +10,114 @@ import { formatContentDate } from "../../lib/content-meta";
 import { contentMetadata } from "../../lib/content-metadata";
 import { blogJsonLd, breadcrumbJsonLd, graphJsonLd } from "../../lib/json-ld";
 import { SITE_URL } from "../../lib/site";
+import { breakpoints } from "../../styles/breakpoints.stylex";
+import { kicker } from "../../styles/recipes/kicker.stylex";
+import { prose } from "../../styles/recipes/prose.stylex";
+import { tokens } from "../../styles/tokens.stylex";
+
+const styles = stylex.create({
+  page: {
+    width: "100%",
+    paddingInline: {
+      default: "1rem",
+      [breakpoints.sm]: "1.5rem",
+    },
+    paddingBlock: {
+      default: "2.5rem",
+      [breakpoints.sm]: "3rem",
+      [breakpoints.lg]: "4rem",
+    },
+    color: tokens.primary,
+  },
+  kicker: {
+    marginTop: 0,
+    marginBottom: "1rem",
+  },
+  title: {
+    marginTop: 0,
+    marginBottom: "1.5rem",
+    fontFamily: tokens.fontDisplay,
+    fontSize: {
+      default: tokens.display,
+      [breakpoints.sm]: "3rem",
+    },
+    lineHeight: 1.25,
+    letterSpacing: "-0.025em",
+    fontStyle: "italic",
+    fontWeight: 400,
+    color: tokens.accent,
+  },
+  intro: {
+    marginTop: 0,
+    marginBottom: "2.5rem",
+    maxWidth: "36rem",
+    fontSize: "1rem",
+    lineHeight: 1.625,
+    color: tokens.primary,
+  },
+  list: {
+    marginTop: 0,
+    marginBottom: 0,
+    paddingInline: 0,
+    paddingBlock: 0,
+    listStyleType: "none",
+    borderTopWidth: 2,
+    borderTopStyle: "solid",
+    borderTopColor: tokens.border,
+    borderBottomWidth: 2,
+    borderBottomStyle: "solid",
+    borderBottomColor: tokens.border,
+  },
+  item: {
+    paddingBlock: "2rem",
+  },
+  divider: {
+    borderTopWidth: 2,
+    borderTopStyle: "solid",
+    borderTopColor: tokens.border,
+  },
+  meta: {
+    marginTop: 0,
+    marginBottom: "0.5rem",
+    fontSize: "0.875rem",
+    lineHeight: "calc(1.25 / 0.875)",
+    color: tokens.secondary,
+  },
+  postTitle: {
+    fontFamily: tokens.fontDisplay,
+    fontSize: {
+      default: "1.5rem",
+      [breakpoints.sm]: "1.875rem",
+    },
+    lineHeight: 1.375,
+    fontStyle: "italic",
+    fontWeight: 400,
+    color: {
+      default: tokens.primary,
+      ":hover": tokens.accent,
+    },
+    textDecorationLine: "none",
+  },
+  description: {
+    marginTop: "0.75rem",
+    marginBottom: 0,
+    fontSize: "1rem",
+    lineHeight: 1.625,
+    color: tokens.secondary,
+  },
+  feed: {
+    marginTop: "2.5rem",
+    marginBottom: 0,
+  },
+  feedLink: {
+    letterSpacing: tokens.trackingLabelTight,
+    color: {
+      default: tokens.secondary,
+      ":hover": tokens.accent,
+    },
+    textDecorationLine: "none",
+  },
+});
 
 export const ensureStatic = "navigation";
 
@@ -58,24 +167,25 @@ export default async function BlogIndexPage() {
     <>
       <JsonLd data={jsonLd} />
       <BackButton href="/" />
-      <div className="text-primary mx-auto w-full max-w-prose px-4 py-10 sm:px-6 sm:py-12 lg:py-16">
+      <div {...stylex.props(prose.column, styles.page)}>
         <Breadcrumbs
           items={[{ name: "Home", href: "/" }, { name: "Journal" }]}
         />
-        <p className="font-display mb-4 text-kicker font-semibold tracking-label text-secondary uppercase">
-          Journal
-        </p>
-        <h1 className="font-display text-accent mb-6 text-display leading-tight tracking-tight italic sm:text-5xl">
+        <p {...stylex.props(kicker.base, styles.kicker)}>Journal</p>
+        <h1 {...stylex.props(styles.title)}>
           Notes on life, time, and Stoicism
         </h1>
-        <p className="text-primary mb-10 max-w-xl text-base leading-relaxed">
+        <p {...stylex.props(styles.intro)}>
           Thoughts on memento mori, Stoicism, and life in weeks. A place to
           reflect on how you spend your time and what matters to you.
         </p>
-        <ul className="divide-border border-border divide-y-2 border-y-2">
-          {posts.map(post => (
-            <li key={post.slug} className="py-8 first:pt-8">
-              <p className="text-secondary mb-2 text-sm">
+        <ul {...stylex.props(styles.list)}>
+          {posts.map((post, index) => (
+            <li
+              key={post.slug}
+              {...stylex.props(styles.item, index > 0 && styles.divider)}
+            >
+              <p {...stylex.props(styles.meta)}>
                 <time dateTime={post.frontmatter.datePublished}>
                   {formatContentDate(post.frontmatter.datePublished)}
                 </time>
@@ -84,20 +194,20 @@ export default async function BlogIndexPage() {
               </p>
               <Link
                 href={`/blog/${post.slug}`}
-                className="font-display text-primary hover:text-accent text-2xl leading-snug italic sm:text-3xl"
+                {...stylex.props(styles.postTitle)}
               >
                 {post.frontmatter.title}
               </Link>
-              <p className="text-secondary mt-3 text-base leading-relaxed">
+              <p {...stylex.props(styles.description)}>
                 {post.frontmatter.description}
               </p>
             </li>
           ))}
         </ul>
-        <p className="mt-10">
+        <p {...stylex.props(styles.feed)}>
           <Link
             href="/feed.xml"
-            className="font-display text-secondary hover:text-accent text-kicker font-semibold tracking-label-tight uppercase"
+            {...stylex.props(kicker.base, styles.feedLink)}
           >
             RSS feed
           </Link>

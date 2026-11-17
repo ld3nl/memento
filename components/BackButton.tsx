@@ -1,15 +1,81 @@
+import * as stylex from "@stylexjs/stylex";
 import Link from "next/link";
+import { breakpoints } from "../styles/breakpoints.stylex";
+import { tokens } from "../styles/tokens.stylex";
 
 interface BackButtonProps {
   href?: string;
   className?: string;
 }
 
+const styles = stylex.create({
+  button: {
+    position: "fixed",
+    top: "1rem",
+    left: "1rem",
+    zIndex: 50,
+    display: {
+      default: "flex",
+      [breakpoints.print]: "none",
+    },
+    alignItems: "center",
+    justifyContent: "center",
+    height: "2.75rem",
+    width: "2.75rem",
+    borderRadius: 9999,
+    borderWidth: 2,
+    borderStyle: "solid",
+    borderColor: {
+      default: tokens.line,
+      ":hover": tokens.accent,
+      [breakpoints.dark]: {
+        default: tokens.border,
+        ":hover": tokens.accent,
+      },
+    },
+    backgroundColor: {
+      default: tokens.surfaceRaised,
+      ":hover": tokens.surface,
+      [breakpoints.dark]: {
+        default: null,
+        ":hover": tokens.surfaceRaised,
+      },
+    },
+    boxShadow: {
+      default: `0 10px 15px -3px color-mix(in oklab, ${tokens.red600} 5%, transparent), 0 4px 6px -4px color-mix(in oklab, ${tokens.red600} 5%, transparent)`,
+      ":hover": `0 20px 25px -5px color-mix(in oklab, ${tokens.red600} 10%, transparent), 0 8px 10px -6px color-mix(in oklab, ${tokens.red600} 10%, transparent)`,
+      ":focus-visible": `0 0 0 4px color-mix(in oklab, ${tokens.accent} 40%, transparent), 0 10px 15px -3px color-mix(in oklab, ${tokens.red600} 5%, transparent), 0 4px 6px -4px color-mix(in oklab, ${tokens.red600} 5%, transparent)`,
+      ":hover:focus-visible": `0 0 0 4px color-mix(in oklab, ${tokens.accent} 40%, transparent), 0 20px 25px -5px color-mix(in oklab, ${tokens.red600} 10%, transparent), 0 8px 10px -6px color-mix(in oklab, ${tokens.red600} 10%, transparent)`,
+    },
+    backdropFilter: "blur(8px)",
+    outlineStyle: {
+      default: null,
+      ":focus-visible": "none",
+    },
+    transitionProperty: "transform, translate, scale, rotate",
+    transitionDuration: "200ms",
+    transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
+    transform: {
+      default: null,
+      ":hover": "scale(1.05)",
+    },
+  },
+  icon: {
+    color: tokens.primary,
+  },
+});
+
 const BackButton = ({ href = "/", className = "" }: BackButtonProps) => {
+  const buttonProps = stylex.props(styles.button);
+  const mergedClassName = [buttonProps.className, className]
+    .filter(Boolean)
+    .join(" ");
+
   return (
     <Link
       href={href}
-      className={`fixed top-4 left-4 z-50 flex h-11 w-11 items-center justify-center rounded-full border-2 border-line bg-surface-raised shadow-lg shadow-red-600/5 backdrop-blur-sm transition-transform duration-200 hover:scale-105 hover:border-accent hover:bg-surface hover:shadow-xl hover:shadow-red-600/10 focus-visible:ring-4 focus-visible:ring-accent/40 focus-visible:outline-none dark:border-border dark:bg-surface-raised dark:hover:bg-surface-raised print:hidden ${className}`}
+      {...buttonProps}
+      className={mergedClassName}
       aria-label="Go back"
     >
       <svg
@@ -21,7 +87,7 @@ const BackButton = ({ href = "/", className = "" }: BackButtonProps) => {
         strokeWidth="2.5"
         strokeLinecap="round"
         strokeLinejoin="round"
-        className="text-primary dark:text-primary"
+        {...stylex.props(styles.icon)}
       >
         <title>Go back</title>
         <path d="M19 12H5" />

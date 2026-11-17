@@ -1,10 +1,12 @@
+import * as stylex from "@stylexjs/stylex";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { connection } from "next/server";
-import { Suspense } from "react";
+import { Suspense, type ReactNode } from "react";
 import BackButton from "../../../components/BackButton";
 import { BurstSceneLazy } from "../../../components/BurstScene/BurstSceneLazy";
+import { CalendarHeading } from "../../../components/CalendarHeading";
 import { LifeTable } from "../../../components/LifeTable/LifeTable";
 import { calculateFullAge, calculateLifeWeeks } from "../../../lib/date-utils";
 import { serializeJsonLd } from "../../../lib/json-ld";
@@ -13,6 +15,184 @@ import {
   birthDateFromPathSegments,
   extractNameFromUrl,
 } from "../../../lib/url-utils";
+import { breakpoints } from "../../../styles/breakpoints.stylex";
+import { kicker } from "../../../styles/recipes/kicker.stylex";
+import { tokens } from "../../../styles/tokens.stylex";
+
+const styles = stylex.create({
+  shell: {
+    marginInline: "auto",
+    paddingInline: {
+      default: "1rem",
+      [breakpoints.sm]: "1.5rem",
+      [breakpoints.lg]: "2rem",
+      [breakpoints.print]: 0,
+    },
+    paddingBlock: {
+      default: "1rem",
+      [breakpoints.sm]: "1.5rem",
+      [breakpoints.lg]: "2rem",
+      [breakpoints.print]: 0,
+    },
+    backgroundColor: {
+      default: null,
+      [breakpoints.print]: tokens.white,
+    },
+    colorScheme: {
+      default: null,
+      [breakpoints.print]: "light",
+    },
+    printColorAdjust: "exact",
+    WebkitPrintColorAdjust: "exact",
+  },
+  switcher: {
+    display: {
+      default: "flex",
+      [breakpoints.print]: "none",
+    },
+    justifyContent: "flex-end",
+    marginBottom: "2rem",
+  },
+  switchLink: {
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderColor: {
+      default: tokens.border,
+      ":hover": tokens.accent,
+    },
+    borderRadius: 9999,
+    paddingInline: "1rem",
+    paddingBlock: "0.5rem",
+    fontFamily: tokens.fontDisplay,
+    fontSize: "0.875rem",
+    lineHeight: "calc(1.25 / 0.875)",
+    fontWeight: 500,
+    color: tokens.primary,
+    textDecorationLine: "none",
+  },
+  titleSpacer: {
+    marginBottom: {
+      default: "2.5rem",
+      [breakpoints.sm]: "3rem",
+      [breakpoints.print]: "0.2rem",
+    },
+    minHeight: {
+      default: "4.75rem",
+      [breakpoints.sm]: "5.75rem",
+      [breakpoints.print]: "1.1rem",
+    },
+  },
+  tableFit: {
+    printColorAdjust: "exact",
+    WebkitPrintColorAdjust: "exact",
+  },
+  tableSlot: {
+    // Reserves table height in the Suspense fallback so the shell does not jump.
+    minHeight: {
+      default: "50vh",
+      [breakpoints.print]: "auto",
+    },
+  },
+  tablePrintOnly: {
+    display: {
+      default: "none",
+      [breakpoints.print]: "block",
+    },
+  },
+  burst: {
+    position: "relative",
+    width: "100%",
+    height: "80vh",
+    display: {
+      default: "block",
+      [breakpoints.print]: "none",
+    },
+  },
+  summary: {
+    display: {
+      default: "block",
+      [breakpoints.print]: "none",
+    },
+    width: "100%",
+    maxWidth: "48rem",
+    marginInline: "auto",
+    marginTop: {
+      default: "4rem",
+      [breakpoints.sm]: "5rem",
+    },
+    borderTopWidth: 2,
+    borderTopStyle: "solid",
+    borderTopColor: `color-mix(in oklab, ${tokens.accent} 20%, transparent)`,
+    paddingInline: "1rem",
+    paddingTop: {
+      default: "4rem",
+      [breakpoints.sm]: "5rem",
+    },
+  },
+  stats: {
+    borderLeftWidth: 3,
+    borderLeftStyle: "solid",
+    borderLeftColor: tokens.accent,
+    paddingLeft: {
+      default: "1.5rem",
+      [breakpoints.sm]: "2rem",
+    },
+  },
+  lived: {
+    fontFamily: tokens.fontMono,
+    fontSize: {
+      default: "3rem",
+      [breakpoints.smOnly]: "3.75rem",
+      [breakpoints.lg]: "4.5rem",
+    },
+    lineHeight: 1,
+    fontWeight: 700,
+    color: tokens.accent,
+    fontVariantNumeric: "tabular-nums",
+  },
+  statLabel: {
+    marginTop: "0.75rem",
+    marginBottom: 0,
+    fontSize: {
+      default: "0.75rem",
+      [breakpoints.sm]: "0.875rem",
+    },
+  },
+  remaining: {
+    marginTop: {
+      default: "2.5rem",
+      [breakpoints.sm]: "3rem",
+    },
+    fontFamily: tokens.fontMono,
+    fontSize: {
+      default: "2.25rem",
+      [breakpoints.smOnly]: "3rem",
+      [breakpoints.lg]: "3.75rem",
+    },
+    lineHeight: 1,
+    fontWeight: 700,
+    color: tokens.primary,
+    fontVariantNumeric: "tabular-nums",
+  },
+  note: {
+    marginTop: {
+      default: "3rem",
+      [breakpoints.sm]: "4rem",
+    },
+    marginBottom: 0,
+    fontFamily: tokens.fontSans,
+    fontSize: {
+      default: "1rem",
+      [breakpoints.sm]: "1.125rem",
+    },
+    lineHeight: 1.625,
+    color: tokens.secondary,
+  },
+});
+
+function mergeClass(stylexClass: string | undefined, marker: string) {
+  return [stylexClass, marker].filter(Boolean).join(" ");
+}
 
 type ViewMode = "table" | "burst";
 
@@ -29,6 +209,7 @@ export async function generateMetadata({
   params,
   searchParams,
 }: Props): Promise<Metadata> {
+  // Age/week copy uses `new Date()` — must run at request time.
   await connection();
   const awaitedParams = await params;
   const view = awaitedParams.view;
@@ -99,17 +280,67 @@ export async function generateMetadata({
   };
 }
 
-function CalendarFallback() {
+function CalendarChrome({ children }: { children: ReactNode }) {
+  return <div {...stylex.props(styles.shell)}>{children}</div>;
+}
+
+function TitleFallback() {
+  return <div {...stylex.props(styles.titleSpacer)} aria-hidden="true" />;
+}
+
+function TableFallback() {
+  const slot = stylex.props(styles.tableFit, styles.tableSlot);
   return (
-    <div className="group m-auto p-4 sm:p-6 lg:p-8">
-      <p className="text-center text-sm text-secondary">
-        Preparing your calendar…
-      </p>
+    <div {...slot} className={mergeClass(slot.className, "life-table-fit")}>
+      <div className="life-table-frame" />
     </div>
   );
 }
 
-const ViewContent = async ({ params, searchParams }: Props) => {
+async function CalendarSwitcher({ params, searchParams }: Props) {
+  const awaitedParams = await params;
+  const view = awaitedParams.view;
+  const dateParams = awaitedParams.params ?? [];
+
+  if (!isViewMode(view)) {
+    return null;
+  }
+
+  const birthDate = birthDateFromPathSegments(dateParams);
+  const urlPath = dateParams.join("/");
+  if (!birthDate) {
+    return null;
+  }
+
+  const query = await searchParams;
+  const name = extractNameFromUrl(
+    new URLSearchParams(
+      Object.entries(query).flatMap(([key, value]) =>
+        value === undefined
+          ? []
+          : Array.isArray(value)
+            ? value.map(item => [key, item] as [string, string])
+            : [[key, value] as [string, string]]
+      )
+    )
+  );
+  const otherView: ViewMode = view === "table" ? "burst" : "table";
+  const nameQuery = name ? `?name=${encodeURIComponent(name)}` : "";
+
+  return (
+    <div {...stylex.props(styles.switcher)}>
+      <Link
+        href={`/${otherView}/${urlPath}${nameQuery}`}
+        {...stylex.props(styles.switchLink)}
+      >
+        Switch to {otherView === "table" ? "table" : "burst"} view
+      </Link>
+    </div>
+  );
+}
+
+async function ViewBody({ params }: Props) {
+  // Request-time gate so `new Date()` in week math is legal under Cache Components.
   await connection();
   const awaitedParams = await params;
   const view = awaitedParams.view;
@@ -126,24 +357,9 @@ const ViewContent = async ({ params, searchParams }: Props) => {
     notFound();
   }
 
-  const query = await searchParams;
-  const name = extractNameFromUrl(
-    new URLSearchParams(
-      Object.entries(query).flatMap(([key, value]) =>
-        value === undefined
-          ? []
-          : Array.isArray(value)
-            ? value.map(item => [key, item] as [string, string])
-            : [[key, value] as [string, string]]
-      )
-    )
-  );
-
   const lifeWeeks = calculateLifeWeeks(birthDate);
   const weeksLived = lifeWeeks?.weeksLived ?? 0;
   const weeksRemaining = lifeWeeks?.weeksRemaining ?? 0;
-  const otherView: ViewMode = view === "table" ? "burst" : "table";
-  const nameQuery = name ? `?name=${encodeURIComponent(name)}` : "";
 
   const breadcrumbJsonLd = {
     "@context": "https://schema.org",
@@ -164,6 +380,11 @@ const ViewContent = async ({ params, searchParams }: Props) => {
     ],
   };
 
+  const tableFit = stylex.props(
+    styles.tableFit,
+    view === "burst" && styles.tablePrintOnly
+  );
+
   return (
     <>
       <script
@@ -171,77 +392,76 @@ const ViewContent = async ({ params, searchParams }: Props) => {
         // biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD structured data is serialized into a script tag.
         dangerouslySetInnerHTML={{ __html: serializeJsonLd(breadcrumbJsonLd) }}
       />
-      <div className="group m-auto p-4 sm:p-6 lg:p-8">
-        <BackButton />
-        <div className="mb-8 flex justify-end">
-          <Link
-            href={`/${otherView}/${urlPath}${nameQuery}`}
-            className="border-border font-display text-primary rounded-full border px-4 py-2 text-sm font-medium hover:border-accent"
-          >
-            Switch to {otherView === "table" ? "table" : "burst"} view
-          </Link>
+
+      <div
+        {...tableFit}
+        className={mergeClass(tableFit.className, "life-table-fit")}
+      >
+        <div className="life-table-frame">
+          <div className="life-table-scale">
+            <LifeTable dob={birthDate} />
+          </div>
         </div>
-        <h1 className="font-display mb-10 text-center text-3xl leading-tight tracking-tight text-primary italic sm:mb-12 sm:text-4xl lg:text-5xl dark:text-primary">
-          {name ? `${name}’s life in weeks` : "Your Life in Weeks"}
-          <span className="mt-2 block font-sans text-sm font-semibold tracking-label text-secondary uppercase sm:text-base dark:text-secondary">
-            {view === "table" ? "Table View" : "Burst View"}
-          </span>
-        </h1>
-
-        {view === "table" ? (
-          <div className="life-table-fit">
-            <div className="life-table-frame">
-              <div className="life-table-scale">
-                <LifeTable dob={birthDate} />
-              </div>
-            </div>
-          </div>
-        ) : (
-          <div className="relative h-[80vh] w-full">
-            <BurstSceneLazy
-              dob={birthDate}
-              shape="circle"
-              itemSizeRem={0.28}
-              itemSpacingRem={0.18}
-            />
-          </div>
-        )}
-
-        <section className="mx-auto mt-16 max-w-3xl border-t-2 border-accent/20 px-4 pt-16 sm:mt-20 sm:pt-20">
-          <div className="stroke-l border-accent pl-6 sm:pl-8">
-            <div className="font-mono text-5xl font-bold text-accent tabular-nums sm:text-6xl lg:text-7xl">
-              {weeksLived.toLocaleString()}
-            </div>
-            <div className="font-display mt-3 text-xs font-semibold tracking-label text-secondary uppercase sm:text-sm dark:text-secondary">
-              Weeks lived
-            </div>
-
-            {weeksRemaining > 0 && (
-              <>
-                <div className="mt-10 font-mono text-4xl font-bold text-primary tabular-nums sm:mt-12 sm:text-5xl lg:text-6xl dark:text-primary">
-                  {weeksRemaining.toLocaleString()}
-                </div>
-                <div className="font-display mt-3 text-xs font-semibold tracking-label text-secondary uppercase sm:text-sm dark:text-secondary">
-                  Weeks remaining (est.)
-                </div>
-              </>
-            )}
-          </div>
-
-          <p className="mt-12 font-sans text-base leading-relaxed text-secondary sm:mt-16 sm:text-lg dark:text-secondary">
-            Each square is a week. The filled ones are gone. Make the empty ones
-            count.
-          </p>
-        </section>
       </div>
+      {view === "burst" ? (
+        <div {...stylex.props(styles.burst)}>
+          <BurstSceneLazy
+            dob={birthDate}
+            shape="circle"
+            itemSizeRem={0.28}
+            itemSpacingRem={0.18}
+          />
+        </div>
+      ) : null}
+
+      <section {...stylex.props(styles.summary)}>
+        <div {...stylex.props(styles.stats)}>
+          <div {...stylex.props(styles.lived)}>
+            {weeksLived.toLocaleString()}
+          </div>
+          <div {...stylex.props(kicker.base, styles.statLabel)}>
+            Weeks lived
+          </div>
+
+          {weeksRemaining > 0 && (
+            <>
+              <div {...stylex.props(styles.remaining)}>
+                {weeksRemaining.toLocaleString()}
+              </div>
+              <div {...stylex.props(kicker.base, styles.statLabel)}>
+                Weeks remaining (est.)
+              </div>
+            </>
+          )}
+        </div>
+
+        <p {...stylex.props(styles.note)}>
+          Each square is a week. The filled ones are gone. Make the empty ones
+          count.
+        </p>
+      </section>
     </>
   );
-};
+}
 
 export default function ViewPage(props: Props) {
   return (
-    <Suspense fallback={<CalendarFallback />}>
-      <ViewContent {...props} />
-    </Suspense>
+    <CalendarChrome>
+      <BackButton />
+      <Suspense
+        fallback={<div {...stylex.props(styles.switcher)} aria-hidden="true" />}
+      >
+        <CalendarSwitcher {...props} />
+      </Suspense>
+      {/* Title + table share a print fragment so they stay on one page. */}
+      <div className="calendar-print">
+        <Suspense fallback={<TitleFallback />}>
+          <CalendarHeading />
+        </Suspense>
+        <Suspense fallback={<TableFallback />}>
+          <ViewBody {...props} />
+        </Suspense>
+      </div>
+    </CalendarChrome>
   );
 }

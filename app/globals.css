@@ -1,14 +1,90 @@
-@import "tailwindcss";
+/* StyleX PostCSS plugin replaces this with atomic CSS. */
+@stylex;
 
-@theme inline {
-  --font-display: var(--font-garamond);
-  --font-sans: var(--font-inter);
-  --font-mono: var(--font-jetbrains);
+/*
+ * Tailwind preflight used to set border-box on everything. Without it,
+ * `width`/`height` are content-box and 1px borders inflate week cells
+ * from 8px to 10px — the life table gains ~160px and the mid-year gap
+ * shrinks. Keep this reset after Tailwind is gone.
+ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/*
+ * Saved birthdate preview is client-only. Reserve its height before paint
+ * when localStorage has a date, so the card does not push the page down.
+ */
+html[data-memento-saved] .birth-preview-slot {
+  min-height: 12rem;
+}
+
+@media (min-width: 40rem) {
+  html[data-memento-saved] .birth-preview-slot {
+    min-height: 13.75rem;
+  }
+}
+
+@media (min-width: 64rem) {
+  html[data-memento-saved] .birth-preview-slot {
+    min-height: 15rem;
+  }
+}
+
+/*
+ * Tailwind preflight used to force responsive media sizing. Without it,
+ * Next/Image keeps the HTML height attribute while CSS shrinks width —
+ * floated about images stretch to ~1192px tall at 14rem wide.
+ */
+img,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+/*
+ * Form control bits formerly from Tailwind preflight. Do not set
+ * `font: inherit` here — this file is unlayered and would beat StyleX
+ * input typography. Date inputs otherwise keep UA datetime-edit padding
+ * and sit ~2px taller than text inputs.
+ */
+button,
+input,
+optgroup,
+select,
+textarea {
+  margin: 0;
+}
+
+input[type="date"]::-webkit-datetime-edit,
+input[type="date"]::-webkit-datetime-edit-fields-wrapper {
+  padding: 0;
+}
+
+/*
+ * Palette + semantic aliases formerly supplied by Tailwind `@theme`.
+ * StyleX tokens and the remaining plain-CSS rules read these vars.
+ */
+:root {
+  --color-zinc-50: #fafafa;
+  --color-zinc-100: #f4f4f5;
+  --color-zinc-200: #e4e4e7;
+  --color-zinc-300: #d4d4d8;
+  --color-zinc-400: #a1a1aa;
+  --color-zinc-500: #71717a;
+  --color-zinc-700: #3f3f46;
+  --color-zinc-800: #27272a;
+  --color-zinc-900: #18181b;
+  --color-zinc-950: #09090b;
+  --color-red-600: #dc2626;
+  --color-amber-500: #f59e0b;
+
   --color-primary: light-dark(var(--color-zinc-900), var(--color-zinc-50));
   --color-secondary: light-dark(var(--color-zinc-500), var(--color-zinc-400));
   --color-quiet: light-dark(var(--color-zinc-700), var(--color-zinc-200));
   --color-accent: var(--color-red-600);
-  --spacing-popover: 0.625rem;
   --color-mark: var(--color-amber-500);
   --color-border: light-dark(var(--color-zinc-200), var(--color-zinc-700));
   --color-line: light-dark(var(--color-zinc-200), var(--color-zinc-800));
@@ -21,34 +97,7 @@
   --color-card: var(--color-zinc-950);
   --color-week: light-dark(var(--color-zinc-900), var(--color-red-600));
   --color-week-muted: light-dark(var(--color-zinc-900), var(--color-zinc-700));
-  --text-tick: 0.625rem;
-  --text-tick-lg: 0.8125rem;
-  --text-kicker: 0.6875rem;
-  --text-display: 2.5rem;
-  --text-card-title: 27px;
-  --text-card-mark: 40px;
-  --text-card-body: 15px;
-  --text-card-caption: 13px;
-  --leading-display: 0.95;
-  --tracking-label: 0.25em;
-  --tracking-label-tight: 0.2em;
-  --tracking-mark: 1.75px;
-  --tracking-mark-tight: 1.5px;
-  --tracking-card: -0.03em;
-  --tracking-tick: 0.14em;
-  --tracking-tick-soft: 0.02em;
-}
-
-@utility stroke {
-  border-width: 3px;
-}
-
-@utility stroke-l {
-  border-left-width: 3px;
-}
-
-@utility stroke-b {
-  border-bottom-width: 3px;
+  --spacing-popover: 0.625rem;
 }
 
 /* CSS Anchor Positioning: custom property for dynamic anchor names */
@@ -180,4 +229,125 @@
   margin-inline: auto;
   transform-origin: top left;
   transform: scale(min(1, 100cqi / var(--life-table-width)));
+}
+
+/*
+ * ScrollTable chrome. MDX raw <table>/<th>/<td> inside <ScrollTable>
+ * do not go through mdx-components, so StyleX never reaches them.
+ * Keep the former Tailwind [&_…] rules here as plain CSS.
+ */
+.scroll-table table {
+  width: max-content;
+  min-width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  text-align: left;
+  font-size: 0.875rem;
+  /* Unitless, matching Tailwind text-sm — not calc(1.25rem / 0.875)
+     which becomes an absolute ~22.9px and inflates every row. */
+  line-height: calc(1.25 / 0.875);
+}
+
+.scroll-table caption {
+  caption-side: top;
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  margin-bottom: 1rem;
+  width: 100cqi;
+  text-align: left;
+  font-family: var(--font-garamond), serif;
+  font-size: 1rem;
+  line-height: 1.5;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--color-primary);
+}
+
+.scroll-table th {
+  border-bottom: 2px solid var(--color-border);
+  background-color: var(--color-surface);
+  padding: 0.75rem 2rem 0.75rem 0;
+  font-family: var(--font-garamond), serif;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  white-space: nowrap;
+  text-align: left;
+  text-transform: uppercase;
+  color: var(--color-secondary);
+}
+
+.scroll-table td {
+  border-bottom: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+  padding: 0.75rem 2rem 0.75rem 0;
+  font-family: var(--font-jetbrains), monospace;
+  font-size: 0.875rem;
+  white-space: nowrap;
+  color: var(--color-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.scroll-table th:first-child,
+.scroll-table td:first-child {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+}
+
+.scroll-table th:last-child,
+.scroll-table td:last-child {
+  padding-right: 0;
+}
+
+.scroll-table .scroll-table-right {
+  text-align: right;
+}
+
+.scroll-table tbody tr:hover td {
+  background-color: var(--color-surface-raised);
+}
+
+@page {
+  size: letter;
+  margin: 0.5in;
+}
+
+/* Screen scale follows the viewport. On paper, fit title + table on one
+   letter page. Do NOT put break-inside:avoid on the table alone — that
+   orphans the title on page 1 and shoves the grid to page 2. */
+@media print {
+  .calendar-print {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .life-table-fit {
+    break-before: avoid;
+    page-break-before: avoid;
+  }
+
+  .life-table-frame {
+    /* Leave ~0.7in for the compact print title inside a 10in content box. */
+    height: calc(
+      var(--life-table-height) *
+      min(7.5in / var(--life-table-width), 9in / var(--life-table-height))
+    );
+  }
+
+  .life-table-scale {
+    transform: scale(
+      min(7.5in / var(--life-table-width), 9in / var(--life-table-height))
+    );
+  }
+}
+
+/* Week dark-mode rules key off prefers-color-scheme, which still matches
+   while printing. Force the light ink on the table only. */
+@media print and (prefers-color-scheme: dark) {
+  .life-table-fit {
+    --color-red-600: var(--color-zinc-900);
+    --color-zinc-200: var(--color-zinc-900);
+  }
 }

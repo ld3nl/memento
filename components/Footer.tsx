@@ -1,7 +1,196 @@
+import * as stylex from "@stylexjs/stylex";
 import { cacheLife } from "next/cache";
 import Image from "next/image";
 import Link from "next/link";
+import type { ReactNode } from "react";
+import { breakpoints } from "../styles/breakpoints.stylex";
+import { kicker } from "../styles/recipes/kicker.stylex";
+import { tokens } from "../styles/tokens.stylex";
 import { KofiButton } from "./KofiButton";
+
+const styles = stylex.create({
+  root: {
+    marginTop: "auto",
+    borderTopWidth: 2,
+    borderTopStyle: "solid",
+    borderTopColor: tokens.line,
+    backgroundColor: tokens.surface,
+    paddingBlock: {
+      default: "2.5rem",
+      [breakpoints.sm]: "3rem",
+    },
+    display: {
+      default: null,
+      [breakpoints.print]: "none",
+    },
+  },
+  container: {
+    width: "100%",
+    marginInline: "auto",
+    maxWidth: {
+      default: null,
+      [breakpoints.sm]: "40rem",
+      [breakpoints.md]: "48rem",
+      [breakpoints.lg]: "64rem",
+      [breakpoints.xl]: "80rem",
+      [breakpoints.xl2]: "96rem",
+    },
+    paddingInline: {
+      default: "1rem",
+      [breakpoints.sm]: "1.5rem",
+      [breakpoints.lg]: "2rem",
+    },
+  },
+  support: {
+    marginBottom: {
+      default: "2rem",
+      [breakpoints.sm]: "2.5rem",
+    },
+    textAlign: "center",
+  },
+  supportLabel: {
+    marginTop: "0.75rem",
+    marginBottom: 0,
+    fontSize: {
+      default: tokens.kicker,
+      [breakpoints.sm]: "0.75rem",
+    },
+  },
+  nav: {
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "center",
+    gap: {
+      default: "1rem",
+      [breakpoints.sm]: "1.5rem",
+    },
+    marginBottom: {
+      default: "2rem",
+      [breakpoints.sm]: "2.5rem",
+    },
+    fontSize: "0.875rem",
+    lineHeight: "calc(1.25 / 0.875)",
+  },
+  navLink: {
+    fontFamily: tokens.fontDisplay,
+    fontWeight: 700,
+    letterSpacing: tokens.trackingLabel,
+    textTransform: "uppercase",
+    textDecorationLine: "none",
+    color: {
+      default: tokens.secondary,
+      ":hover": tokens.accent,
+      ":focus": tokens.accent,
+    },
+    transitionProperty:
+      "color, background-color, border-color, outline-color, text-decoration-color, fill, stroke",
+    transitionDuration: "200ms",
+    transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
+    boxShadow: {
+      default: null,
+      ":focus": `0 0 0 2px color-mix(in oklab, ${tokens.accent} 40%, transparent)`,
+    },
+    outlineStyle: {
+      default: null,
+      ":focus": "none",
+    },
+  },
+  descriptionWrap: {
+    marginBottom: {
+      default: "2rem",
+      [breakpoints.sm]: "2.5rem",
+    },
+    textAlign: "center",
+  },
+  description: {
+    marginTop: 0,
+    marginBottom: 0,
+    marginInline: "auto",
+    maxWidth: "42rem",
+    fontFamily: tokens.fontSans,
+    fontSize: {
+      default: "0.75rem",
+      [breakpoints.sm]: "0.875rem",
+    },
+    lineHeight: 1.625,
+    color: tokens.secondary,
+  },
+  bottom: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: "0.75rem",
+    borderTopWidth: 2,
+    borderTopStyle: "solid",
+    borderTopColor: tokens.line,
+    paddingTop: {
+      default: "1.5rem",
+      [breakpoints.sm]: "2rem",
+    },
+  },
+  brandRow: {
+    display: "flex",
+    alignItems: "center",
+    gap: "0.5rem",
+  },
+  brandLink: {
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    height: {
+      default: "2.25rem",
+      [breakpoints.sm]: "2.5rem",
+    },
+    width: {
+      default: "2.25rem",
+      [breakpoints.sm]: "2.5rem",
+    },
+    borderRadius: 9999,
+    backgroundColor: {
+      default: tokens.surfaceRaised,
+      ":hover": `color-mix(in oklab, ${tokens.accent} 10%, transparent)`,
+    },
+    textDecorationLine: "none",
+    transitionProperty:
+      "color, background-color, border-color, outline-color, text-decoration-color, fill, stroke",
+    transitionDuration: "200ms",
+    transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
+    boxShadow: {
+      default: null,
+      ":focus": `0 0 0 2px color-mix(in oklab, ${tokens.accent} 40%, transparent)`,
+    },
+    outlineStyle: {
+      default: null,
+      ":focus": "none",
+    },
+  },
+  brandMark: {
+    height: {
+      default: "1rem",
+      [breakpoints.sm]: "1.125rem",
+    },
+    width: {
+      default: "1rem",
+      [breakpoints.sm]: "1.125rem",
+    },
+  },
+  copyright: {
+    letterSpacing: tokens.trackingLabelTight,
+    fontSize: {
+      default: tokens.kicker,
+      [breakpoints.sm]: "0.75rem",
+    },
+  },
+});
+
+function FooterLink({ href, children }: { href: string; children: ReactNode }) {
+  return (
+    <Link href={href} {...stylex.props(styles.navLink)}>
+      {children}
+    </Link>
+  );
+}
 
 async function copyrightYear() {
   "use cache";
@@ -11,71 +200,40 @@ async function copyrightYear() {
 
 export const Footer = async () => {
   const currentYear = await copyrightYear();
+  const brandMark = stylex.props(styles.brandMark);
 
   return (
-    <footer className="mt-auto border-t-2 border-line bg-surface py-10 sm:py-12 dark:border-line dark:bg-surface print:hidden">
-      <div className="container mx-auto w-full px-4 sm:px-6 lg:px-8">
-        {/* Support Section */}
-        <div className="mb-8 text-center sm:mb-10">
+    <footer {...stylex.props(styles.root)}>
+      <div {...stylex.props(styles.container)}>
+        <div {...stylex.props(styles.support)}>
           <KofiButton size="small" />
-          <p className="font-display mt-3 text-kicker font-semibold tracking-label text-secondary uppercase sm:text-xs dark:text-secondary">
+          <p {...stylex.props(kicker.base, styles.supportLabel)}>
             Support this reflection tool
           </p>
         </div>
 
-        {/* Navigation Links */}
-        <nav
-          className="mb-8 flex flex-wrap justify-center gap-4 text-sm sm:mb-10 sm:gap-6"
-          aria-label="Footer navigation"
-        >
-          <Link
-            href="/"
-            className="font-display font-bold tracking-label text-secondary uppercase transition-colors duration-200 hover:text-accent focus:text-accent focus:ring-2 focus:ring-accent/40 focus:outline-none dark:text-secondary"
-          >
-            Home
-          </Link>
-          <Link
-            href="/about"
-            className="font-display font-bold tracking-label text-secondary uppercase transition-colors duration-200 hover:text-accent focus:text-accent focus:ring-2 focus:ring-accent/40 focus:outline-none dark:text-secondary"
-          >
-            About
-          </Link>
-          <Link
-            href="/blog"
-            className="font-display font-bold tracking-label text-secondary uppercase transition-colors duration-200 hover:text-accent focus:text-accent focus:ring-2 focus:ring-accent/40 focus:outline-none dark:text-secondary"
-          >
-            Journal
-          </Link>
-          <Link
-            href="/table/1990/1/1"
-            className="font-display font-bold tracking-label text-secondary uppercase transition-colors duration-200 hover:text-accent focus:text-accent focus:ring-2 focus:ring-accent/40 focus:outline-none dark:text-secondary"
-          >
-            Example: 1990
-          </Link>
-          <Link
-            href="/burst/1985/6/15"
-            className="font-display font-bold tracking-label text-secondary uppercase transition-colors duration-200 hover:text-accent focus:text-accent focus:ring-2 focus:ring-accent/40 focus:outline-none dark:text-secondary"
-          >
-            Burst View
-          </Link>
+        <nav {...stylex.props(styles.nav)} aria-label="Footer navigation">
+          <FooterLink href="/">Home</FooterLink>
+          <FooterLink href="/about">About</FooterLink>
+          <FooterLink href="/blog">Journal</FooterLink>
+          <FooterLink href="/table/1990/1/1">Example: 1990</FooterLink>
+          <FooterLink href="/burst/1985/6/15">Burst View</FooterLink>
         </nav>
 
-        {/* Description */}
-        <div className="mb-8 text-center sm:mb-10">
-          <p className="font-body mx-auto max-w-2xl text-xs leading-relaxed text-secondary sm:text-sm dark:text-secondary">
+        <div {...stylex.props(styles.descriptionWrap)}>
+          <p {...stylex.props(styles.description)}>
             Memento Mori Life Calendar visualizes life in weeks. Rooted in Stoic
             philosophy, it transforms abstract time into tangible perspective.
           </p>
         </div>
 
-        {/* Bottom Section */}
-        <div className="flex flex-col items-center justify-center gap-3 border-t-2 border-line pt-6 sm:pt-8 dark:border-line">
-          <div className="flex items-center gap-2">
+        <div {...stylex.props(styles.bottom)}>
+          <div {...stylex.props(styles.brandRow)}>
             <Link
               href="https://www.echoflow.ca/"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-surface-raised transition-colors duration-200 hover:bg-accent/10 focus:ring-2 focus:ring-accent/40 focus:outline-none sm:h-10 sm:w-10 dark:bg-surface-raised"
+              {...stylex.props(styles.brandLink)}
               aria-label="Echo Flow Canada"
             >
               <Image
@@ -83,10 +241,11 @@ export const Footer = async () => {
                 alt="Echo Flow"
                 width={18}
                 height={18}
-                className="h-4 w-4 sm:h-[1.125rem] sm:w-[1.125rem]"
+                className={brandMark.className}
+                style={brandMark.style}
               />
             </Link>
-            <span className="font-display text-kicker font-semibold tracking-label-tight text-secondary uppercase sm:text-xs dark:text-secondary">
+            <span {...stylex.props(kicker.base, styles.copyright)}>
               Echo Flow Canada © {currentYear}
             </span>
           </div>

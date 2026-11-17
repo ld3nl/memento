@@ -1,8 +1,9 @@
 "use client";
 
+import * as stylex from "@stylexjs/stylex";
 import { type ReactNode, useEffect, useId, useRef, useState } from "react";
-
-import { cn } from "../../lib/utils";
+import { breakpoints } from "../../styles/breakpoints.stylex";
+import { tokens } from "../../styles/tokens.stylex";
 
 type PopoverMode = "auto" | "manual";
 type PopoverAction = "toggle" | "show" | "hide";
@@ -39,6 +40,100 @@ interface PopoverProps {
   onBeforeToggle?: (event: React.ToggleEvent<HTMLDialogElement>) => void;
   /** Fired after the popover state changes */
   onToggle?: (event: React.ToggleEvent<HTMLDialogElement>) => void;
+}
+
+const positionClass: Record<PopoverPosition, string> = {
+  auto: "popover-auto",
+  left_top: "popover-left-top",
+  center_top: "popover-center-top",
+  right_top: "popover-right-top",
+  left_center: "popover-left-center",
+  center_center: "popover-center-center",
+  right_center: "popover-right-center",
+  left_bottom: "popover-left-bottom",
+  center_bottom: "popover-center-bottom",
+  right_bottom: "popover-right-bottom",
+};
+
+const styles = stylex.create({
+  trigger: {
+    position: "relative",
+    width: "0.5rem",
+    height: "0.5rem",
+    padding: 0,
+    cursor: "pointer",
+    borderWidth: 1,
+    borderStyle: "solid",
+    color: tokens.secondary,
+    transitionProperty:
+      "color, background-color, border-color, outline-color, text-decoration-color, fill, stroke",
+    transitionDuration: "150ms",
+    transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
+    outlineStyle: "none",
+    boxShadow: {
+      default: null,
+      ":focus-visible": `0 0 0 2px ${tokens.surface}, 0 0 0 4px color-mix(in oklab, ${tokens.accent} 50%, transparent)`,
+    },
+  },
+  triggerFilled: {
+    borderColor: {
+      default: tokens.border,
+      ":hover": tokens.accent,
+      [breakpoints.dark]: {
+        default: tokens.accent,
+        ":hover": tokens.accent,
+      },
+    },
+    backgroundColor: {
+      default: tokens.card,
+      ":hover": tokens.accent,
+      [breakpoints.dark]: {
+        default: tokens.accent,
+        ":hover": tokens.accent,
+      },
+    },
+  },
+  triggerEmpty: {
+    borderColor: {
+      default: tokens.accent,
+      ":hover": tokens.accent,
+    },
+    backgroundColor: {
+      default: "transparent",
+      ":hover": `color-mix(in oklab, ${tokens.accent} 10%, transparent)`,
+    },
+  },
+  triggerEnd: {
+    marginLeft: "auto",
+  },
+  dialog: {
+    position: "fixed",
+    inset: "auto",
+    zIndex: 50,
+    margin: 0,
+    maxWidth: "none",
+    borderWidth: 0,
+    backgroundColor: "transparent",
+    padding: 0,
+    opacity: {
+      default: 0,
+      ":popover-open": 1,
+    },
+    transitionProperty: "opacity",
+    transitionDuration: "200ms",
+    transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
+    "::backdrop": {
+      backgroundColor: `color-mix(in oklab, ${tokens.black} 30%, transparent)`,
+      backdropFilter: "blur(8px)",
+    },
+  },
+});
+
+function mergeClassName(
+  stylexClassName: string | undefined,
+  ...extra: Array<string | false | undefined>
+) {
+  return [stylexClassName, ...extra].filter(Boolean).join(" ");
 }
 
 export default function Popover({
@@ -98,6 +193,13 @@ export default function Popover({
     }
   }, [open]);
 
+  const triggerProps = stylex.props(
+    styles.trigger,
+    isFilled ? styles.triggerFilled : styles.triggerEmpty,
+    weekIndex != null && weekIndex > 26 && styles.triggerEnd
+  );
+  const dialogProps = stylex.props(styles.dialog);
+
   return (
     <>
       <button
@@ -108,21 +210,9 @@ export default function Popover({
         aria-expanded={open}
         aria-haspopup="dialog"
         aria-controls={popoverId}
-        className={cn(
-          "relative size-2 cursor-pointer border text-secondary transition-colors outline-none",
-          {
-            "border-border bg-card dark:border-accent dark:bg-accent": isFilled,
-            "border-accent dark:border-accent": !isFilled,
-            "hover:border-accent hover:bg-accent dark:hover:border-accent dark:hover:bg-accent":
-              isFilled,
-            "hover:border-accent hover:bg-accent/10 dark:hover:border-accent dark:hover:bg-accent/10":
-              !isFilled,
-            "ml-auto": weekIndex && weekIndex > 26,
-          },
-          "focus-visible:ring-2 focus-visible:ring-accent/50 focus-visible:ring-offset-2 focus-visible:ring-offset-surface dark:text-secondary dark:focus-visible:ring-offset-surface",
-          triggerClassName
-        )}
-        style={{ anchorName }}
+        {...triggerProps}
+        className={mergeClassName(triggerProps.className, triggerClassName)}
+        style={{ ...triggerProps.style, anchorName }}
       >
         {label}
       </button>
@@ -135,24 +225,16 @@ export default function Popover({
         aria-label="Record details"
         onBeforeToggle={handleBeforeToggle}
         onToggle={handleToggle}
-        style={{
-          positionAnchor: anchorName,
-        }}
-        className={cn(
-          "fixed inset-auto z-50 m-0 max-w-none border-0 bg-transparent p-0 opacity-0 transition-opacity duration-200 [&::backdrop]:bg-black/30 [&::backdrop]:backdrop-blur-sm [&:popover-open]:opacity-100",
-          // Position classes
-          position === "auto" && "popover-auto",
-          position === "left_top" && "popover-left-top",
-          position === "center_top" && "popover-center-top",
-          position === "right_top" && "popover-right-top",
-          position === "left_center" && "popover-left-center",
-          position === "center_center" && "popover-center-center",
-          position === "right_center" && "popover-right-center",
-          position === "left_bottom" && "popover-left-bottom",
-          position === "center_bottom" && "popover-center-bottom",
-          position === "right_bottom" && "popover-right-bottom",
+        {...dialogProps}
+        className={mergeClassName(
+          dialogProps.className,
+          positionClass[position],
           className
         )}
+        style={{
+          ...dialogProps.style,
+          positionAnchor: anchorName,
+        }}
       >
         {children}
       </dialog>

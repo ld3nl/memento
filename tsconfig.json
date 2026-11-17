@@ -32,6 +32,7 @@
     "**/*.test.ts",
     "**/*.test.tsx",
     "jest.setup.ts",
-    "bun.setup.ts"
+    "bun.setup.ts",
+    "test/**"
   ]
 }

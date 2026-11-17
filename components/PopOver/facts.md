@@ -221,7 +221,7 @@ Style descendants based on which fallback is active:
 }
 
 /* When flip-block is active */
-@container anchored(fallback: flip-block) {
+@container anchored (fallback: flip-block) {
   .arrow {
     transform: rotate(180deg);
   }

@@ -1,2 +1,2 @@
 [test]
-preload = ["./jest.setup.ts", "./bun.setup.ts"]
+preload = ["./test/bun-stylex-preload.ts", "./jest.setup.ts", "./bun.setup.ts"]

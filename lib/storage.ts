@@ -12,8 +12,10 @@ localforage.config({
   description: "Storage for Memento Mori form data",
 });
 
+export const FORM_DATA_STORAGE_KEY = "formData";
+
 const STORAGE_KEYS = {
-  FORM_DATA: "formData",
+  FORM_DATA: FORM_DATA_STORAGE_KEY,
 } as const;
 
 // Type definitions
@@ -113,6 +115,7 @@ export const FormStorage = {
    * Save form data
    */
   async saveFormData(data: FormData): Promise<void> {
+    writeFormDataSync(data);
     await StorageManager.setItem(STORAGE_KEYS.FORM_DATA, data);
   },
 
@@ -127,6 +130,31 @@ export const FormStorage = {
    * Clear form data
    */
   async clearFormData(): Promise<void> {
+    writeFormDataSync(null);
     await StorageManager.removeItem(STORAGE_KEYS.FORM_DATA);
   },
 };
+
+/** Synchronous copy so a reload can paint the saved birthdate before IndexedDB. */
+export function readFormDataSync(): FormData | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = localStorage.getItem(STORAGE_KEYS.FORM_DATA);
+    if (!raw) return null;
+    const data = JSON.parse(raw) as FormData;
+    if (!data || typeof data.date !== "string") return null;
+    return data;
+  } catch {
+    return null;
+  }
+}
+
+function writeFormDataSync(data: FormData | null) {
+  if (typeof window === "undefined") return;
+  try {
+    if (!data) localStorage.removeItem(STORAGE_KEYS.FORM_DATA);
+    else localStorage.setItem(STORAGE_KEYS.FORM_DATA, JSON.stringify(data));
+  } catch {
+    // Private mode or a full quota — IndexedDB copy still stands.
+  }
+}

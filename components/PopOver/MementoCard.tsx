@@ -1,3 +1,6 @@
+import * as stylex from "@stylexjs/stylex";
+import { tokens } from "../../styles/tokens.stylex";
+
 interface MementoCardProps {
   weekNumber: string;
   age: string;
@@ -10,6 +13,154 @@ interface MementoCardProps {
   prompt?: string;
 }
 
+const styles = stylex.create({
+  card: {
+    width: "20rem",
+    borderRadius: "1.5rem",
+    backgroundColor: tokens.card,
+    padding: "1.5rem",
+    fontFamily: tokens.fontSans,
+    color: tokens.white,
+  },
+  header: {
+    display: "flex",
+    alignItems: "center",
+    columnGap: "0.5rem",
+    marginBottom: "0.75rem",
+  },
+  dot: {
+    height: "0.375rem",
+    width: "0.375rem",
+    borderRadius: 9999,
+    backgroundColor: tokens.mark,
+  },
+  week: {
+    fontSize: "0.75rem",
+    lineHeight: "calc(1 / 0.75)",
+    letterSpacing: tokens.trackingMark,
+    textTransform: "uppercase",
+    color: tokens.mark,
+  },
+  age: {
+    margin: 0,
+    fontFamily: tokens.fontDisplay,
+    fontSize: tokens.cardTitle,
+    lineHeight: 1,
+    letterSpacing: tokens.trackingCard,
+  },
+  rule: {
+    height: 1,
+    marginBlock: "1.25rem",
+    backgroundColor: `color-mix(in oklab, ${tokens.surface} 10%, transparent)`,
+  },
+  ruleTight: {
+    height: 1,
+    marginBlock: "1rem",
+    backgroundColor: `color-mix(in oklab, ${tokens.surface} 10%, transparent)`,
+  },
+  reflection: {
+    marginBottom: "1.25rem",
+  },
+  kicker: {
+    marginBottom: "0.625rem",
+    fontSize: "0.75rem",
+    lineHeight: "calc(1 / 0.75)",
+    letterSpacing: tokens.trackingMarkTight,
+    color: tokens.mark,
+  },
+  milestoneKicker: {
+    marginBottom: "0.75rem",
+    fontSize: "0.75rem",
+    lineHeight: "calc(1 / 0.75)",
+    letterSpacing: tokens.trackingMarkTight,
+    color: tokens.mark,
+  },
+  quote: {
+    position: "relative",
+    margin: 0,
+    paddingLeft: "1.5rem",
+    fontFamily: tokens.fontDisplay,
+    fontStyle: "italic",
+    color: `color-mix(in oklab, ${tokens.white} 95%, transparent)`,
+  },
+  mark: {
+    pointerEvents: "none",
+    position: "absolute",
+    top: "-0.125rem",
+    left: 0,
+    fontFamily: tokens.fontDisplay,
+    fontSize: tokens.cardMark,
+    lineHeight: 1,
+    color: `color-mix(in oklab, ${tokens.mark} 35%, transparent)`,
+    userSelect: "none",
+  },
+  quoteText: {
+    margin: 0,
+    fontSize: tokens.cardBody,
+    lineHeight: 1.375,
+  },
+  cite: {
+    display: "block",
+    marginTop: "0.5rem",
+    fontSize: "0.75rem",
+    lineHeight: "calc(1 / 0.75)",
+    fontWeight: 500,
+    fontStyle: "normal",
+    letterSpacing: "0.05em",
+    color: tokens.mark,
+  },
+  milestoneRow: {
+    display: "flex",
+    alignItems: "flex-start",
+    columnGap: "0.75rem",
+  },
+  trophy: {
+    marginTop: "0.125rem",
+    display: "flex",
+    height: "2rem",
+    width: "2rem",
+    flexShrink: 0,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 9999,
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderColor: `color-mix(in oklab, ${tokens.mark} 70%, transparent)`,
+  },
+  trophyIcon: {
+    height: "1rem",
+    width: "1rem",
+    color: tokens.mark,
+  },
+  milestoneTitle: {
+    fontFamily: tokens.fontDisplay,
+    fontSize: tokens.cardBody,
+    lineHeight: 1.25,
+    fontWeight: 600,
+  },
+  milestoneDate: {
+    marginTop: "0.125rem",
+    fontSize: "0.75rem",
+    lineHeight: "calc(1 / 0.75)",
+    letterSpacing: "0.025em",
+    color: `color-mix(in oklab, ${tokens.white} 60%, transparent)`,
+  },
+  prompt: {
+    marginTop: "1.75rem",
+    borderTopWidth: 1,
+    borderTopStyle: "solid",
+    borderTopColor: `color-mix(in oklab, ${tokens.white} 10%, transparent)`,
+    paddingTop: "1rem",
+  },
+  promptText: {
+    margin: 0,
+    textAlign: "center",
+    fontSize: tokens.cardCaption,
+    letterSpacing: "0.025em",
+    color: `color-mix(in oklab, ${tokens.white} 70%, transparent)`,
+  },
+});
+
 export function MementoCard({
   weekNumber,
   age,
@@ -19,54 +170,36 @@ export function MementoCard({
   prompt = "What will you do with this week?",
 }: MementoCardProps) {
   return (
-    <article className="w-[320px] rounded-3xl bg-card p-6 font-sans text-white">
-      {/* Week Header */}
-      <div className="mb-3 flex items-center gap-x-2">
-        <div className="h-1.5 w-1.5 rounded-full bg-mark" />
-        <span className="text-xs tracking-mark text-mark uppercase">
-          {weekNumber}
-        </span>
+    <article {...stylex.props(styles.card)}>
+      <div {...stylex.props(styles.header)}>
+        <div {...stylex.props(styles.dot)} />
+        <span {...stylex.props(styles.week)}>{weekNumber}</span>
       </div>
 
-      {/* Age */}
-      <h1 className="font-serif text-card-title leading-none tracking-card">
-        {age}
-      </h1>
+      <h1 {...stylex.props(styles.age)}>{age}</h1>
 
-      {/* Divider */}
-      <div className="my-5 h-px bg-surface/10" />
+      <div {...stylex.props(styles.rule)} />
 
-      {/* Stoic Reflection */}
-      <section className="mb-5">
-        <div className="mb-2.5 text-xs tracking-mark-tight text-mark">
-          STOIC REFLECTION
-        </div>
-        <blockquote className="relative pl-6 font-serif text-white/95 italic">
-          <span className="pointer-events-none absolute -top-0.5 left-0 font-serif text-card-mark leading-none text-mark/35 select-none">
-            "
-          </span>
-          <p className="text-card-body leading-snug">{quote}</p>
-          <cite className="mt-2 block text-xs font-medium tracking-wider text-mark not-italic">
-            - {author}
-          </cite>
+      <section {...stylex.props(styles.reflection)}>
+        <div {...stylex.props(styles.kicker)}>STOIC REFLECTION</div>
+        <blockquote {...stylex.props(styles.quote)}>
+          <span {...stylex.props(styles.mark)}>"</span>
+          <p {...stylex.props(styles.quoteText)}>{quote}</p>
+          <cite {...stylex.props(styles.cite)}>- {author}</cite>
         </blockquote>
       </section>
 
       {milestone && (
         <>
-          {/* Divider */}
-          <div className="my-4 h-px bg-surface/10" />
+          <div {...stylex.props(styles.ruleTight)} />
 
-          {/* Milestone */}
           <section>
-            <div className="mb-3 text-xs tracking-mark-tight text-mark">
-              MILESTONE
-            </div>
-            <div className="flex items-start gap-x-3">
-              <div className="mt-0.5 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border border-mark/70">
+            <div {...stylex.props(styles.milestoneKicker)}>MILESTONE</div>
+            <div {...stylex.props(styles.milestoneRow)}>
+              <div {...stylex.props(styles.trophy)}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-4 w-4 text-mark"
+                  {...stylex.props(styles.trophyIcon)}
                   viewBox="0 0 256 256"
                   aria-hidden="true"
                 >
@@ -120,10 +253,10 @@ export function MementoCard({
                 </svg>
               </div>
               <div>
-                <div className="font-serif text-card-body leading-tight font-semibold">
+                <div {...stylex.props(styles.milestoneTitle)}>
                   {milestone.title}
                 </div>
-                <div className="mt-0.5 text-xs tracking-wide text-white/60">
+                <div {...stylex.props(styles.milestoneDate)}>
                   {milestone.date}
                 </div>
               </div>
@@ -132,11 +265,8 @@ export function MementoCard({
         </>
       )}
 
-      {/* Bottom Prompt */}
-      <div className="mt-7 border-t border-white/10 pt-4">
-        <p className="text-center text-card-caption tracking-wide text-white/70">
-          {prompt}
-        </p>
+      <div {...stylex.props(styles.prompt)}>
+        <p {...stylex.props(styles.promptText)}>{prompt}</p>
       </div>
     </article>
   );

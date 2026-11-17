@@ -1,15 +1,18 @@
 "use client";
 
+import * as stylex from "@stylexjs/stylex";
 import { createFormHook } from "@tanstack/react-form-nextjs";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { calculateLifeWeeks, getFormattedAge } from "../../lib/date-utils";
-import { FormStorage } from "../../lib/storage";
+import { FormStorage, readFormDataSync } from "../../lib/storage";
 import {
   birthDateFromPathSegments,
   generateLifeTableUrl,
 } from "../../lib/url-utils";
-import { cn } from "../../lib/utils";
+import { breakpoints } from "../../styles/breakpoints.stylex";
+import { kicker } from "../../styles/recipes/kicker.stylex";
+import { tokens } from "../../styles/tokens.stylex";
 import LabeledInput from "./fields/LabeledInput";
 import { fieldContext, formContext, useFormContext } from "./form-hook";
 import { formSchema } from "./schema";
@@ -20,20 +23,296 @@ function lifeWeeksForInput(birthdate: string) {
   return calculateLifeWeeks(birth);
 }
 
-// Create SubmitButton component using useFormContext
+const styles = stylex.create({
+  shell: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+  },
+  form: {
+    display: "flex",
+    flexDirection: "column",
+    gap: {
+      default: "1.5rem",
+      [breakpoints.sm]: "1.75rem",
+    },
+  },
+  submit: {
+    alignSelf: {
+      default: "stretch",
+      [breakpoints.sm]: "flex-start",
+    },
+    minHeight: "3.25rem",
+    width: {
+      default: "100%",
+      [breakpoints.sm]: "auto",
+    },
+    minWidth: {
+      default: null,
+      [breakpoints.sm]: "15rem",
+    },
+    cursor: "pointer",
+    borderRadius: 0,
+    borderWidth: 3,
+    borderStyle: "solid",
+    borderColor: tokens.accent,
+    backgroundColor: {
+      default: tokens.surface,
+      ":hover": tokens.accent,
+      [breakpoints.dark]: {
+        default: tokens.surfaceRaised,
+        ":hover": tokens.accent,
+      },
+    },
+    paddingInline: {
+      default: "1.5rem",
+      [breakpoints.sm]: "2rem",
+    },
+    paddingBlock: "1rem",
+    fontFamily: tokens.fontDisplay,
+    fontSize: {
+      default: "0.875rem",
+      [breakpoints.sm]: "1rem",
+    },
+    lineHeight: {
+      default: "calc(1.25 / 0.875)",
+      [breakpoints.sm]: 1.5,
+    },
+    fontWeight: 700,
+    letterSpacing: tokens.trackingLabel,
+    textTransform: "uppercase",
+    color: {
+      default: tokens.accent,
+      ":hover": tokens.white,
+    },
+    boxShadow: {
+      default: `0 10px 15px -3px color-mix(in oklab, ${tokens.red600} 10%, transparent), 0 4px 6px -4px color-mix(in oklab, ${tokens.red600} 10%, transparent)`,
+      ":hover": `0 20px 25px -5px color-mix(in oklab, ${tokens.red600} 20%, transparent), 0 8px 10px -6px color-mix(in oklab, ${tokens.red600} 20%, transparent)`,
+      ":focus": `0 0 0 4px color-mix(in oklab, ${tokens.accent} 40%, transparent), 0 10px 15px -3px color-mix(in oklab, ${tokens.red600} 10%, transparent), 0 4px 6px -4px color-mix(in oklab, ${tokens.red600} 10%, transparent)`,
+      ":hover:focus": `0 0 0 4px color-mix(in oklab, ${tokens.accent} 40%, transparent), 0 20px 25px -5px color-mix(in oklab, ${tokens.red600} 20%, transparent), 0 8px 10px -6px color-mix(in oklab, ${tokens.red600} 20%, transparent)`,
+    },
+    outlineStyle: {
+      default: null,
+      ":focus": "none",
+    },
+    transform: {
+      default: "scale(1)",
+      ":active": "scale(0.98)",
+    },
+    transitionProperty: "all",
+    transitionDuration: "200ms",
+    transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
+  },
+  submitDisabled: {
+    cursor: "not-allowed",
+    opacity: 0.4,
+    backgroundColor: {
+      default: null,
+      ":hover": tokens.surface,
+      [breakpoints.dark]: {
+        default: null,
+        ":hover": tokens.week,
+      },
+    },
+    color: {
+      default: null,
+      ":hover": tokens.accent,
+    },
+    boxShadow: {
+      default: null,
+      ":hover": `0 10px 15px -3px color-mix(in oklab, ${tokens.red600} 10%, transparent), 0 4px 6px -4px color-mix(in oklab, ${tokens.red600} 10%, transparent)`,
+      ":hover:focus": `0 0 0 4px color-mix(in oklab, ${tokens.accent} 40%, transparent), 0 10px 15px -3px color-mix(in oklab, ${tokens.red600} 10%, transparent), 0 4px 6px -4px color-mix(in oklab, ${tokens.red600} 10%, transparent)`,
+    },
+  },
+  preview: {
+    marginTop: {
+      default: 0,
+      [breakpoints.sm]: "0.25rem",
+    },
+    width: "100%",
+  },
+  previewCard: {
+    borderWidth: 3,
+    borderStyle: "solid",
+    borderColor: tokens.accent,
+    backgroundColor: {
+      default: tokens.surface,
+      [breakpoints.dark]: tokens.surfaceRaised,
+    },
+    padding: {
+      default: "1.5rem",
+      [breakpoints.sm]: "1.75rem",
+      [breakpoints.lg]: "2rem",
+    },
+    boxShadow: `0 25px 50px -12px color-mix(in oklab, ${tokens.red600} 10%, transparent)`,
+  },
+  weeks: {
+    fontFamily: tokens.fontMono,
+    fontSize: {
+      default: "3rem",
+      [breakpoints.smOnly]: "3.75rem",
+      [breakpoints.lg]: "4.5rem",
+    },
+    lineHeight: 1,
+    fontWeight: 700,
+    letterSpacing: "-0.025em",
+    color: tokens.accent,
+    fontVariantNumeric: "tabular-nums",
+  },
+  weeksLabel: {
+    marginTop: {
+      default: "0.75rem",
+      [breakpoints.sm]: "1rem",
+    },
+  },
+  ageCopy: {
+    marginTop: "1rem",
+    borderTopWidth: 1,
+    borderTopStyle: "solid",
+    borderTopColor: tokens.line,
+    paddingTop: "1rem",
+    fontFamily: tokens.fontDisplay,
+    fontSize: "0.875rem",
+    lineHeight: 1.625,
+    fontStyle: "italic",
+    color: tokens.secondary,
+  },
+  beyond: {
+    marginTop: "0.75rem",
+    marginBottom: 0,
+    fontSize: "0.875rem",
+    lineHeight: "calc(1.25 / 0.875)",
+    color: tokens.secondary,
+  },
+  remember: {
+    display: "flex",
+    width: "100%",
+    cursor: "pointer",
+    alignItems: "flex-start",
+    gap: "0.75rem",
+    paddingBlock: "0.5rem",
+    fontSize: {
+      default: "0.875rem",
+      [breakpoints.sm]: "1rem",
+    },
+    lineHeight: 1.375,
+    color: {
+      default: tokens.secondary,
+      ":hover": tokens.primary,
+    },
+    userSelect: "none",
+  },
+  checkBox: {
+    position: "relative",
+    marginTop: "0.125rem",
+    display: "inline-flex",
+    height: "1.25rem",
+    width: "1.25rem",
+    flexShrink: 0,
+  },
+  checkbox: {
+    height: "1.25rem",
+    width: "1.25rem",
+    margin: 0,
+    cursor: "pointer",
+    appearance: "none",
+    borderRadius: 0,
+    borderWidth: 2,
+    borderStyle: "solid",
+    borderColor: {
+      default: tokens.line,
+      ":checked": tokens.accent,
+      [breakpoints.dark]: {
+        default: tokens.border,
+        ":checked": tokens.accent,
+      },
+    },
+    backgroundColor: {
+      default: tokens.surface,
+      ":checked": tokens.accent,
+      [breakpoints.dark]: {
+        default: tokens.surfaceRaised,
+        ":checked": tokens.accent,
+      },
+    },
+    boxShadow: {
+      default: null,
+      ":focus-visible": `0 0 0 4px color-mix(in oklab, ${tokens.accent} 20%, transparent)`,
+    },
+    outlineStyle: {
+      default: null,
+      ":focus-visible": "none",
+    },
+  },
+  check: {
+    pointerEvents: "none",
+    position: "absolute",
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    margin: "auto",
+    display: {
+      default: "none",
+      [stylex.when.ancestor(":has(input:checked)")]: "block",
+    },
+    height: "0.75rem",
+    width: "0.75rem",
+    color: tokens.white,
+  },
+});
+
+function BirthPreview({
+  date,
+  invalid,
+  weeksLived,
+  beyondGrid,
+}: {
+  date: string;
+  invalid: boolean;
+  weeksLived: number | null;
+  beyondGrid: boolean;
+}) {
+  const preview = stylex.props(styles.preview);
+  const show = Boolean(date) && !invalid && weeksLived !== null;
+
+  return (
+    <div
+      {...preview}
+      className={[preview.className, "birth-preview-slot"]
+        .filter(Boolean)
+        .join(" ")}
+    >
+      {show ? (
+        <div {...stylex.props(styles.previewCard)}>
+          <div data-cy="age" {...stylex.props(styles.weeks)}>
+            {weeksLived.toLocaleString()}
+          </div>
+          <div {...stylex.props(kicker.base, styles.weeksLabel)}>
+            Weeks lived
+          </div>
+          <div data-cy="age-copy" {...stylex.props(styles.ageCopy)}>
+            {getFormattedAge(date)}
+          </div>
+          {beyondGrid ? (
+            <p {...stylex.props(styles.beyond)}>
+              The grid visualizes 80 years. Extra years are not drawn, but you
+              can still open the calendar.
+            </p>
+          ) : null}
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
 function SubmitButton() {
   const form = useFormContext();
   return (
     <form.Subscribe selector={state => [state.canSubmit, state.isSubmitting]}>
       {([canSubmit, isSubmitting]) => (
         <button
-          className={cn(
-            "font-display min-h-[52px] w-full cursor-pointer rounded-none stroke border-accent bg-surface px-6 py-4 text-sm font-bold tracking-label text-accent uppercase shadow-lg shadow-red-600/10 transition-all duration-200 hover:bg-accent hover:text-white hover:shadow-xl hover:shadow-red-600/20 focus:ring-4 focus:ring-accent/40 focus:outline-none active:scale-[0.98] sm:w-auto sm:min-w-[240px] sm:px-8 sm:text-base dark:bg-surface-raised",
-            {
-              "cursor-not-allowed opacity-40 hover:bg-surface hover:text-accent hover:shadow-lg dark:hover:bg-week":
-                !canSubmit,
-            }
-          )}
+          {...stylex.props(styles.submit, !canSubmit && styles.submitDisabled)}
           type="submit"
           disabled={!canSubmit}
           data-cy={"generate-table-button"}
@@ -46,7 +325,6 @@ function SubmitButton() {
   );
 }
 
-// Create the app form hook with pre-configured components
 const { useAppForm } = createFormHook({
   fieldContext,
   formContext,
@@ -89,29 +367,46 @@ const Form = () => {
     }
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     let cancelled = false;
 
-    const loadSavedData = async () => {
-      const savedData = await FormStorage.loadFormData().catch(error => {
-        console.error("Failed to load saved form data:", error);
-        return null;
-      });
-
-      if (cancelled || !savedData) return;
-
+    const apply = (savedData: {
+      name?: string;
+      date: string;
+      saveData?: boolean;
+    }) => {
       form.setFieldValue("name", savedData.name || "");
       form.setFieldValue("date", savedData.date || "");
       setSaveData(savedData.saveData || false);
-
-      if (savedData.date) {
-        const life = lifeWeeksForInput(savedData.date);
-        setWeeksLived(life?.weeksLived ?? null);
-        setBeyondGrid(life?.beyondGrid ?? false);
+      if (!savedData.date) {
+        document.documentElement.removeAttribute("data-memento-saved");
+        return;
       }
+      document.documentElement.setAttribute("data-memento-saved", "");
+      const life = lifeWeeksForInput(savedData.date);
+      setWeeksLived(life?.weeksLived ?? null);
+      setBeyondGrid(life?.beyondGrid ?? false);
     };
 
-    void loadSavedData();
+    const mirrored = readFormDataSync();
+    if (mirrored) {
+      apply(mirrored);
+      return;
+    }
+
+    document.documentElement.removeAttribute("data-memento-saved");
+
+    // First visit after this change may only have the IndexedDB copy.
+    void FormStorage.loadFormData()
+      .then(savedData => {
+        if (cancelled || !savedData) return;
+        apply(savedData);
+        return FormStorage.saveFormData(savedData);
+      })
+      .catch(error => {
+        console.error("Failed to load saved form data:", error);
+      });
+
     return () => {
       cancelled = true;
     };
@@ -120,7 +415,7 @@ const Form = () => {
   const overEighty = beyondGrid;
 
   return (
-    <div className="flex flex-col justify-center">
+    <div {...stylex.props(styles.shell)}>
       <form
         data-cy={"bday-form"}
         action={async formData => {
@@ -141,7 +436,7 @@ const Form = () => {
           if (!date) return;
           router.push(generateLifeTableUrl(date, name || undefined));
         }}
-        className="space-y-6 sm:space-y-7"
+        {...stylex.props(styles.form)}
         noValidate
       >
         <form.AppField name="name">
@@ -169,48 +464,33 @@ const Form = () => {
                   const life = lifeWeeksForInput(date);
                   setWeeksLived(life?.weeksLived ?? null);
                   setBeyondGrid(life?.beyondGrid ?? false);
+                  if (life) {
+                    document.documentElement.setAttribute(
+                      "data-memento-saved",
+                      ""
+                    );
+                  } else {
+                    document.documentElement.removeAttribute(
+                      "data-memento-saved"
+                    );
+                  }
                 }}
               />
-              {field.state.value &&
-                !field.state.meta.errors.length &&
-                weeksLived !== null && (
-                  <div className="mt-6 sm:mt-8">
-                    <div className="stroke border-accent bg-surface p-6 shadow-2xl shadow-red-600/10 sm:p-7 lg:p-8 dark:bg-surface-raised">
-                      <div
-                        data-cy="age"
-                        className="font-mono text-5xl font-bold tracking-tight text-accent tabular-nums sm:text-6xl lg:text-7xl"
-                      >
-                        {weeksLived.toLocaleString()}
-                      </div>
-                      <div className="font-display mt-3 text-kicker font-semibold tracking-label text-secondary uppercase sm:mt-4 dark:text-secondary">
-                        Weeks lived
-                      </div>
-                      {field.state.value && (
-                        <div
-                          data-cy="age-copy"
-                          className="font-display mt-4 border-t border-line pt-4 text-sm leading-relaxed text-secondary italic dark:border-line dark:text-secondary"
-                        >
-                          {getFormattedAge(field.state.value)}
-                        </div>
-                      )}
-                      {overEighty && (
-                        <p className="mt-3 text-sm text-secondary dark:text-secondary">
-                          The grid visualizes 80 years. Extra years are not
-                          drawn, but you can still open the calendar.
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                )}
+              <BirthPreview
+                date={field.state.value}
+                invalid={field.state.meta.errors.length > 0}
+                weeksLived={weeksLived}
+                beyondGrid={overEighty}
+              />
             </>
           )}
         </form.AppField>
 
-        <label className="flex cursor-pointer items-start gap-3 py-2 text-sm leading-snug text-secondary select-none hover:text-primary sm:text-base dark:text-secondary dark:hover:text-primary">
-          <span className="relative mt-0.5 inline-flex h-5 w-5 flex-shrink-0">
+        <label {...stylex.props(styles.remember, stylex.defaultMarker())}>
+          <span {...stylex.props(styles.checkBox)}>
             <input
+              {...stylex.props(styles.checkbox)}
               id="save-data-checkbox"
-              className="peer h-5 w-5 cursor-pointer appearance-none rounded-none border-2 border-line bg-surface checked:border-accent checked:bg-accent focus-visible:ring-4 focus-visible:ring-accent/20 focus-visible:outline-none dark:border-border dark:bg-surface-raised"
               type="checkbox"
               name="saveData"
               value="on"
@@ -241,7 +521,7 @@ const Form = () => {
               data-cy={"input-checkbox-save"}
             />
             <svg
-              className="pointer-events-none absolute inset-0 m-auto hidden h-3 w-3 text-white peer-checked:block"
+              {...stylex.props(styles.check)}
               viewBox="0 0 12 12"
               aria-hidden="true"
             >
