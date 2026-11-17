@@ -9,7 +9,12 @@ import BackButton from "../../../components/BackButton";
 import { JsonLd } from "../../../components/content/JsonLd";
 import { LifeTable } from "../../../components/LifeTable/LifeTable";
 import { contentMetadata } from "../../../lib/content-metadata";
-import { breadcrumbJsonLd, graphJsonLd } from "../../../lib/json-ld";
+import {
+  absoluteUrl,
+  breadcrumbJsonLd,
+  graphJsonLd,
+} from "../../../lib/json-ld";
+import { LIFE_OG_SIZE } from "../../../lib/life-og";
 import { getLife, lifeSpans, listLives } from "../../../lib/lives";
 import {
   formatSpanRange,
@@ -186,6 +191,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       life.birthplace,
     ],
     ogType: "website",
+    image: {
+      url: absoluteUrl(`/lives/${life.slug}/og.png`),
+      width: LIFE_OG_SIZE.width,
+      height: LIFE_OG_SIZE.height,
+      alt: `${life.name}, life in weeks`,
+    },
   });
 }
 

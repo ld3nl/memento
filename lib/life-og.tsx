@@ -21,7 +21,9 @@ const GRID_H =
   (YEARS_IN_LIFETIME - 1) * DECADE_GAP;
 const EMPTY_WEEK = "#3f3f46";
 
-const INK_DARK = new Map(LEDGER_INKS.map(ink => [ink.id, ink.dark]));
+const INK_DARK = new Map<string, string>(
+  LEDGER_INKS.map(ink => [ink.id, ink.dark])
+);
 
 function bornDate(iso: string): Date {
   const [year, month, day] = iso.split("-").map(Number);

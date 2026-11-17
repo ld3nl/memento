@@ -12,6 +12,7 @@ export function contentMetadata({
   keywords,
   tags,
   ogType = "article",
+  image,
 }: {
   title: string;
   description: string;
@@ -21,8 +22,23 @@ export function contentMetadata({
   keywords: string[];
   tags?: string[];
   ogType?: "article" | "website";
+  image?: {
+    url: string;
+    width: number;
+    height: number;
+    alt: string;
+  };
 }): Metadata {
   const url = absoluteUrl(path);
+  const picture = image
+    ? {
+        url: image.url,
+        width: image.width,
+        height: image.height,
+        alt: image.alt,
+        type: "image/png",
+      }
+    : undefined;
 
   return {
     title,
@@ -39,6 +55,7 @@ export function contentMetadata({
       type: ogType,
       siteName: SITE_NAME,
       locale: "en_US",
+      ...(picture ? { images: [picture] } : {}),
       ...(ogType === "article" && datePublished
         ? {
             publishedTime: toIsoDateTime(datePublished),
@@ -53,6 +70,7 @@ export function contentMetadata({
       card: "summary_large_image",
       title,
       description,
+      ...(picture ? { images: [picture] } : {}),
     },
     robots: {
       index: true,
