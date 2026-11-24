@@ -1,12 +1,32 @@
 import {
+  calculateWeeksFromLastBirthday,
+  calculateYearsAlive,
+} from "./date-utils";
+import {
   dateLifeImage,
   lifeImageAlt,
   lifeOgImage,
   paintLifeGrid,
 } from "./life-og";
+import { shouldWeekBeFilled } from "./life-table-utils";
 import { lifeWeekDays } from "./life-week";
 import { getLife } from "./lives";
 import { LEDGER_INKS } from "./week-notes";
+
+const LIVED = "#dc2626";
+const EMPTY = "#3f3f46";
+
+function tableLived(
+  dob: Date,
+  asOf: Date,
+  year: number,
+  week: number
+): boolean {
+  const yearsAlive = calculateYearsAlive(dob, asOf);
+  const weeksFromLastBday = calculateWeeksFromLastBirthday(dob, asOf);
+  if (yearsAlive === null || weeksFromLastBday === null) return false;
+  return shouldWeekBeFilled(yearsAlive, year, week, weeksFromLastBday);
+}
 
 const dark = (id: string) => LEDGER_INKS.find(ink => ink.id === id)?.dark;
 
@@ -24,18 +44,22 @@ describe("life share image", () => {
 
   it("paints a lived week with no chapter in red", () => {
     if (!life) throw new Error("missing life");
-    const grid = paintLifeGrid(life, new Date(2026, 10, 16));
+    const asOf = new Date(2026, 10, 16);
+    const grid = paintLifeGrid(life, asOf);
     const dob = new Date(1971, 5, 28);
     let found = false;
 
     for (let year = 1; year <= 80 && !found; year++) {
       for (let week = 1; week <= 52; week++) {
         const days = lifeWeekDays(dob, year, week);
-        if (days.startDay > "2026-09-28" && days.startDay <= "2026-11-16") {
-          expect(grid[year - 1]?.[week - 1]).toBe("#dc2626");
-          found = true;
-          break;
+        if (
+          days.startDay <= "2026-09-28" ||
+          !tableLived(dob, asOf, year, week)
+        ) {
+          continue;
         }
+        expect(grid[year - 1]?.[week - 1]).toBe(LIVED);
+        found = true;
       }
     }
 
@@ -67,8 +91,30 @@ describe("life share image", () => {
       { born: "1971-06-28", name: "Life in weeks" },
       new Date(2026, 10, 16)
     );
-    expect(grid[0]?.[0]).toBe("#dc2626");
-    expect(grid[79]?.[51]).toBe("#3f3f46");
+    expect(grid[0]?.[0]).toBe(LIVED);
+    expect(grid[79]?.[51]).toBe(EMPTY);
+  });
+
+  it("paints 17 December 1987 with the same squares as the life table", () => {
+    const asOf = new Date(2026, 10, 23);
+    const dob = new Date(1987, 11, 17);
+    const grid = paintLifeGrid(
+      { born: "1987-12-17", name: "Life in weeks" },
+      asOf
+    );
+    let lived = 0;
+
+    for (let year = 1; year <= 80; year++) {
+      for (let week = 1; week <= 52; week++) {
+        const on = tableLived(dob, asOf, year, week);
+        expect(grid[year - 1]?.[week - 1]).toBe(on ? LIVED : EMPTY);
+        if (on) lived += 1;
+      }
+    }
+
+    const yearsAlive = calculateYearsAlive(dob, asOf) ?? 0;
+    const weeksFromLastBday = calculateWeeksFromLastBirthday(dob, asOf) ?? 0;
+    expect(lived).toBe(yearsAlive * 52 + weeksFromLastBday);
   });
 
   it("describes the picture without a name", () => {

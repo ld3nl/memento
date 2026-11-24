@@ -23,6 +23,38 @@ export const generateDecadeConfig = () => ({
 });
 
 /**
+ * A square is filled when its life-year is already complete, or when it is
+ * the current life-year and that week is on or before the weeks since the
+ * last birthday. `currentDecadeYear` and `weekIndex` are 1-based.
+ */
+export const shouldWeekBeFilled = (
+  yearsAlive: number,
+  currentDecadeYear: number,
+  weekIndex: number,
+  weeksFromLastBday: number
+): boolean => {
+  return (
+    yearsAlive >= currentDecadeYear ||
+    (yearsAlive + 1 === currentDecadeYear && weeksFromLastBday >= weekIndex)
+  );
+};
+
+/**
+ * The week being lived: the first square after the filled ones, in the
+ * current life-year. The table paints it as a partial bar.
+ */
+export const isCurrentWeek = (
+  yearsAlive: number,
+  currentDecadeYear: number,
+  weekIndex: number,
+  weeksFromLastBday: number
+): boolean => {
+  return (
+    yearsAlive + 1 === currentDecadeYear && weeksFromLastBday + 1 === weekIndex
+  );
+};
+
+/**
  * Calculates the current decade year based on decade index and year index
  */
 export const calculateDecadeYear = (

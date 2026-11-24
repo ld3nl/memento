@@ -59,12 +59,15 @@ export const getFormattedAge = (dob: string | Date): string | null => {
 /**
  * Calculates years alive (for life table calculations)
  */
-export const calculateYearsAlive = (dob: string | Date): number | null => {
+export const calculateYearsAlive = (
+  dob: string | Date,
+  asOf: Date = new Date()
+): number | null => {
   const dobDate = parseAndValidateDate(dob);
   if (!dobDate) return null;
 
   // Subtract 1 to account for current year
-  return differenceInCalendarISOWeekYears(new Date(), dobDate) - 1;
+  return differenceInCalendarISOWeekYears(asOf, dobDate) - 1;
 };
 
 /**
@@ -73,14 +76,15 @@ export const calculateYearsAlive = (dob: string | Date): number | null => {
  * is the square count, not the raw elapsed time.
  */
 export const calculateLifeWeeks = (
-  dob: string | Date
+  dob: string | Date,
+  asOf: Date = new Date()
 ): {
   weeksLived: number;
   weeksRemaining: number;
   beyondGrid: boolean;
 } | null => {
-  const yearsAlive = calculateYearsAlive(dob);
-  const weeksFromBirthday = calculateWeeksFromLastBirthday(dob);
+  const yearsAlive = calculateYearsAlive(dob, asOf);
+  const weeksFromBirthday = calculateWeeksFromLastBirthday(dob, asOf);
   if (yearsAlive === null || weeksFromBirthday === null) return null;
 
   if (yearsAlive >= LIFETIME_YEARS) {
@@ -104,12 +108,13 @@ export const calculateLifeWeeks = (
  * Calculates weeks since the last birthday
  */
 export const calculateWeeksFromLastBirthday = (
-  dob: string | Date
+  dob: string | Date,
+  asOf: Date = new Date()
 ): number | null => {
   const dobDate = parseAndValidateDate(dob);
   if (!dobDate) return null;
 
-  const today = new Date();
+  const today = asOf;
   const currentYear = today.getFullYear();
   const birthMonth = getMonth(dobDate);
   const birthDay = getDate(dobDate);

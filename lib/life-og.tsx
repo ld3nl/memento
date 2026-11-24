@@ -2,6 +2,11 @@ import { deflateSync } from "node:zlib";
 import { format } from "date-fns";
 import { ImageResponse } from "next/og";
 import { DECADE_LENGTH, WEEKS_PER_YEAR, YEARS_IN_LIFETIME } from "./constants";
+import {
+  calculateWeeksFromLastBirthday,
+  calculateYearsAlive,
+} from "./date-utils";
+import { shouldWeekBeFilled } from "./life-table-utils";
 import { lifeWeekDays } from "./life-week";
 import { lifeSpans, type PublicLife } from "./lives";
 import { LEDGER_INKS, spansCovering } from "./week-notes";
@@ -49,13 +54,20 @@ function speakBorn(iso: string): string {
   return format(bornDate(iso), "d MMMM yyyy");
 }
 
-/** One color per week, in the same order as the page. */
+/**
+ * One color per week, in the same order as the life table.
+ * A square is filled with the same rule as the tablet: completed ISO
+ * week-years, then calendar weeks since the last birthday. The week being
+ * lived stays empty here; the table draws that one as a partial bar.
+ * Chapter color still covers a public life.
+ */
 export function paintLifeGrid(
   life: LifePicture,
   asOf: Date = new Date()
 ): string[][] {
   const dob = bornDate(life.born);
-  const today = format(asOf, "yyyy-MM-dd");
+  const yearsAlive = calculateYearsAlive(dob, asOf);
+  const weeksFromLastBday = calculateWeeksFromLastBirthday(dob, asOf);
   const spans =
     life.slug && life.marks && life.marks.length > 0
       ? lifeSpans(life as PublicLife)
@@ -67,9 +79,13 @@ export function paintLifeGrid(
     for (let week = 1; week <= WEEKS_PER_YEAR; week++) {
       const days = lifeWeekDays(dob, year, week);
       const hit = spansCovering(spans, days.startDay, days.endDay)[0];
+      const lived =
+        yearsAlive !== null &&
+        weeksFromLastBday !== null &&
+        shouldWeekBeFilled(yearsAlive, year, week, weeksFromLastBday);
       if (hit) {
         row.push(INK_DARK.get(hit.color) ?? LIVED);
-      } else if (days.startDay <= today) {
+      } else if (lived) {
         row.push(LIVED);
       } else {
         row.push(EMPTY);
