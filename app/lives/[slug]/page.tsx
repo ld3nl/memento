@@ -46,7 +46,9 @@ async function LifeGrid({ dob, spans }: { dob: string; spans: WeekSpan[] }) {
     >
       <div className="life-table-frame">
         <div className="life-table-scale">
-          <LifeTable dob={dob} preset={spans} readOnly />
+          <Suspense fallback={null}>
+            <LifeTable dob={dob} preset={spans} readOnly />
+          </Suspense>
         </div>
       </div>
     </div>

@@ -1,5 +1,6 @@
-import { addDays, addWeeks, format } from "date-fns";
+import { addDays, format } from "date-fns";
 import localforage from "localforage";
+import { gridWeekSpan } from "./life-grid-time";
 
 /**
  * Preset inks for notes. `light` holds on the paper ledger, `dark` holds
@@ -452,9 +453,9 @@ function migrateLegacyBook(record: Record<string, unknown>): WeekSpan[] {
     }
     const [year, month, day] = dobDay.split("-").map(Number);
     const dob = new Date(year ?? 0, (month ?? 1) - 1, day ?? 1);
-    const weekStart = addWeeks(dob, (lifeYear - 1) * 52 + (weekIndex - 1));
-    const start = format(weekStart, "yyyy-MM-dd");
-    const end = format(addDays(weekStart, 6), "yyyy-MM-dd");
+    const span = gridWeekSpan(dob, lifeYear, weekIndex, "birthday-grid");
+    const start = format(span.start, "yyyy-MM-dd");
+    const end = format(span.end, "yyyy-MM-dd");
     for (const note of notes) {
       if (!note || typeof note !== "object") continue;
       const label = normalizeNoteLabel(

@@ -77,9 +77,9 @@ describe("date utilities", () => {
   });
 
   describe("calculateYearsAlive", () => {
-    it("calculates years alive correctly", () => {
+    it("counts completed anniversary rows from calendar age", () => {
       const result = calculateYearsAlive("1990-01-15");
-      expect(result).toBe(33); // Current year minus 1
+      expect(result).toBe(34);
     });
 
     it("handles recent birth", () => {
@@ -96,27 +96,30 @@ describe("date utilities", () => {
     it("handles Date object", () => {
       const birthDate = new Date("1990-01-15");
       const result = calculateYearsAlive(birthDate);
-      expect(result).toBe(33);
+      expect(result).toBe(34);
     });
   });
 
   describe("calculateWeeksFromLastBirthday", () => {
-    it("calculates weeks from birthday this year", () => {
-      // Birthday was January 15, today is June 15
+    it("calculates weeks into the current life-year", () => {
       const result = calculateWeeksFromLastBirthday("1990-01-15");
-      expect(result).toBeGreaterThan(20); // Roughly 22 weeks
-      expect(result).toBeLessThan(25);
+      expect(result).toBeGreaterThan(20);
+      expect(result).toBeLessThan(28);
     });
 
     it("calculates weeks when birthday hasnt occurred this year", () => {
       // Birthday is December 25, today is June 15
       const result = calculateWeeksFromLastBirthday("1990-12-25");
       expect(result).toBeGreaterThan(20); // From last year's birthday
-      expect(result).toBeLessThan(30);
+      expect(result).toBeLessThanOrEqual(30);
     });
 
-    it("returns 0 for today's birthday", () => {
-      const result = calculateWeeksFromLastBirthday("1990-06-15");
+    it("returns 0 on a grid birthday in calendar mode", () => {
+      const result = calculateWeeksFromLastBirthday(
+        "1990-06-15",
+        MOCK_TODAY,
+        "calendar"
+      );
       expect(result).toBe(0);
     });
 
@@ -140,7 +143,7 @@ describe("date utilities", () => {
       const life = calculateLifeWeeks(dob);
       const age = calculateFullAge(dob);
 
-      expect(yearsAlive).toBe(33);
+      expect(yearsAlive).toBe(34);
       expect(life).toEqual({
         weeksLived:
           (yearsAlive ?? 0) * WEEKS_PER_YEAR + (weeksFromBirthday ?? 0),

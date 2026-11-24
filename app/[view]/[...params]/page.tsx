@@ -441,7 +441,9 @@ async function ViewBody({ params }: Props) {
       >
         <div className="life-table-frame">
           <div className="life-table-scale">
-            <LifeTable dob={birthDate} />
+            <Suspense fallback={null}>
+              <LifeTable dob={birthDate} />
+            </Suspense>
           </div>
         </div>
       </div>

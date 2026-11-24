@@ -23,60 +23,81 @@ describe("Week Calculations - Comprehensive DOB Tests", () => {
       jest.useRealTimers();
     });
 
-    describe("calculateWeeksFromLastBirthday - Edge Cases", () => {
+    describe("calculateWeeksFromLastBirthday - calendar mode", () => {
       it("returns 0 on the exact birthday", () => {
-        // Today is Jan 15, birthday is Jan 15
         jest.setSystemTime(new Date("2024-01-15T12:00:00Z"));
-        const result = calculateWeeksFromLastBirthday("1990-01-15");
+        const result = calculateWeeksFromLastBirthday(
+          "1990-01-15",
+          new Date("2024-01-15T12:00:00Z"),
+          "calendar"
+        );
         expect(result).toBe(0);
       });
 
       it("returns 1 after one week from birthday", () => {
-        // Today is Jan 22 (7 days after Jan 15)
         jest.setSystemTime(new Date("2024-01-22T12:00:00Z"));
-        const result = calculateWeeksFromLastBirthday("1990-01-15");
+        const result = calculateWeeksFromLastBirthday(
+          "1990-01-15",
+          new Date("2024-01-22T12:00:00Z"),
+          "calendar"
+        );
         expect(result).toBe(1);
       });
 
-      it("returns 26 at mid-year from birthday", () => {
-        // Birthday on Jan 1, today is July 1 (roughly 26 weeks)
+      it("counts finished squares halfway through a real year", () => {
         jest.setSystemTime(new Date("2024-07-01T12:00:00Z"));
-        const result = calculateWeeksFromLastBirthday("1990-01-01");
-        expect(result).toBe(26);
+        const result = calculateWeeksFromLastBirthday(
+          "1990-01-01",
+          new Date("2024-07-01T12:00:00Z"),
+          "calendar"
+        );
+        expect(result).toBe(25);
       });
 
       it("handles leap year birthday (Feb 29)", () => {
-        // Leap year birthday - Feb 29
         jest.setSystemTime(new Date("2024-03-15T12:00:00Z"));
-        const result = calculateWeeksFromLastBirthday("1992-02-29");
+        const result = calculateWeeksFromLastBirthday(
+          "1992-02-29",
+          new Date("2024-03-15T12:00:00Z"),
+          "calendar"
+        );
         expect(result).toBeGreaterThanOrEqual(2);
         expect(result).toBeLessThanOrEqual(3);
       });
 
       it("handles end of year correctly", () => {
-        // Birthday Dec 31, today is Dec 31 next year
         jest.setSystemTime(new Date("2024-12-31T12:00:00Z"));
-        const result = calculateWeeksFromLastBirthday("1990-12-31");
+        const result = calculateWeeksFromLastBirthday(
+          "1990-12-31",
+          new Date("2024-12-31T12:00:00Z"),
+          "calendar"
+        );
         expect(result).toBe(0);
       });
 
       it("handles birthday not yet occurred this year", () => {
-        // Today is Feb 1, birthday is Dec 25
         jest.setSystemTime(new Date("2024-02-01T12:00:00Z"));
-        const result = calculateWeeksFromLastBirthday("1990-12-25");
-        // Should calculate from last year's Dec 25 to this Feb 1 (about 5-6 weeks)
+        const result = calculateWeeksFromLastBirthday(
+          "1990-12-25",
+          new Date("2024-02-01T12:00:00Z"),
+          "calendar"
+        );
         expect(result).toBeGreaterThanOrEqual(5);
         expect(result).toBeLessThanOrEqual(6);
       });
 
       it("handles birthday just passed", () => {
-        // Today is Jan 20, birthday is Jan 15
         jest.setSystemTime(new Date("2024-01-20T12:00:00Z"));
-        const result = calculateWeeksFromLastBirthday("1990-01-15");
-        // 5 days after birthday = 0 complete weeks
+        const result = calculateWeeksFromLastBirthday(
+          "1990-01-15",
+          new Date("2024-01-20T12:00:00Z"),
+          "calendar"
+        );
         expect(result).toBe(0);
       });
+    });
 
+    describe("calculateWeeksFromLastBirthday - birthday grid", () => {
       it("calculates correctly for someone born today", () => {
         jest.setSystemTime(new Date("2024-06-15T12:00:00Z"));
         const result = calculateWeeksFromLastBirthday("2024-06-15");
@@ -85,12 +106,22 @@ describe("Week Calculations - Comprehensive DOB Tests", () => {
     });
 
     describe("calculateYearsAlive - Validation", () => {
-      it("calculates correct years for a 34-year-old", () => {
+      it("uses calendar age as completed life-year rows", () => {
         jest.setSystemTime(new Date("2024-06-15T12:00:00Z"));
         const result = calculateYearsAlive("1990-01-15");
-        // Person born Jan 15 1990, today is June 15, 2024 = 34 years
-        // The function returns years - 1 for "completed years"
-        expect(result).toBe(33);
+        expect(result).toBe(34);
+      });
+
+      it("keeps the same life-year row in calendar mode", () => {
+        jest.setSystemTime(new Date("2024-06-15T12:00:00Z"));
+        const grid = calculateYearsAlive("1990-01-15");
+        const calendar = calculateYearsAlive(
+          "1990-01-15",
+          new Date("2024-06-15T12:00:00Z"),
+          "calendar"
+        );
+        expect(calendar).toBe(grid);
+        expect(calendar).toBe(34);
       });
 
       it("handles newborn correctly", () => {
@@ -100,11 +131,10 @@ describe("Week Calculations - Comprehensive DOB Tests", () => {
         expect(result).toBeLessThanOrEqual(0);
       });
 
-      it("handles first birthday scenario", () => {
+      it("marks the first life-year complete after the first birthday", () => {
         jest.setSystemTime(new Date("2024-06-15T12:00:00Z"));
         const result = calculateYearsAlive("2023-06-15");
-        // Exactly 1 year ago
-        expect(result).toBe(0);
+        expect(result).toBe(1);
       });
     });
 
@@ -116,11 +146,8 @@ describe("Week Calculations - Comprehensive DOB Tests", () => {
         const yearsAlive = calculateYearsAlive(dob);
         const weeksFromBday = calculateWeeksFromLastBirthday(dob);
 
-        // differenceInCalendarISOWeekYears returns 34, minus 1 = 33 completed years
-        expect(yearsAlive).toBe(33);
-        // differenceInCalendarWeeks uses Sunday as week start
-        expect(weeksFromBday).toBeGreaterThanOrEqual(23);
-        expect(weeksFromBday).toBeLessThanOrEqual(24);
+        expect(yearsAlive).toBe(34);
+        expect(weeksFromBday).toBe(29);
       });
 
       it("correctly calculates for a person born on Dec 31, 1985 on Jan 2, 2024", () => {
@@ -128,16 +155,18 @@ describe("Week Calculations - Comprehensive DOB Tests", () => {
 
         const dob = "1985-12-31";
         const yearsAlive = calculateYearsAlive(dob);
-        const weeksFromBday = calculateWeeksFromLastBirthday(dob);
+        const weeksFromBday = calculateWeeksFromLastBirthday(
+          dob,
+          new Date("2024-01-02T12:00:00Z"),
+          "calendar"
+        );
 
-        expect(yearsAlive).toBe(37); // 38 years old, minus 1 = 37 completed years
-        // From Dec 31, 2023 to Jan 2, 2024 crosses a week boundary (Sunday)
-        // differenceInCalendarWeeks counts calendar week boundaries crossed
+        expect(yearsAlive).toBe(38);
         expect(weeksFromBday).toBeGreaterThanOrEqual(0);
         expect(weeksFromBday).toBeLessThanOrEqual(1);
       });
 
-      it("matches the reported home and table counts for 17 Dec 1987", () => {
+      it("counts seven-day squares for 17 Dec 1987, not calendar weeks", () => {
         jest.setSystemTime(new Date(2026, 9, 26, 12, 0, 0));
 
         const dob = new Date(1987, 11, 17);
@@ -145,11 +174,9 @@ describe("Week Calculations - Comprehensive DOB Tests", () => {
         const life = calculateLifeWeeks(dob);
 
         expect(age).toMatchObject({ years: 38, months: 10, days: 9 });
-        // 38 filled years plus 45 weeks of the current year. Raw elapsed time
-        // is 2,027, and years * 52 + leftover days is 1,977.
         expect(life).toEqual({
-          weeksLived: 2021,
-          weeksRemaining: 2139,
+          weeksLived: 2027,
+          weeksRemaining: 2133,
           beyondGrid: false,
         });
       });
@@ -169,10 +196,14 @@ describe("Week Calculations - Comprehensive DOB Tests", () => {
 
         const dob = "1994-06-15";
         const yearsAlive = calculateYearsAlive(dob);
-        const weeksFromBday = calculateWeeksFromLastBirthday(dob);
+        const weeksFromBday = calculateWeeksFromLastBirthday(
+          dob,
+          new Date("2024-06-15T12:00:00Z"),
+          "calendar"
+        );
 
-        expect(yearsAlive).toBe(29); // Just turned 30, minus 1 = 29
-        expect(weeksFromBday).toBe(0); // Birthday is today
+        expect(yearsAlive).toBe(30);
+        expect(weeksFromBday).toBe(0);
       });
     });
 

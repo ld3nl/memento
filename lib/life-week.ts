@@ -1,12 +1,12 @@
 import {
-  addDays,
-  addWeeks,
   format,
   formatISO,
   getISOWeek,
   getISOWeekYear,
   getMonth,
 } from "date-fns";
+import type { LifeWeekCountMode } from "./life-grid-time";
+import { DEFAULT_LIFE_WEEK_COUNT_MODE, gridWeekSpan } from "./life-grid-time";
 
 export type LifeWeekDetail = {
   /** ISO week of the day this square starts. */
@@ -33,22 +33,28 @@ export type LifeWeekDetail = {
 export function lifeWeekDays(
   dob: Date,
   lifeYear: number,
-  weekIndex: number
+  weekIndex: number,
+  mode: LifeWeekCountMode = DEFAULT_LIFE_WEEK_COUNT_MODE
 ): { startDay: string; endDay: string } {
-  const weekStart = weekStartDate(dob, lifeYear, weekIndex);
+  const { start, end } = weekBounds(dob, lifeYear, weekIndex, mode);
   return {
-    startDay: format(weekStart, "yyyy-MM-dd"),
-    endDay: format(addDays(weekStart, 6), "yyyy-MM-dd"),
+    startDay: format(start, "yyyy-MM-dd"),
+    endDay: format(end, "yyyy-MM-dd"),
   };
 }
 
 export function describeLifeWeek(
   dob: Date,
   lifeYear: number,
-  weekIndex: number
+  weekIndex: number,
+  mode: LifeWeekCountMode = DEFAULT_LIFE_WEEK_COUNT_MODE
 ): LifeWeekDetail {
-  const weekStart = weekStartDate(dob, lifeYear, weekIndex);
-  const weekEnd = addDays(weekStart, 6);
+  const { start: weekStart, end: weekEnd } = weekBounds(
+    dob,
+    lifeYear,
+    weekIndex,
+    mode
+  );
   const isoWeek = getISOWeek(weekStart);
   const isoYear = getISOWeekYear(weekStart);
   const ageYears = Math.max(0, lifeYear - 1);
@@ -66,8 +72,13 @@ export function describeLifeWeek(
   };
 }
 
-function weekStartDate(dob: Date, lifeYear: number, weekIndex: number): Date {
-  return addWeeks(dob, (lifeYear - 1) * 52 + (weekIndex - 1));
+function weekBounds(
+  dob: Date,
+  lifeYear: number,
+  weekIndex: number,
+  mode: LifeWeekCountMode
+): { start: Date; end: Date } {
+  return gridWeekSpan(dob, lifeYear, weekIndex, mode);
 }
 
 function formatWeekSpan(start: Date, end: Date): string {

@@ -16,19 +16,21 @@ export const lifeImagePath = (date: Date): string => {
 export const generateLifeTableUrl = (
   date: string | null,
   name?: string,
-  view: "table" | "burst" = "table"
+  view: "table" | "burst" = "table",
+  options?: { calendarWeeks?: boolean }
 ): string => {
   const basePath = `/${view}`;
 
-  // Handle date path segment
   const datePath = date ? `/${date.split("-").join("/")}` : "";
 
-  // Handle name query parameter
-  const nameParam = name?.trim()
-    ? `?name=${encodeURIComponent(name.trim())}`
-    : "";
+  const query: string[] = [];
+  if (name?.trim()) {
+    query.push(`name=${encodeURIComponent(name.trim())}`);
+  }
+  if (options?.calendarWeeks) query.push("weeks=calendar");
+  const suffix = query.join("&");
 
-  return `${basePath}${datePath}${nameParam}`;
+  return `${basePath}${datePath}${suffix ? `?${suffix}` : ""}`;
 };
 
 /**

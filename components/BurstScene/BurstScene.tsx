@@ -2,11 +2,14 @@
 
 import { Canvas } from "@react-three/fiber";
 import * as stylex from "@stylexjs/stylex";
+import { useSearchParams } from "next/navigation";
 import * as React from "react";
 import {
   calculateWeeksFromLastBirthday,
   calculateYearsAlive,
+  type LifeWeekCountMode,
 } from "../../lib/date-utils";
+import { resolveWeekCountMode } from "../../lib/week-count-mode";
 import { generateDecadeConfig } from "../../lib/life-table-utils";
 import { isValidDate } from "../../lib/validation";
 import { breakpoints } from "../../styles/breakpoints.stylex";
@@ -49,6 +52,7 @@ function buildBurstLayout({
   height,
   itemSizePx,
   itemSpacingPx,
+  weekCountMode,
 }: {
   birthDate: Date;
   totalWeeks?: number;
@@ -56,9 +60,14 @@ function buildBurstLayout({
   height: number;
   itemSizePx: number;
   itemSpacingPx: number;
+  weekCountMode: LifeWeekCountMode;
 }) {
-  const yearsAlive = calculateYearsAlive(birthDate);
-  const weeksFromBirthday = calculateWeeksFromLastBirthday(birthDate);
+  const yearsAlive = calculateYearsAlive(birthDate, new Date(), weekCountMode);
+  const weeksFromBirthday = calculateWeeksFromLastBirthday(
+    birthDate,
+    new Date(),
+    weekCountMode
+  );
 
   if (yearsAlive === null || weeksFromBirthday === null) return null;
 
@@ -88,6 +97,7 @@ function layoutWhenReady(input: {
   height: number;
   itemSizePx: number;
   itemSpacingPx: number;
+  weekCountMode: LifeWeekCountMode;
 }) {
   if (!input.isValid || input.width <= 0 || input.height <= 0) return null;
   return buildBurstLayout(input);
@@ -477,6 +487,11 @@ export function BurstScene({
     [birthTimestamp]
   );
   const isValid = isValidDate(birthDate);
+  const searchParams = useSearchParams();
+  const weekCountMode = React.useMemo<LifeWeekCountMode>(
+    () => resolveWeekCountMode(searchParams),
+    [searchParams]
+  );
   const layout = React.useMemo(
     () =>
       layoutWhenReady({
@@ -487,8 +502,18 @@ export function BurstScene({
         height: size.h,
         itemSizePx,
         itemSpacingPx,
+        weekCountMode,
       }),
-    [isValid, birthDate, totalWeeks, size.w, size.h, itemSizePx, itemSpacingPx]
+    [
+      isValid,
+      birthDate,
+      totalWeeks,
+      size.w,
+      size.h,
+      itemSizePx,
+      itemSpacingPx,
+      weekCountMode,
+    ]
   );
   const currentIndex =
     layout?.items.findIndex(item => item.isCurrentWeek) ?? -1;

@@ -125,103 +125,123 @@ const styles = stylex.create({
   },
 });
 
-export const Week = ({
-  weekIndex,
-  isFilled,
-  yearsAlive,
-  className,
-  isCurrentWeek,
-  currentDayOfWeek,
-  lifeYear,
-  tabStop,
-}: WeekProps) => {
-  const yearTick = yearTickFor(yearsAlive);
-  const inspect = useContext(WeekInspectContext);
-  const weekNotes = useContext(WeekNotesContext);
-  const inspectable = lifeYear !== undefined && inspect !== null;
-  const marks =
-    inspectable && lifeYear !== undefined
-      ? (weekNotes?.marksFor(lifeYear, weekIndex) ?? EMPTY_WEEK_SPANS)
-      : EMPTY_WEEK_SPANS;
-  const noteHover =
-    marks.length > 0 && lifeYear !== undefined
-      ? (weekNotes?.hoverFor(lifeYear, weekIndex) ?? null)
-      : null;
-  const markColor = marks[0]?.color;
-  const fillPercentage = currentWeekFill(isCurrentWeek, currentDayOfWeek);
-  const showFill = Boolean(isCurrentWeek && currentDayOfWeek);
-  const isLived = Boolean(isFilled || isCurrentWeek);
+function tickStyle(yearTick: YearTick | undefined) {
+  if (yearTick === "origin") {
+    return stylex.props(styles.tick, styles.tickOrigin);
+  }
+  if (yearTick === "decade") {
+    return stylex.props(styles.tick, styles.tickDecade);
+  }
+  return stylex.props(styles.tick);
+}
 
-  const stylexProps = stylex.props(
-    styles.cell,
-    inspectable && styles.hit,
-    !isLived && styles.emptyBorder,
-    Boolean(isFilled && !isCurrentWeek) && styles.filled,
-    weekIndex > 26 && styles.secondHalf
+function WeekFill({ percent }: { percent: number }) {
+  return (
+    <div
+      {...stylex.props(styles.fillBar)}
+      style={{ ["--week-fill" as string]: `${percent}%` }}
+      aria-hidden="true"
+    />
   );
+}
 
-  const markerClasses = [
-    stylexProps.className,
-    isCurrentWeek ? "current-week" : null,
-    className,
+function WeekTick({ yearTick, label }: { yearTick: YearTick; label: string }) {
+  return <span {...tickStyle(yearTick)}>{label}</span>;
+}
+
+type WeekView = {
+  className: string;
+  style?: { backgroundColor?: string };
+  title?: string;
+  tick?: YearTick;
+  day?: number;
+  fillPercent: number | null;
+  inspect: {
+    tabIndex: number;
+    "data-life-year": number;
+    "data-week-index": number;
+    onClick: () => void;
+    onKeyDown: (event: KeyboardEvent<HTMLDivElement>) => void;
+  } | null;
+};
+
+function weekView(
+  props: WeekProps,
+  inspect: ((lifeYear: number, weekIndex: number) => void) | null,
+  marks: { color?: string }[],
+  noteHover: string | null
+): WeekView {
+  const yearTick = yearTickFor(props.yearsAlive);
+  const lived = Boolean(props.isFilled || props.isCurrentWeek);
+  const painted = stylex.props(
+    styles.cell,
+    props.lifeYear !== undefined && inspect !== null && styles.hit,
+    !lived && styles.emptyBorder,
+    Boolean(props.isFilled && !props.isCurrentWeek) && styles.filled,
+    props.weekIndex > 26 && styles.secondHalf
+  );
+  const className = [
+    painted.className,
+    props.isCurrentWeek && "current-week",
+    props.className,
   ]
     .filter(Boolean)
     .join(" ");
-
-  const shared = {
-    ...stylexProps,
-    className: markerClasses,
-    ...(markColor
-      ? {
-          style: { ...stylexProps.style, backgroundColor: inkPaint(markColor) },
-        }
-      : {}),
-    ...(noteHover
-      ? { title: noteHover }
-      : yearsAlive
-        ? { title: yearsAlive }
-        : {}),
-    ...(yearsAlive ? { "data-tick": yearTick } : {}),
-    ...(showFill ? { "data-current-week-day": currentDayOfWeek } : {}),
+  const showFill = Boolean(props.isCurrentWeek && props.currentDayOfWeek);
+  return {
+    className,
+    style: marks[0]?.color
+      ? { ...painted.style, backgroundColor: inkPaint(marks[0].color) }
+      : painted.style,
+    title: noteHover ?? props.yearsAlive,
+    tick: yearTick,
+    day: showFill ? props.currentDayOfWeek : undefined,
+    fillPercent:
+      showFill && !marks[0]?.color
+        ? currentWeekFill(props.isCurrentWeek, props.currentDayOfWeek)
+        : null,
+    inspect:
+      props.lifeYear !== undefined && inspect !== null
+        ? {
+            tabIndex: props.isCurrentWeek || props.tabStop ? 0 : -1,
+            "data-life-year": props.lifeYear,
+            "data-week-index": props.weekIndex,
+            onClick: () => inspect(props.lifeYear as number, props.weekIndex),
+            onKeyDown: moveWeekFocus,
+          }
+        : null,
   };
+}
 
-  const inner = (
-    <>
-      {showFill && !markColor ? (
-        <div
-          {...stylex.props(styles.fillBar)}
-          style={{ ["--week-fill" as string]: `${fillPercentage}%` }}
-          aria-hidden="true"
-        />
-      ) : null}
-      {yearTick && yearsAlive ? (
-        <span
-          {...stylex.props(
-            styles.tick,
-            yearTick === "origin" && styles.tickOrigin,
-            yearTick === "decade" && styles.tickDecade
-          )}
-        >
-          {yearsAlive}
-        </span>
-      ) : null}
-    </>
-  );
+export const Week = (props: WeekProps) => {
+  const inspect = useContext(WeekInspectContext);
+  const weekNotes = useContext(WeekNotesContext);
+  const lifeYear = props.lifeYear;
+  const marks =
+    lifeYear !== undefined && inspect !== null
+      ? (weekNotes?.marksFor(lifeYear, props.weekIndex) ?? EMPTY_WEEK_SPANS)
+      : EMPTY_WEEK_SPANS;
+  const noteHover =
+    marks.length > 0 && lifeYear !== undefined
+      ? (weekNotes?.hoverFor(lifeYear, props.weekIndex) ?? null)
+      : null;
+  const view = weekView(props, inspect, marks, noteHover);
 
   return (
     <div
-      {...shared}
-      {...(inspectable
-        ? {
-            tabIndex: isCurrentWeek || tabStop ? 0 : -1,
-            "data-life-year": lifeYear,
-            "data-week-index": weekIndex,
-            onClick: () => inspect(lifeYear, weekIndex),
-            onKeyDown: moveWeekFocus,
-          }
-        : {})}
+      className={view.className}
+      style={view.style}
+      title={view.title}
+      data-tick={view.tick}
+      data-current-week-day={view.day}
+      {...(view.inspect ?? {})}
     >
-      {inner}
+      {view.fillPercent !== null ? (
+        <WeekFill percent={view.fillPercent} />
+      ) : null}
+      {view.tick && props.yearsAlive ? (
+        <WeekTick yearTick={view.tick} label={props.yearsAlive} />
+      ) : null}
     </div>
   );
 };

@@ -1,7 +1,8 @@
 "use client";
 
 import * as stylex from "@stylexjs/stylex";
-import { addDays, addWeeks, format } from "date-fns";
+import { format } from "date-fns";
+import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   DECADE_LENGTH,
@@ -12,10 +13,13 @@ import {
   calculateWeeksFromLastBirthday,
   calculateYearsAlive,
   getDaysIntoCurrentWeek,
+  type LifeWeekCountMode,
 } from "../../lib/date-utils";
+import { gridWeekSpan } from "../../lib/life-grid-time";
+import { readFormDataSync } from "../../lib/storage";
+import { resolveWeekCountMode } from "../../lib/week-count-mode";
 import { generateDecadeConfig } from "../../lib/life-table-utils";
 import { describeLifeWeek, lifeWeekDays } from "../../lib/life-week";
-import { readFormDataSync } from "../../lib/storage";
 import { isValidDate, parseAndValidateDate } from "../../lib/validation";
 import {
   addSpan,
@@ -88,18 +92,22 @@ export const LifeTable = ({ dob, preset, readOnly }: LifeTableProps) => {
   }, [locked]);
 
   const dobDate = dob && isValidDate(dob) ? parseAndValidateDate(dob) : null;
+  const searchParams = useSearchParams();
+  const weekCountMode = useMemo<LifeWeekCountMode>(
+    () => resolveWeekCountMode(searchParams),
+    [searchParams]
+  );
 
   const notesApi = useMemo<WeekNotesApi>(() => {
     const lifeStart = dobDate ? format(dobDate, "yyyy-MM-dd") : null;
     const lifeEnd = dobDate
       ? format(
-          addDays(
-            addWeeks(
-              dobDate,
-              YEARS_IN_LIFETIME * DECADE_LENGTH * WEEKS_PER_YEAR - 1
-            ),
-            6
-          ),
+          gridWeekSpan(
+            dobDate,
+            YEARS_IN_LIFETIME * DECADE_LENGTH,
+            WEEKS_PER_YEAR,
+            weekCountMode
+          ).end,
           "yyyy-MM-dd"
         )
       : null;
@@ -115,7 +123,7 @@ export const LifeTable = ({ dob, preset, readOnly }: LifeTableProps) => {
     };
     const marksFor = (lifeYear: number, weekIndex: number): WeekSpan[] => {
       if (!dobDate) return [];
-      const days = lifeWeekDays(dobDate, lifeYear, weekIndex);
+      const days = lifeWeekDays(dobDate, lifeYear, weekIndex, weekCountMode);
       return spansCovering(spans, days.startDay, days.endDay);
     };
     return {
@@ -128,7 +136,12 @@ export const LifeTable = ({ dob, preset, readOnly }: LifeTableProps) => {
       hoverFor: (lifeYear, weekIndex) => {
         const marks = marksFor(lifeYear, weekIndex);
         if (!marks.length || !dobDate) return null;
-        const week = describeLifeWeek(dobDate, lifeYear, weekIndex);
+        const week = describeLifeWeek(
+          dobDate,
+          lifeYear,
+          weekIndex,
+          weekCountMode
+        );
         return formatNoteHover(
           marks.map(mark => mark.label),
           week.label
@@ -136,7 +149,7 @@ export const LifeTable = ({ dob, preset, readOnly }: LifeTableProps) => {
       },
       add: (lifeYear, weekIndex, label) => {
         if (!dobDate) return;
-        const days = lifeWeekDays(dobDate, lifeYear, weekIndex);
+        const days = lifeWeekDays(dobDate, lifeYear, weekIndex, weekCountMode);
         commit(prev => addSpan(prev, label, days.startDay, days.endDay));
       },
       setRange: (id, start, end) => {
@@ -150,7 +163,7 @@ export const LifeTable = ({ dob, preset, readOnly }: LifeTableProps) => {
       },
       readOnly: locked,
     };
-  }, [dobDate, spans, remembered, locked]);
+  }, [dobDate, spans, remembered, locked, weekCountMode]);
 
   // Validate input DOB
   if (!dob) {
@@ -164,9 +177,17 @@ export const LifeTable = ({ dob, preset, readOnly }: LifeTableProps) => {
   }
 
   // Calculate years alive and weeks from birthday using utilities
-  const yearsAlive = calculateYearsAlive(dob);
-  const weeksFromBirthday = calculateWeeksFromLastBirthday(dob);
-  const daysIntoCurrentWeek = getDaysIntoCurrentWeek(dob);
+  const yearsAlive = calculateYearsAlive(dob, new Date(), weekCountMode);
+  const weeksFromBirthday = calculateWeeksFromLastBirthday(
+    dob,
+    new Date(),
+    weekCountMode
+  );
+  const daysIntoCurrentWeek = getDaysIntoCurrentWeek(
+    dob,
+    new Date(),
+    weekCountMode
+  );
 
   // Return null if calculations failed
   if (
@@ -182,7 +203,12 @@ export const LifeTable = ({ dob, preset, readOnly }: LifeTableProps) => {
   const { weeks, yearsInLifetime, decadeLength } = generateDecadeConfig();
   const detail =
     selected && dobDate
-      ? describeLifeWeek(dobDate, selected.lifeYear, selected.weekIndex)
+      ? describeLifeWeek(
+          dobDate,
+          selected.lifeYear,
+          selected.weekIndex,
+          weekCountMode
+        )
       : null;
 
   return (

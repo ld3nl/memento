@@ -56,8 +56,8 @@ function speakBorn(iso: string): string {
 
 /**
  * One color per week, in the same order as the life table.
- * A square is filled with the same rule as the tablet: completed ISO
- * week-years, then calendar weeks since the last birthday. The week being
+ * A square is filled with the same rule as the tablet: completed life-years
+ * on the birthday grid, then weeks into the current 52-week row. The week being
  * lived stays empty here; the table draws that one as a partial bar.
  * Chapter color still covers a public life.
  */

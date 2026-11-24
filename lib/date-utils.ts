@@ -1,18 +1,20 @@
-import {
-  differenceInCalendarISOWeekYears,
-  differenceInCalendarWeeks,
-  getDate,
-  getMonth,
-  intervalToDuration,
-  parse,
-} from "date-fns";
+import { intervalToDuration, parse } from "date-fns";
 import {
   DECADE_LENGTH,
   DEFAULT_DATE_FORMAT,
   WEEKS_PER_YEAR,
   YEARS_IN_LIFETIME,
 } from "./constants";
+import {
+  DEFAULT_LIFE_WEEK_COUNT_MODE,
+  gridProgress,
+  type LifeWeekCountMode,
+} from "./life-grid-time";
 import { parseAndValidateDate } from "./validation";
+
+function resolveWeekCountMode(mode?: LifeWeekCountMode): LifeWeekCountMode {
+  return mode ?? DEFAULT_LIFE_WEEK_COUNT_MODE;
+}
 
 const LIFETIME_YEARS = YEARS_IN_LIFETIME * DECADE_LENGTH;
 const LIFETIME_WEEKS = LIFETIME_YEARS * WEEKS_PER_YEAR;
@@ -57,34 +59,34 @@ export const getFormattedAge = (dob: string | Date): string | null => {
 };
 
 /**
- * Calculates years alive (for life table calculations)
+ * Full rows behind the current one.
+ * The birthday grid counts 52×7-day squares from the date of birth.
+ * Calendar mode counts real birthdays, so the rows stay lined up.
  */
 export const calculateYearsAlive = (
   dob: string | Date,
-  asOf: Date = new Date()
+  asOf: Date = new Date(),
+  mode: LifeWeekCountMode = DEFAULT_LIFE_WEEK_COUNT_MODE
 ): number | null => {
-  const dobDate = parseAndValidateDate(dob);
-  if (!dobDate) return null;
-
-  // Subtract 1 to account for current year
-  return differenceInCalendarISOWeekYears(asOf, dobDate) - 1;
+  return gridProgress(dob, asOf, mode)?.completedLifeYearRows ?? null;
 };
 
 /**
- * Weeks painted as filled on the 52-week life calendar, plus the empty
- * squares left in an 80-year grid. A calendar year is not 52 weeks, so this
- * is the square count, not the raw elapsed time.
+ * Filled squares on the 80×52 grid, and the empty squares left.
+ * The birthday grid counts every 7 days since birth. Calendar mode counts
+ * squares inside real birthday years instead.
  */
 export const calculateLifeWeeks = (
   dob: string | Date,
-  asOf: Date = new Date()
+  asOf: Date = new Date(),
+  mode: LifeWeekCountMode = DEFAULT_LIFE_WEEK_COUNT_MODE
 ): {
   weeksLived: number;
   weeksRemaining: number;
   beyondGrid: boolean;
 } | null => {
-  const yearsAlive = calculateYearsAlive(dob, asOf);
-  const weeksFromBirthday = calculateWeeksFromLastBirthday(dob, asOf);
+  const yearsAlive = calculateYearsAlive(dob, asOf, mode);
+  const weeksFromBirthday = calculateWeeksFromLastBirthday(dob, asOf, mode);
   if (yearsAlive === null || weeksFromBirthday === null) return null;
 
   if (yearsAlive >= LIFETIME_YEARS) {
@@ -105,33 +107,18 @@ export const calculateLifeWeeks = (
 };
 
 /**
- * Calculates weeks since the last birthday
+ * Full squares already finished in the current row.
+ * The square being lived is the next one, drawn with a partial fill.
  */
 export const calculateWeeksFromLastBirthday = (
   dob: string | Date,
-  asOf: Date = new Date()
+  asOf: Date = new Date(),
+  mode: LifeWeekCountMode = DEFAULT_LIFE_WEEK_COUNT_MODE
 ): number | null => {
-  const dobDate = parseAndValidateDate(dob);
-  if (!dobDate) return null;
-
-  const today = asOf;
-  const currentYear = today.getFullYear();
-  const birthMonth = getMonth(dobDate);
-  const birthDay = getDate(dobDate);
-
-  // Create this year's birthday
-  const thisYearBirthday = new Date(currentYear, birthMonth, birthDay);
-
-  // Calculate weeks difference
-  let weekDiff = differenceInCalendarWeeks(today, thisYearBirthday);
-
-  // If birthday hasn't occurred this year, use last year's birthday
-  if (weekDiff < 0) {
-    const lastBirthday = new Date(currentYear - 1, birthMonth, birthDay);
-    weekDiff = differenceInCalendarWeeks(today, lastBirthday);
-  }
-
-  return Math.max(0, weekDiff);
+  return (
+    gridProgress(dob, asOf, resolveWeekCountMode(mode))?.weeksIntoLifeYear ??
+    null
+  );
 };
 
 /**
@@ -150,29 +137,19 @@ export const getCurrentDayOfWeek = (): number => {
  * Returns a value 1-7 representing which day of the current week we're in
  * This allows for partial week fill visualization in the life table
  */
-export const getDaysIntoCurrentWeek = (dob: string | Date): number | null => {
-  const dobDate = parseAndValidateDate(dob);
-  if (!dobDate) return null;
-
-  const today = new Date();
-  const currentYear = today.getFullYear();
-  const birthMonth = getMonth(dobDate);
-  const birthDay = getDate(dobDate);
-
-  // Create this year's birthday
-  let lastBirthday = new Date(currentYear, birthMonth, birthDay);
-
-  // If birthday hasn't occurred this year, use last year's
-  if (lastBirthday > today) {
-    lastBirthday = new Date(currentYear - 1, birthMonth, birthDay);
-  }
-
-  // Calculate total days since last birthday
-  const diffTime = today.getTime() - lastBirthday.getTime();
-  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-
-  // Get position within the current week (1-7)
-  const daysIntoWeek = (diffDays % 7) + 1;
-
-  return daysIntoWeek;
+export const getDaysIntoCurrentWeek = (
+  dob: string | Date,
+  asOf: Date = new Date(),
+  mode: LifeWeekCountMode = DEFAULT_LIFE_WEEK_COUNT_MODE
+): number | null => {
+  const progress = gridProgress(dob, asOf, resolveWeekCountMode(mode));
+  if (!progress) return null;
+  if (progress.weekLength <= 7) return progress.daysIntoWeek;
+  // The cell paints a 7-step bar. Scale an 8-day square onto that bar.
+  return Math.max(
+    1,
+    Math.min(7, Math.round((progress.daysIntoWeek / progress.weekLength) * 7))
+  );
 };
+
+export type { LifeWeekCountMode };

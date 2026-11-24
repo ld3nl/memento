@@ -23,6 +23,8 @@ interface FormData {
   name?: string;
   date: string;
   saveData?: boolean;
+  /** Real birthday-to-birthday rows. Off keeps 52 exact weeks from the date of birth. */
+  calendarWeeks?: boolean;
 }
 
 /**

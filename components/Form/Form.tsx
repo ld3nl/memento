@@ -11,6 +11,7 @@ import {
   birthDateFromPathSegments,
   generateLifeTableUrl,
 } from "../../lib/url-utils";
+import { writeCalendarWeeksPreference } from "../../lib/week-count-mode";
 import { clearWeekNotes } from "../../lib/week-notes";
 import { breakpoints } from "../../styles/breakpoints.stylex";
 import { kicker } from "../../styles/recipes/kicker.stylex";
@@ -19,10 +20,14 @@ import LabeledInput from "./fields/LabeledInput";
 import { fieldContext, formContext, useFormContext } from "./form-hook";
 import { formSchema } from "./schema";
 
-function lifeWeeksForInput(birthdate: string) {
+function lifeWeeksForInput(birthdate: string, calendarWeeks?: boolean) {
   const birth = birthDateFromPathSegments(birthdate.split("-"));
   if (!birth) return null;
-  return calculateLifeWeeks(birth);
+  return calculateLifeWeeks(
+    birth,
+    new Date(),
+    calendarWeeks ? "calendar" : "birthday-grid"
+  );
 }
 
 const styles = stylex.create({
@@ -341,6 +346,7 @@ const { useAppForm } = createFormHook({
 const Form = () => {
   const router = useRouter();
   const [saveData, setSaveData] = useState(false);
+  const [calendarWeeks, setCalendarWeeks] = useState(false);
   const [weeksLived, setWeeksLived] = useState<number | null>(null);
   const [beyondGrid, setBeyondGrid] = useState(false);
 
@@ -363,6 +369,7 @@ const Form = () => {
         name: values.name,
         date: values.date,
         saveData: true,
+        calendarWeeks,
       });
     } catch (error) {
       console.error("Failed to save form data:", error);
@@ -376,16 +383,23 @@ const Form = () => {
       name?: string;
       date: string;
       saveData?: boolean;
+      calendarWeeks?: boolean;
     }) => {
       form.setFieldValue("name", savedData.name || "");
       form.setFieldValue("date", savedData.date || "");
       setSaveData(savedData.saveData || false);
+      const align = savedData.calendarWeeks === true;
+      setCalendarWeeks(align);
+      writeCalendarWeeksPreference(align);
       if (!savedData.date) {
         document.documentElement.removeAttribute("data-memento-saved");
         return;
       }
       document.documentElement.setAttribute("data-memento-saved", "");
-      const life = lifeWeeksForInput(savedData.date);
+      const life = lifeWeeksForInput(
+        savedData.date,
+        savedData.calendarWeeks === true
+      );
       setWeeksLived(life?.weeksLived ?? null);
       setBeyondGrid(life?.beyondGrid ?? false);
     };
@@ -424,12 +438,15 @@ const Form = () => {
           const date = String(formData.get("date") ?? "");
           const name = String(formData.get("name") ?? "");
           const persist = formData.get("saveData") === "on";
+          const alignCalendar = formData.get("calendarWeeks") === "on";
+          writeCalendarWeeksPreference(alignCalendar);
 
           if (persist) {
             await FormStorage.saveFormData({
               name,
               date,
               saveData: true,
+              calendarWeeks: alignCalendar,
             });
           } else {
             await FormStorage.clearFormData();
@@ -437,7 +454,11 @@ const Form = () => {
 
           if (!date) return;
           trackGenerateCalendar(date, Boolean(name.trim()));
-          router.push(generateLifeTableUrl(date, name || undefined));
+          router.push(
+            generateLifeTableUrl(date, name || undefined, "table", {
+              calendarWeeks: alignCalendar,
+            })
+          );
         }}
         {...stylex.props(styles.form)}
         noValidate
@@ -464,7 +485,7 @@ const Form = () => {
                 inputType="date"
                 onValueChange={date => {
                   void saveValues({ ...form.state.values, date });
-                  const life = lifeWeeksForInput(date);
+                  const life = lifeWeeksForInput(date, calendarWeeks);
                   setWeeksLived(life?.weeksLived ?? null);
                   setBeyondGrid(life?.beyondGrid ?? false);
                   if (life) {
@@ -493,6 +514,55 @@ const Form = () => {
           <span {...stylex.props(styles.checkBox)}>
             <input
               {...stylex.props(styles.checkbox)}
+              id="calendar-weeks-checkbox"
+              type="checkbox"
+              name="calendarWeeks"
+              value="on"
+              checked={calendarWeeks}
+              onChange={async e => {
+                const on = e.target.checked;
+                setCalendarWeeks(on);
+                writeCalendarWeeksPreference(on);
+                const date = form.state.values.date;
+                if (date) {
+                  const life = lifeWeeksForInput(date, on);
+                  setWeeksLived(life?.weeksLived ?? null);
+                  setBeyondGrid(life?.beyondGrid ?? false);
+                }
+                try {
+                  await saveValues({ ...form.state.values });
+                  if (!saveData) return;
+                  await FormStorage.saveFormData({
+                    name: form.state.values.name,
+                    date: form.state.values.date,
+                    saveData: true,
+                    calendarWeeks: on,
+                  });
+                } catch (error) {
+                  console.error("Failed to save calendar weeks:", error);
+                }
+              }}
+            />
+            <svg
+              {...stylex.props(styles.check)}
+              viewBox="0 0 12 12"
+              aria-hidden="true"
+            >
+              <path
+                d="M2 6.5 4.5 9 10 3"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              />
+            </svg>
+          </span>
+          Line each year up with the real birthday (365 or 366 days)
+        </label>
+
+        <label {...stylex.props(styles.remember, stylex.defaultMarker())}>
+          <span {...stylex.props(styles.checkBox)}>
+            <input
+              {...stylex.props(styles.checkbox)}
               id="save-data-checkbox"
               type="checkbox"
               name="saveData"
@@ -509,6 +579,7 @@ const Form = () => {
                       name: values.name,
                       date: values.date,
                       saveData: true,
+                      calendarWeeks,
                     });
                   } catch (error) {
                     console.error("Failed to save form data:", error);
