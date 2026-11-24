@@ -1,5 +1,5 @@
-import sharp from "sharp";
 import { lifeOgImage } from "../../../../lib/life-og";
+import { lifeJpegResponse } from "../../../../lib/life-response";
 import { getLife, listLives } from "../../../../lib/lives";
 
 type Props = {
@@ -17,17 +17,6 @@ export async function GET(_request: Request, { params }: Props) {
     return new Response(null, { status: 404 });
   }
 
-  const png = Buffer.from(await lifeOgImage(life).arrayBuffer());
-  const jpeg = await sharp(png)
-    .flatten({ background: "#09090b" })
-    .jpeg({ quality: 92, chromaSubsampling: "4:4:4" })
-    .toBuffer();
-
-  return new Response(jpeg, {
-    headers: {
-      "Content-Type": "image/jpeg",
-      "Cache-Control":
-        "public, max-age=86400, s-maxage=86400, stale-while-revalidate=604800",
-    },
-  });
+  const png = await lifeOgImage(life).arrayBuffer();
+  return lifeJpegResponse(png);
 }

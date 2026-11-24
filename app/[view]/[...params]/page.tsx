@@ -1,19 +1,31 @@
 import * as stylex from "@stylexjs/stylex";
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { connection } from "next/server";
 import { type ReactNode, Suspense } from "react";
 import BackButton from "../../../components/BackButton";
 import { BurstSceneLazy } from "../../../components/BurstScene/BurstSceneLazy";
 import { CalendarHeading } from "../../../components/CalendarHeading";
+import { LifeSharePicture } from "../../../components/LifeSharePicture";
 import { LifeTable } from "../../../components/LifeTable/LifeTable";
+import { SwitchViewLink } from "../../../components/SwitchViewLink";
 import { calculateFullAge, calculateLifeWeeks } from "../../../lib/date-utils";
-import { serializeJsonLd } from "../../../lib/json-ld";
-import { OG_IMAGE, SITE_URL } from "../../../lib/site";
+import {
+  graphJsonLd,
+  lifeImageObject,
+  serializeJsonLd,
+} from "../../../lib/json-ld";
+import {
+  LIFE_OG_CONTENT_TYPE,
+  LIFE_OG_SIZE,
+  lifeImageAlt,
+  speakBirthDate,
+} from "../../../lib/life-og";
+import { SITE_URL } from "../../../lib/site";
 import {
   birthDateFromPathSegments,
   extractNameFromUrl,
+  lifeImagePath,
 } from "../../../lib/url-utils";
 import { breakpoints } from "../../../styles/breakpoints.stylex";
 import { kicker } from "../../../styles/recipes/kicker.stylex";
@@ -241,6 +253,10 @@ export async function generateMetadata({
   const viewTitle = view === "burst" ? "Burst View" : "Table View";
   const canonicalUrl = `${SITE_URL}/${view}/${urlPath}`;
   const titleName = name ? `${name} · ` : "";
+  const imagePath = lifeImagePath(birthDate);
+  const imageAlt = lifeImageAlt(
+    `${birthDate.getFullYear()}-${String(birthDate.getMonth() + 1).padStart(2, "0")}-${String(birthDate.getDate()).padStart(2, "0")}`
+  );
 
   return {
     title: `${titleName}Your Life in Weeks - Age ${age} - ${viewTitle}`,
@@ -255,6 +271,8 @@ export async function generateMetadata({
       googleBot: {
         index: false,
         follow: true,
+        "max-image-preview": "large",
+        "max-snippet": -1,
       },
     },
     openGraph: {
@@ -264,10 +282,11 @@ export async function generateMetadata({
       type: "website",
       images: [
         {
-          url: OG_IMAGE,
-          width: 730,
-          height: 548,
-          alt: "Memento Mori Life Calendar Visualization",
+          url: imagePath,
+          width: LIFE_OG_SIZE.width,
+          height: LIFE_OG_SIZE.height,
+          alt: imageAlt,
+          type: LIFE_OG_CONTENT_TYPE,
         },
       ],
     },
@@ -275,7 +294,7 @@ export async function generateMetadata({
       card: "summary_large_image",
       title: `${titleName}Your Life in Weeks - Age ${age} - ${viewTitle}`,
       description: `At ${age} years old, you've lived approximately ${weeksLived} weeks. Visualize your life ${view === "burst" ? "as a radial burst" : "in a table grid"}.`,
-      images: [OG_IMAGE],
+      images: [imagePath],
     },
   };
 }
@@ -329,12 +348,13 @@ async function CalendarSwitcher({ params, searchParams }: Props) {
 
   return (
     <div {...stylex.props(styles.switcher)}>
-      <Link
+      <SwitchViewLink
         href={`/${otherView}/${urlPath}${nameQuery}`}
+        view={otherView}
         {...stylex.props(styles.switchLink)}
       >
         Switch to {otherView === "table" ? "table" : "burst"} view
-      </Link>
+      </SwitchViewLink>
     </div>
   );
 }
@@ -361,24 +381,46 @@ async function ViewBody({ params }: Props) {
   const weeksLived = lifeWeeks?.weeksLived ?? 0;
   const weeksRemaining = lifeWeeks?.weeksRemaining ?? 0;
 
-  const breadcrumbJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      {
-        "@type": "ListItem",
-        position: 1,
-        name: "Home",
-        item: SITE_URL,
-      },
-      {
-        "@type": "ListItem",
-        position: 2,
-        name: `${view === "table" ? "Table" : "Burst"} View`,
-        item: `${SITE_URL}/${view}/${urlPath}`,
-      },
-    ],
-  };
+  const imagePath = lifeImagePath(birthDate);
+  const iso = `${birthDate.getFullYear()}-${String(birthDate.getMonth() + 1).padStart(2, "0")}-${String(birthDate.getDate()).padStart(2, "0")}`;
+  const imageAlt = lifeImageAlt(iso);
+  const imageUrl = `${SITE_URL}${imagePath}`;
+  const pageUrl = `${SITE_URL}/${view}/${urlPath}`;
+  const structured = graphJsonLd([
+    {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Home",
+          item: SITE_URL,
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: `${view === "table" ? "Table" : "Burst"} View`,
+          item: pageUrl,
+        },
+      ],
+    },
+    {
+      "@type": "WebPage",
+      url: pageUrl,
+      primaryImageOfPage: lifeImageObject({
+        contentUrl: imageUrl,
+        caption: imageAlt,
+        width: LIFE_OG_SIZE.width,
+        height: LIFE_OG_SIZE.height,
+      }),
+    },
+    lifeImageObject({
+      contentUrl: imageUrl,
+      caption: imageAlt,
+      width: LIFE_OG_SIZE.width,
+      height: LIFE_OG_SIZE.height,
+    }),
+  ]);
 
   const tableFit = stylex.props(
     styles.tableFit,
@@ -390,7 +432,7 @@ async function ViewBody({ params }: Props) {
       <script
         type="application/ld+json"
         // biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD structured data is serialized into a script tag.
-        dangerouslySetInnerHTML={{ __html: serializeJsonLd(breadcrumbJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(structured) }}
       />
 
       <div
@@ -440,6 +482,11 @@ async function ViewBody({ params }: Props) {
           count.
         </p>
       </section>
+      <LifeSharePicture
+        src={imagePath}
+        alt={imageAlt}
+        caption={`Born ${speakBirthDate(iso)}. The picture is the same count as the grid.`}
+      />
     </>
   );
 }

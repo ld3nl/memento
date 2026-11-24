@@ -2,6 +2,7 @@ import {
   birthDateFromPathSegments,
   extractNameFromUrl,
   generateLifeTableUrl,
+  lifeImagePath,
   parseDateFromUrl,
 } from "./url-utils";
 
@@ -64,6 +65,14 @@ describe("url utilities", () => {
       expect(parseDateFromUrl(["", "01", "15"])).toBe(null);
       expect(parseDateFromUrl(["2023", "", "15"])).toBe(null);
       expect(parseDateFromUrl(["2023", "01", ""])).toBe(null);
+    });
+  });
+
+  describe("lifeImagePath", () => {
+    it("uses the birthdate and a descriptive filename", () => {
+      expect(lifeImagePath(new Date(1971, 5, 28))).toBe(
+        "/life/1971/6/28/life-in-weeks.jpg"
+      );
     });
   });
 

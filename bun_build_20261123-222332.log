@@ -1,0 +1,64 @@
+$ bun clean && next build --debug-prerender
+$ rm -rf .next node_modules/.cache
+⚠ Prerendering is running in debug mode with NODE_ENV='development'. This will affect performance and should not be used for production.
+▲ Next.js 16.4.6 (Turbopack)
+✓ Running next.config.ts took 1132ms
+- Cache Components enabled
+- Partial Prefetching enabled
+- Experiments (use with caution):
+  ✓ allowDevelopmentBuild (enabled by `--debug-prerender`)
+  ⨯ prerenderEarlyExit (disabled by `--debug-prerender`)
+  ✓ serverSourceMaps (enabled by `--debug-prerender`)
+  ⨯ turbopackMinify (disabled by `--debug-prerender`)
+
+  Creating an optimized production build ...
+  Using external babel configuration from /Users/denis/Documents/GitHub/memento/babel.config.js
+✓ Compiled successfully in 17.2s
+  Running TypeScript ...
+  Finished TypeScript in 2.1s ...
+  Collecting page data using 11 workers ...
+  Generating static pages using 11 workers (0/36) ...
+  Generating static pages using 11 workers (9/36) 
+  Generating static pages using 11 workers (18/36) 
+  Generating static pages using 11 workers (27/36) 
+✓ Generating static pages using 11 workers (36/36) in 7.3s
+  Finalizing page optimization ...
+
+Route (app)                                             Revalidate  Expire
+┌ ○ /                                                          30d      1y
+├ ○ /_not-found                                                30d      1y
+├   /[view]                                                    30d      1y
+│ └ ◐ /[view]                                                  30d      1y
+├   /[view]/[...params]                                        30d      1y
+│ └ ◐ /[view]/[...params]                                      30d      1y
+├ ○ /about                                                     30d      1y
+├ ○ /about/opengraph-image                                     30d      1y
+├ ○ /blog                                                      30d      1y
+├   /blog/[slug]                                               30d      1y
+│ ├ ◐ /blog/[slug]                                             30d      1y
+│ ├ ○ /blog/elon-musk-in-weeks                                 30d      1y
+│ ├ ○ /blog/how-many-weekends-do-you-have-left                 30d      1y
+│ └ ◐ [+7 more paths]
+├ ƒ /blog/[slug]/opengraph-image                               30d      1y
+├   /blog/[slug]/opengraph-image                               30d      1y
+│ ├ ● /blog/what-makes-a-life-rich/opengraph-image             30d      1y
+│ ├ ● /blog/what-is-memento-mori/opengraph-image               30d      1y
+│ ├ ● /blog/steve-jobs-memento-mori/opengraph-image            30d      1y
+│ └ ● /blog/famous-stoics-on-mortality/opengraph-image         30d      1y
+├ ƒ /blog/opengraph-image
+├ ○ /feed.xml                                                   1h      1d
+├   /lives/[slug]                                              30d      1y
+│ ├ ◐ /lives/[slug]                                            30d      1y
+│ └ ◐ /lives/elon-musk                                         30d      1y
+├ ƒ /lives/[slug]/og.jpg
+├ ○ /manifest.webmanifest
+├ ƒ /opengraph-image
+├ ○ /robots.txt
+└ ○ /sitemap.xml                                               30d      1y
+
+
+○  (Static)             prerendered as static content
+●  (SSG)                prerendered as static HTML (uses generateStaticParams)
+◐  (Partial Prerender)  prerendered as static HTML with dynamic server-streamed content
+ƒ  (Dynamic)            server-rendered on demand
+

@@ -20,6 +20,39 @@ export function absoluteUrl(path: string): string {
   return `${SITE_URL}${path.startsWith("/") ? path : `/${path}`}`;
 }
 
+export const IMAGE_LICENSE_PATH = "/about#pictures";
+
+export function lifeImageObject({
+  contentUrl,
+  caption,
+  width,
+  height,
+}: {
+  contentUrl: string;
+  caption: string;
+  width: number;
+  height: number;
+}) {
+  return {
+    "@type": "ImageObject",
+    contentUrl,
+    url: contentUrl,
+    caption,
+    width,
+    height,
+    encodingFormat: "image/jpeg",
+    license: absoluteUrl(IMAGE_LICENSE_PATH),
+    acquireLicensePage: absoluteUrl(IMAGE_LICENSE_PATH),
+    creditText: ORGANIZATION_NAME,
+    copyrightNotice: ORGANIZATION_NAME,
+    creator: {
+      "@type": "Organization",
+      name: ORGANIZATION_NAME,
+      url: SITE_URL,
+    },
+  };
+}
+
 export function organizationJsonLd() {
   return {
     "@type": "Organization",

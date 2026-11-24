@@ -1,4 +1,9 @@
-import { lifeOgImage, paintLifeGrid } from "./life-og";
+import {
+  dateLifeImage,
+  lifeImageAlt,
+  lifeOgImage,
+  paintLifeGrid,
+} from "./life-og";
 import { lifeWeekDays } from "./life-week";
 import { getLife } from "./lives";
 import { LEDGER_INKS } from "./week-notes";
@@ -55,6 +60,31 @@ describe("life share image", () => {
     }
 
     expect(found).toBe(true);
+  });
+
+  it("paints a birthdate with no chapters in red and empty", () => {
+    const grid = paintLifeGrid(
+      { born: "1971-06-28", name: "Life in weeks" },
+      new Date(2026, 10, 16)
+    );
+    expect(grid[0]?.[0]).toBe("#dc2626");
+    expect(grid[79]?.[51]).toBe("#3f3f46");
+  });
+
+  it("describes the picture without a name", () => {
+    expect(lifeImageAlt("1971-06-28")).toContain("28 June 1971");
+    expect(lifeImageAlt("1971-06-28")).not.toMatch(/Elon/);
+  });
+
+  it("renders a plain birthdate as a png", async () => {
+    const response = dateLifeImage(
+      new Date(1971, 5, 28),
+      new Date(2026, 10, 16)
+    );
+    const bytes = new Uint8Array(await response.arrayBuffer());
+    expect(bytes[0]).toBe(0x89);
+    expect(bytes[1]).toBe(0x50);
+    expect(bytes.byteLength).toBeGreaterThan(1000);
   });
 
   it("renders a png", async () => {

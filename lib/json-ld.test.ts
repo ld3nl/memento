@@ -3,6 +3,7 @@ import {
   absoluteUrl,
   articleJsonLd,
   graphJsonLd,
+  lifeImageObject,
   serializeJsonLd,
 } from "./json-ld";
 import { SITE_URL } from "./site";
@@ -33,5 +34,22 @@ describe("json-ld", () => {
     expect(article.datePublished).toBe("2026-08-31T00:00:00.000Z");
     expect(article.url).toBe(`${SITE_URL}/blog/what-is-memento-mori`);
     expect(graphJsonLd([article])["@context"]).toBe("https://schema.org");
+  });
+
+  it("marks a life picture with credit and a license URL", () => {
+    const image = lifeImageObject({
+      contentUrl: `${SITE_URL}/life/1971/6/28/life-in-weeks.jpg`,
+      caption: "Life in weeks for a person born 28 June 1971.",
+      width: 1200,
+      height: 675,
+    });
+
+    expect(image.contentUrl).toBe(
+      `${SITE_URL}/life/1971/6/28/life-in-weeks.jpg`
+    );
+    expect(image.encodingFormat).toBe("image/jpeg");
+    expect(image.license).toBe(`${SITE_URL}/about#pictures`);
+    expect(image.creditText).toBe("Memento Mori");
+    expect(image.creator).toMatchObject({ name: "Memento Mori" });
   });
 });

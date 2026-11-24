@@ -1,0 +1,10 @@
+$ next start --inspect
+Debugger listening on ws://127.0.0.1:9229/cbe83daf-df9f-4980-afb5-b108873453e7
+For help, see: https://nodejs.org/learn/getting-started/debugging
+▲ Next.js 16.4.6
+- Local:         http://localhost:3000
+- Network:       http://192.168.1.65:3000
+- Debugger port: 9229
+✓ Ready in 255ms
+✓ Running next.config.ts took 52ms
+error: script "start" exited with code 130

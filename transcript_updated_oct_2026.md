@@ -5,7 +5,7 @@
 
 > Money is the single most powerful tool you have to create the life you want. It is not about greed or luxury. It is about freedom.
 
-This document updates a spoken summary of *The Simple Path to Wealth*. The purpose, the argument, and the plain voice stay the same. What changed is anything that can go stale: law, tax brackets, account limits, fund fees, debt totals, and market levels.
+This document updates a spoken summary of _The Simple Path to Wealth_. The purpose, the argument, and the plain voice stay the same. What changed is anything that can go stale: law, tax brackets, account limits, fund fees, debt totals, and market levels.
 
 Personal stories are the author’s account from the period of the book. They were **not** reinvestigated as a 2026 biography. Where a number could not be confirmed, the text says so.
 
@@ -13,12 +13,12 @@ Personal stories are the author’s account from the period of the book. They we
 
 ## How to read this update
 
-| Mark | Meaning |
-| --- | --- |
+| Mark           | Meaning                                                      |
+| -------------- | ------------------------------------------------------------ |
 | Still in force | The claim still matches a current official or primary source |
-| Updated | The old figure was replaced with a 2026 figure |
-| Historical | Left as a past window, not a forecast |
-| Unverified | Not recomputed or not reopened for this edit |
+| Updated        | The old figure was replaced with a 2026 figure               |
+| Historical     | Left as a past window, not a forecast                        |
+| Unverified     | Not recomputed or not reopened for this edit                 |
 
 Three questions from the book still decide the portfolio:
 
@@ -51,10 +51,10 @@ The less you need, the freer you are. A high income with a high burn rate can le
 
 **FU money** is enough invested wealth to walk away. It is not a license to be cruel. It is options.
 
-| Coworker | Pay | Lifestyle | Result in the parable |
-| --- | --- | --- | --- |
-| Sarah | Higher | New car, downtown rent, dinners out | Paycheck to paycheck |
-| Mike | Lower | Used car, modest home, high savings rate | On a path to independence |
+| Coworker | Pay    | Lifestyle                                | Result in the parable     |
+| -------- | ------ | ---------------------------------------- | ------------------------- |
+| Sarah    | Higher | New car, downtown rent, dinners out      | Paycheck to paycheck      |
+| Mike     | Lower  | Used car, modest home, high savings rate | On a path to independence |
 
 The names and salaries are a teaching sketch, not a 2026 budget.
 
@@ -62,7 +62,7 @@ The names and salaries are a teaching sketch, not a 2026 budget.
 
 ## It was never about retirement
 
-Collins traces the phrase *FU money* to James Clavell’s novel *Noble House*. His own early jobs, a $5,000 trip in his twenties, later career breaks, and time at home with his daughter are autobiography.
+Collins traces the phrase _FU money_ to James Clavell’s novel _Noble House_. His own early jobs, a $5,000 trip in his twenties, later career breaks, and time at home with his daughter are autobiography.
 
 The repeatable part is the method:
 
@@ -131,13 +131,13 @@ Debt shrinks your lifestyle, ties you to a paycheck, and burns attention.
 
 The talk’s “$12 trillion” picture is obsolete. In the **second quarter of 2026**, the New York Fed measured U.S. household debt as follows. [2]
 
-| Category | Balance |
-| --- | ---: |
+| Category           |        Balance |
+| ------------------ | -------------: |
 | All household debt | $18.8 trillion |
-| Mortgages | $13.1 trillion |
-| Student loans | $1.65 trillion |
-| Auto loans | $1.71 trillion |
-| Credit cards | $1.26 trillion |
+| Mortgages          | $13.1 trillion |
+| Student loans      | $1.65 trillion |
+| Auto loans         | $1.71 trillion |
+| Credit cards       | $1.26 trillion |
 
 “Normal” is still not the same as harmless.
 
@@ -145,11 +145,11 @@ The talk’s “$12 trillion” picture is obsolete. In the **second quarter of 
 
 Collins’s interest-rate rule is a judgment:
 
-| Rate on the debt | His suggestion |
-| --- | --- |
-| Under 3% | Pay slowly. Invest the extra cash. |
-| 3% to 5% | Either path is reasonable. Pick the one you will finish. |
-| Over 5% | Pay it off aggressively. |
+| Rate on the debt | His suggestion                                           |
+| ---------------- | -------------------------------------------------------- |
+| Under 3%         | Pay slowly. Invest the extra cash.                       |
+| 3% to 5%         | Either path is reasonable. Pick the one you will finish. |
+| Over 5%          | Pay it off aggressively.                                 |
 
 Market yields in the mid-2020s are much higher than in the mid-2010s, so a true 3 percent loan is less common.
 
@@ -169,7 +169,7 @@ Do **not** pay someone to do this for you. Do **not** pay the smallest balance f
 - **A mortgage** can make sense if the house is the one you need, not the one a lender will approve.
 - **Student loans** are the sharp edge.
 
-Federal student loans are still presumed **nondischargeable** in bankruptcy under 11 U.S.C. § 523(a)(8), unless the debtor proves undue hardship. Courts often use the *Brunner* test. A November 2022 Justice Department process, still posted with a **March 2026** update, makes agreed discharges easier in clear hardship cases. It does not turn student debt into ordinary credit-card debt. [3]
+Federal student loans are still presumed **nondischargeable** in bankruptcy under 11 U.S.C. § 523(a)(8), unless the debtor proves undue hardship. Courts often use the _Brunner_ test. A November 2022 Justice Department process, still posted with a **March 2026** update, makes agreed discharges easier in clear hardship cases. It does not turn student debt into ordinary credit-card debt. [3]
 
 Whether defaulted federal loans are **currently** being offset from Social Security was **not reconfirmed** for this date. Do not describe the loans as disappearing at death. Do not describe them as impossible to discharge in every case.
 
@@ -200,11 +200,11 @@ The math can work for a middle-income household in the United States. Behavior i
 
 These examples belong to the book’s **1975–2015** window and its **11.9 percent** figure. They are not a projection from 2026.
 
-| Starting habit | Book’s punch line |
-| --- | --- |
-| $12,000 once, dividends reinvested | Past $1 million by 2015 |
-| About $130 a month | A large nest egg, not yet $1 million |
-| About $150 a month | Past $1 million in that same window |
+| Starting habit                     | Book’s punch line                    |
+| ---------------------------------- | ------------------------------------ |
+| $12,000 once, dividends reinvested | Past $1 million by 2015              |
+| About $130 a month                 | A large nest egg, not yet $1 million |
+| About $150 a month                 | Past $1 million in that same window  |
 
 A new car is no longer the casual “leftover” those pages imagined. Car prices and the index both moved.
 
@@ -240,9 +240,9 @@ Mike Tyson’s career earnings and his bankruptcy remain a fair cautionary tale 
 
 A **$20,000** car paid in cash avoids a loan. It also gives up whatever that $20,000 would have earned.
 
-| Assumption | Rough result |
-| --- | --- |
-| 8% for one year | About $1,600 forgone |
+| Assumption                            | Rough result                                               |
+| ------------------------------------- | ---------------------------------------------------------- |
+| 8% for one year                       | About $1,600 forgone                                       |
 | 8% for ten years, gains left invested | Meaningfully more than $1,600 × 10, because gains compound |
 
 The car’s price in the example is dated. The idea is not.
@@ -267,10 +267,10 @@ The old illustration of buying VTSAX at **$53.67** is a past price. Vanguard’s
 
 “Early 2015, S&P 500 over 2,000” is a period detail.
 
-| Index | Close on 16 October 2026 |
-| --- | ---: |
-| S&P 500 | 7,659.44 |
-| Dow Jones Industrial Average | 52,002.41 |
+| Index                        | Close on 16 October 2026 |
+| ---------------------------- | -----------------------: |
+| S&P 500                      |                 7,659.44 |
+| Dow Jones Industrial Average |                52,002.41 |
 
 Source: market closes reported for that session. [7]
 
@@ -350,10 +350,10 @@ The book’s “only 18 percent beat the market in a 2013 Vanguard study” is a
 
 There are still more products than an individual needs. Marketing shows the recent winners.
 
-| In the glass | What it is |
-| --- | --- |
-| Beer | The businesses: profits, products, reinvested capital |
-| Foam | Daily prices, headlines, and television forecasts |
+| In the glass | What it is                                            |
+| ------------ | ----------------------------------------------------- |
+| Beer         | The businesses: profits, products, reinvested capital |
+| Foam         | Daily prices, headlines, and television forecasts     |
 
 **VTSAX** and the ETF share class **VTI** remain the simple U.S. total-market tools. Fidelity’s comparable fund is **FSKAX**. The talk’s “FFSKX” is a mishearing.
 
@@ -363,11 +363,11 @@ There are still more products than an individual needs. Marketing shows the rece
 
 From the **1929** peak to the **1932** low, the Dow fell on the order of **90 percent**, from the high 300s to the low 40s, and took until the mid-1950s to regain the old peak in price terms.
 
-| Situation | What history suggests |
-| --- | --- |
-| Bought at the exact top, with borrowed money | Ruin |
-| Bought a couple of years earlier and held | A long, painful recovery, not a lifetime sentence |
-| Kept a job and kept buying | The decline was also a sale |
+| Situation                                    | What history suggests                             |
+| -------------------------------------------- | ------------------------------------------------- |
+| Bought at the exact top, with borrowed money | Ruin                                              |
+| Bought a couple of years earlier and held    | A long, painful recovery, not a lifetime sentence |
+| Kept a job and kept buying                   | The decline was also a sale                       |
 
 The line that “75 percent of workers kept their jobs” was **not** rechecked against a primary Depression labor series.
 
@@ -393,11 +393,11 @@ Stage of life beats age. Someone at 60 may have decades ahead. Someone at 40 may
 
 ### The toolbox
 
-| Tool | Ticker | Job | Fee checked for this update |
-| --- | --- | --- | --- |
-| U.S. total stock market | `VTSAX` | Growth | **0.04%** as of 28 April 2026. Minimum **$3,000**. [6] |
-| U.S. total bond market | `VBTLX` | Smoother ride, income | **0.04%** as of 28 April 2026. [10] |
-| Cash | Bank or money market | Near-term bills | Rate not checked. It will change. |
+| Tool                    | Ticker               | Job                   | Fee checked for this update                            |
+| ----------------------- | -------------------- | --------------------- | ------------------------------------------------------ |
+| U.S. total stock market | `VTSAX`              | Growth                | **0.04%** as of 28 April 2026. Minimum **$3,000**. [6] |
+| U.S. total bond market  | `VBTLX`              | Smoother ride, income | **0.04%** as of 28 April 2026. [10]                    |
+| Cash                    | Bank or money market | Near-term bills       | Rate not checked. It will change.                      |
 
 Vanguard’s own comparison, as of **31 December 2025**: [6]
 
@@ -435,10 +435,10 @@ You still cannot know the next king. In 2026 the leading company is an artificia
 
 Once you are withdrawing about **4 percent** a year, a **1 percent** fee is a quarter of that spending money.
 
-| Annual cost | Dollars per year on $10,000 |
-| --- | ---: |
-| 1.00% advisor or fund fee | $100 |
-| 0.04% VTSAX | $4 |
+| Annual cost               | Dollars per year on $10,000 |
+| ------------------------- | --------------------------: |
+| 1.00% advisor or fund fee |                        $100 |
+| 0.04% VTSAX               |                          $4 |
 
 Bogle’s line still earns its place: performance comes and goes, and fees are forever.
 
@@ -460,11 +460,11 @@ A total bond-market fund spreads issuer risk and maturity risk. It does **not** 
 
 ### Tax flavor, in brief
 
-| Bond | Typical income-tax treatment |
-| --- | --- |
-| Municipal | Often exempt from federal income tax, and sometimes from state tax |
-| U.S. Treasury | Exempt from state and local income tax. Taxable at the federal level. |
-| Corporate, inside a bond index fund | Taxable interest. Prefer a tax-deferred account if you have one. |
+| Bond                                | Typical income-tax treatment                                          |
+| ----------------------------------- | --------------------------------------------------------------------- |
+| Municipal                           | Often exempt from federal income tax, and sometimes from state tax    |
+| U.S. Treasury                       | Exempt from state and local income tax. Taxable at the federal level. |
+| Corporate, inside a bond index fund | Taxable interest. Prefer a tax-deferred account if you have one.      |
 
 Whether a municipal bond wins **after tax** depends on your bracket. An inverted yield curve has often preceded recessions. It is not a trading signal this strategy uses.
 
@@ -490,10 +490,10 @@ The “$200 a month from 1975 to 2015 became more than $1.5 million” case sits
 His household example:
 
 | Sleeve | Share |
-| --- | ---: |
-| VTSAX | 75% |
-| VBTLX | 20% |
-| Cash | 5% |
+| ------ | ----: |
+| VTSAX  |   75% |
+| VBTLX  |   20% |
+| Cash   |    5% |
 
 Rebalance about once a year. A more cautious mix, **60/40** or **50/50**, trades growth for a smoother ride. There is no perfect ratio. There is the ratio you will not abandon.
 
@@ -565,10 +565,10 @@ The **$10,000** Admiral minimum in the talk is wrong now. VTSAX’s minimum on V
 
 The old Investor share class, **VTSMX**, is not the on-ramp it was when the book was new.
 
-| Share class | How you buy it now |
-| --- | --- |
-| `VTSAX` | Mutual fund. $3,000 minimum at Vanguard. |
-| `VTI` | ETF. No fund minimum. One share, or a fraction where the broker allows it. |
+| Share class                               | How you buy it now                                                                                         |
+| ----------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `VTSAX`                                   | Mutual fund. $3,000 minimum at Vanguard.                                                                   |
+| `VTI`                                     | ETF. No fund minimum. One share, or a fraction where the broker allows it.                                 |
 | Institutional class inside a large 401(k) | Often cheaper still. Confirm the ticker in your plan. The talk’s institutional tickers were not rechecked. |
 
 If the plan has no Vanguard fund, take the match anyway. Then prefer:
@@ -590,12 +590,12 @@ It is **not** a promise that every Vanguard product is the cheapest forever. Fid
 
 ### Safety, stated carefully
 
-| Event | What is protected |
-| --- | --- |
-| The market falls 40% | Nothing. That is the investment risk you accepted. |
-| The management company has an operational failure | The funds are separate legal pools. A disaster-recovery plan is not the same as a guarantee. |
-| A broker fails | **SIPC** covers brokerage custody up to statutory limits. It does not insure market losses. This statute was **not** reopened for this edit. |
-| A bank fails | **FDIC** covers deposits up to the legal limit. It does not cover VTSAX. |
+| Event                                             | What is protected                                                                                                                            |
+| ------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| The market falls 40%                              | Nothing. That is the investment risk you accepted.                                                                                           |
+| The management company has an operational failure | The funds are separate legal pools. A disaster-recovery plan is not the same as a guarantee.                                                 |
+| A broker fails                                    | **SIPC** covers brokerage custody up to statutory limits. It does not insure market losses. This statute was **not** reopened for this edit. |
+| A bank fails                                      | **FDIC** covers deposits up to the legal limit. It does not cover VTSAX.                                                                     |
 
 Collins’s statement that Vanguard does not pay him is his disclosure. It was not independently audited here.
 
@@ -609,14 +609,14 @@ The container is not the investment. A 401(k), 403(b), Thrift Savings Plan, IRA,
 
 Figures below are the 2026 limits published from IRS tables. [11]
 
-| Account | 2026 limit |
-| --- | --- |
-| Employee deferral: 401(k), 403(b), governmental 457(b), TSP | $24,500 |
-| Catch-up, age 50 and older | $8,000 |
-| Catch-up, ages 60 through 63 | $11,250 |
-| Employee plus employer, before catch-up | $72,000 |
-| Traditional IRA and Roth IRA, combined | $7,500 |
-| IRA catch-up, age 50 and older | $1,100 |
+| Account                                                     | 2026 limit |
+| ----------------------------------------------------------- | ---------- |
+| Employee deferral: 401(k), 403(b), governmental 457(b), TSP | $24,500    |
+| Catch-up, age 50 and older                                  | $8,000     |
+| Catch-up, ages 60 through 63                                | $11,250    |
+| Employee plus employer, before catch-up                     | $72,000    |
+| Traditional IRA and Roth IRA, combined                      | $7,500     |
+| IRA catch-up, age 50 and older                              | $1,100     |
 
 Roth IRA income phaseouts for 2026:
 
@@ -655,11 +655,11 @@ After the 2025 tax law that kept the post-2017 rate structure and adjusted it fo
 
 `10% · 12% · 22% · 24% · 32% · 35% · 37%`
 
-| Threshold (taxable income) | Single | Married filing jointly |
-| --- | ---: | ---: |
-| 22% bracket begins above | $50,400 | $100,800 |
-| 37% bracket begins above | $640,600 | $768,700 |
-| Standard deduction | $16,100 | $32,200 |
+| Threshold (taxable income) |   Single | Married filing jointly |
+| -------------------------- | -------: | ---------------------: |
+| 22% bracket begins above   |  $50,400 |               $100,800 |
+| 37% bracket begins above   | $640,600 |               $768,700 |
+| Standard deduction         |  $16,100 |                $32,200 |
 
 The talk’s **15 percent** and **25 percent** brackets are gone.
 
@@ -669,10 +669,10 @@ The talk’s **15 percent** and **25 percent** brackets are gone.
 
 Required minimum distributions are **not** triggered at 70½, and they are **not** universally triggered at 73.
 
-| Born | Age when RMDs start |
-| --- | --- |
-| 1951 through 1959 | 73 |
-| 1960 or later | 75 |
+| Born              | Age when RMDs start |
+| ----------------- | ------------------- |
+| 1951 through 1959 | 73                  |
+| 1960 or later     | 75                  |
 
 The first deadline can be **1 April** of the following year. Using that grace period stacks two distributions into one tax year. Most people are better off taking the first distribution in the year they reach the age.
 
@@ -682,11 +682,11 @@ Roth IRAs still have no lifetime RMD for the owner.
 
 ### The penalty changed
 
-| Rule | Amount |
-| --- | --- |
-| Old penalty in the talk | 50% of the missed RMD |
-| Current penalty | **25%** of the shortfall |
-| If you correct it inside the window | **10%** |
+| Rule                                | Amount                   |
+| ----------------------------------- | ------------------------ |
+| Old penalty in the talk             | 50% of the missed RMD    |
+| Current penalty                     | **25%** of the shortfall |
+| If you correct it inside the window | **10%**                  |
 
 That is still a penalty to avoid. [13]
 
@@ -712,13 +712,13 @@ An HSA is still the only common account that is:
 
 ### 2026 HSA limits
 
-| Item | Amount |
-| --- | ---: |
-| Self-only contribution | $4,400 |
-| Family contribution | $8,750 |
-| Catch-up at age 55 or older | $1,000 |
+| Item                               | Amount |
+| ---------------------------------- | -----: |
+| Self-only contribution             | $4,400 |
+| Family contribution                | $8,750 |
+| Catch-up at age 55 or older        | $1,000 |
 | Minimum HDHP deductible, self-only | $1,700 |
-| Minimum HDHP deductible, family | $3,400 |
+| Minimum HDHP deductible, family    | $3,400 |
 
 Source: 2026 IRS figures. [11]
 
@@ -758,12 +758,12 @@ Selling twelve advisor funds can realize capital gains. That tax is often smalle
 
 Commission loads still exist. A **5.75 percent** front load is no longer “very common” in the old sense, but it is not extinct. Annuities and cash-value life insurance still pay large commissions.
 
-| Way the advisor is paid | Conflict |
-| --- | --- |
-| Load or commission | The product that pays the advisor may be the product that costs you most. |
+| Way the advisor is paid                 | Conflict                                                                                               |
+| --------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| Load or commission                      | The product that pays the advisor may be the product that costs you most.                              |
 | Assets under management, often about 1% | The advisor is paid more if you keep money invested, even when paying off debt would serve you better. |
-| Hourly | The cleanest of the three. You can still receive bad advice. |
-| A blend of all three | You will not see the total easily. |
+| Hourly                                  | The cleanest of the three. You can still receive bad advice.                                           |
+| A blend of all three                    | You will not see the total easily.                                                                     |
 
 An assets-under-management fee of **1 percent** is ordinary. **Two percent** is hard to justify.
 
@@ -781,10 +781,10 @@ Bogle died in **2019**. [1] Vanguard is no longer the only low-cost shop, and it
 
 Buffett’s instruction — that the money left for his wife go mostly into a low-cost S&P 500 index fund — is still the cleanest public endorsement this idea has.
 
-| Ticker | What it is |
-| --- | --- |
+| Ticker          | What it is              |
+| --------------- | ----------------------- |
 | `VTSAX` / `VTI` | Total U.S. stock market |
-| `VFIAX` / `VOO` | S&P 500 only |
+| `VFIAX` / `VOO` | S&P 500 only            |
 
 The talk sometimes swaps those names. Either is a reasonable core. They are **not** the same portfolio. The S&P 500 leaves out most smaller companies. The total market includes them, and in 2026 it is still dominated at the top by the largest firms. [4]
 
@@ -794,7 +794,7 @@ The talk sometimes swaps those names. Either is a reasonable core. They are **no
 
 Professionals with more information than you still fail to beat the index after fees. [8]
 
-*The Intelligent Investor* was written before a retail index fund existed. Graham’s later sympathy for indexing, and Buffett’s advice for ordinary investors, point the same way.
+_The Intelligent Investor_ was written before a retail index fund existed. Graham’s later sympathy for indexing, and Buffett’s advice for ordinary investors, point the same way.
 
 Insider trading is still illegal. Most of what feels like an edge is a forecast stacked on another forecast.
 
@@ -816,7 +816,7 @@ Once the money is in, a later crash can still happen. Averaging did not insure y
 
 ## Chapter 27. Gurus
 
-Louis Rukeyser’s *Wall Street Week*, Abby Joseph Cohen’s permanent bullishness, and Marty Zweig’s permanent worry are period pieces. The method of becoming a television sage has not changed.
+Louis Rukeyser’s _Wall Street Week_, Abby Joseph Cohen’s permanent bullishness, and Marty Zweig’s permanent worry are period pieces. The method of becoming a television sage has not changed.
 
 1. Make a dated, extreme call.
 2. Stay quiet when it fails.
@@ -869,11 +869,11 @@ $$
 
 Later years in the classic rule are adjusted for inflation. The portfolio is not a contract to pay you that sum.
 
-| Stance | Withdrawal | Who it fits |
-| --- | --- | --- |
-| Very cautious | About 3% | Fixed bills, little flexibility, long retirement |
-| Classic anchor | 4% | The Trinity planning number |
-| Flexible | 5% to 6% | People who will cut spending when markets fall |
+| Stance         | Withdrawal | Who it fits                                      |
+| -------------- | ---------- | ------------------------------------------------ |
+| Very cautious  | About 3%   | Fixed bills, little flexibility, long retirement |
+| Classic anchor | 4%         | The Trinity planning number                      |
+| Flexible       | 5% to 6%   | People who will cut spending when markets fall   |
 
 A rigid 4 percent **plus** a 1 percent fee is a different and worse plan. The book’s claim that a 1 percent fee drops success to **84 percent**, and a 2 percent fee to **65 percent**, was **not** re-run.
 
@@ -908,10 +908,10 @@ The talk’s “age 70½” and “age 75 for everyone” are both wrong as a si
 
 ### Do not budget on the book’s yields
 
-| Fund | Talk’s yield | What turned up in this check |
-| --- | --- | --- |
-| VTSAX | About 2% | Closer to **1%** in the Morningstar data reviewed. [4] |
-| VBTLX | About 3% | About **5%** on a Vanguard advisor page in October 2026, after the post-2022 rate reset. Yields fall when bond prices rise. [10] |
+| Fund  | Talk’s yield | What turned up in this check                                                                                                     |
+| ----- | ------------ | -------------------------------------------------------------------------------------------------------------------------------- |
+| VTSAX | About 2%     | Closer to **1%** in the Morningstar data reviewed. [4]                                                                           |
+| VBTLX | About 3%     | About **5%** on a Vanguard advisor page in October 2026, after the post-2022 rate reset. Yields fall when bond prices rise. [10] |
 
 Check the current yield. Do not automate 4 percent and then ignore a 50 percent decline. Revisit the plan at least once a year, and after any move of about 20 percent.
 
@@ -923,14 +923,14 @@ The program began in **1935**. Collins’s early-adult assumption that it would 
 
 ### The 2026 Trustees Report
 
-| Item | Figure |
-| --- | --- |
-| Combined OASI and DI reserves at the end of 2025 | **$2.56 trillion** (down $160 billion that year) |
-| Cost versus total income | Cost has been higher **since 2021** |
-| Combined reserves projected to last until | **2034** |
-| Share of scheduled benefits payable then | About **83%** |
-| Retirement fund (OASI) alone | Shortfall in the **fourth quarter of 2032**, about **78%** payable |
-| Disability reserves | Projected to last through the 75-year window |
+| Item                                             | Figure                                                             |
+| ------------------------------------------------ | ------------------------------------------------------------------ |
+| Combined OASI and DI reserves at the end of 2025 | **$2.56 trillion** (down $160 billion that year)                   |
+| Cost versus total income                         | Cost has been higher **since 2021**                                |
+| Combined reserves projected to last until        | **2034**                                                           |
+| Share of scheduled benefits payable then         | About **83%**                                                      |
+| Retirement fund (OASI) alone                     | Shortfall in the **fourth quarter of 2032**, about **78%** payable |
+| Disability reserves                              | Projected to last through the 75-year window                       |
 
 Those reserves are Treasury bonds. They are real obligations. They are not a pile of cash in a drawer. [14]
 
@@ -938,11 +938,11 @@ The talk’s “$2.7 trillion, empty in 2033, 75 percent payable” is the **old
 
 ### When to claim
 
-| Age | What you get |
-| --- | --- |
-| 62 | The earliest check. It is permanently smaller. |
-| Full retirement age | 67 for anyone born in **1960 or later** |
-| 70 | Delayed credits stop. The worker’s check is larger. A surviving spouse can step up to it. |
+| Age                 | What you get                                                                              |
+| ------------------- | ----------------------------------------------------------------------------------------- |
+| 62                  | The earliest check. It is permanently smaller.                                            |
+| Full retirement age | 67 for anyone born in **1960 or later**                                                   |
+| 70                  | Delayed credits stop. The worker’s check is larger. A surviving spouse can step up to it. |
 
 The break-even “around 84” is a common planning shorthand, not a personal calculation. Collins’s plan to wait until 70 is **his** plan.
 
@@ -989,10 +989,10 @@ This is the advice Collins says he gave his daughter. It is not only for a 22-ye
 10. Starting at 55 still helps. It does not recreate a 22-year-old’s timeline.
 
 | Annual spending | Portfolio at 25× |
-| --- | ---: |
-| $20,000 | $500,000 |
-| $40,000 | $1,000,000 |
-| $80,000 | $2,000,000 |
+| --------------- | ---------------: |
+| $20,000         |         $500,000 |
+| $40,000         |       $1,000,000 |
+| $80,000         |       $2,000,000 |
 
 ---
 
@@ -1014,11 +1014,11 @@ The Dow began the twentieth century in the double digits and ended that century 
 
 That path includes wars, inflation, and crashes. It is **one country’s** history.
 
-| Asset | How it feels | What it has done over long U.S. stretches |
-| --- | --- | --- |
-| Cash | Calm | Loses purchasing power |
-| Stocks | Violent | Built purchasing power, with deep interruptions |
-| A forecast | Certain | Usually expires on contact with the next year |
+| Asset      | How it feels | What it has done over long U.S. stretches       |
+| ---------- | ------------ | ----------------------------------------------- |
+| Cash       | Calm         | Loses purchasing power                          |
+| Stocks     | Violent      | Built purchasing power, with deep interruptions |
+| A forecast | Certain      | Usually expires on contact with the next year   |
 
 Volatility is the turbulence. Selling at the bottom is the crash.
 
@@ -1038,26 +1038,26 @@ Nothing here guarantees that the next 25 years will resemble the last 50, or tha
 
 ## Change log
 
-| Section | Old statement | New statement | Source |
-| --- | --- | --- | --- |
-| Debt | About $12T total: $8T mortgages, $1T student loans, $3T cards and other | Q2 2026: $18.8T total; mortgages $13.1T; student loans $1.65T; cards $1.26T; auto $1.71T | [2] |
-| Debt | Student loans cannot be discharged and follow you until death | Still nondischargeable unless undue hardship. The 2022 DOJ process, updated March 2026, allows discharges in hardship cases. Current Social Security offset practice not reconfirmed | [3] |
-| Chapters 5–7 | S&P 500 over 2,000 in 2015; Dow about 17,000–17,800; 5,000 treated as a distant ceiling | 16 Oct 2026: S&P 500 **7,659.44**; Dow **52,002.41**. The 2015 levels stay as history | [7] |
-| Notes | 2000–2009 returned 93.8% a year | Transcription error. That decade was weak to negative. Exact figure not recomputed | — |
-| Tools | VTSAX costs 0.05%; industry average about 1%; Admiral minimum $10,000 | VTSAX and VBTLX **0.04%** (28 Apr 2026). VTSAX minimum **$3,000**. Industry average excluding Vanguard **0.50%** (31 Dec 2025) | [6], [10] |
-| Chapters 4 and 11 | Apple is the largest U.S. company | 17 Oct 2026: Nvidia about $5.2T, Apple about $5.0T. Top ten were about 33.5% of VTSAX on 31 Aug 2026 | [4], [5] |
-| Chapter 8 | 2013 Vanguard study: only 18% of active funds beat the market | 2025 SPIVA: **79%** of active U.S. large-cap funds trailed the S&P 500 | [8] |
-| Chapters 11 and 17 | Watch ETF commissions; a $10,000 minimum blocks beginners | Major brokers generally charge no ETF commission. VTI has no fund minimum | [6] |
-| Chapter 16 | Target-date lineup stops at 2060; fees 0.14–0.16% | The ceiling is stale. Current fees were not verified. Do not quote them | — |
-| Chapters 19 and 22 | 2016 deferral $18,000; IRA $5,500 or $6,500 | 2026 deferral **$24,500**; IRA **$7,500**. High earners’ catch-ups must be Roth | [11] |
-| Chapters 19 and 20 | Brackets of 15% and 25%; a couple fills 15% up to about $96,000 | 2026 brackets are 10/12/22/24/32/35/37. Joint 22% starts above **$100,800**. Joint standard deduction **$32,200** | [12] |
-| Chapters 20 and 30 | RMDs at 70½, or “now 73” for everyone; a miss costs 50% | Age **73** if born 1951–1959; age **75** if born 1960 or later. Penalty **25%**, or **10%** if corrected. Many heirs face a 10-year rule | [13] |
-| Chapter 21 | HSA limits about $3,000 and $7,750 | 2026: **$4,400** / **$8,750**, plus $1,000 at age 55 | [11] |
-| Chapter 24 | Bogle is the living authority | Bogle died **16 January 2019**. The fund structure remains | [1] |
-| Chapter 30 | Budget on a 2% stock yield and a 3% bond yield | Stock yield nearer 1%. Bond yield was about 5% on one October 2026 page. Use the current yield | [4], [10] |
-| Chapter 31 | Trust fund about $2.7T; empty in 2033; about 75% payable | End-2025 reserves **$2.56T**. Combined depletion **2034**, about **83%** payable. OASI alone late **2032**, about **78%** | [14] |
-| Chapter 6 | Bonds reliably cushion stock crashes | True in some crashes, including 2008. False in 2022 | [10] |
-| Chapter 32 | Small gifts obviously reduce your tax | Many households will not itemize. Donor-advised funds and QCDs at 70½ are the current tools | [12] |
+| Section            | Old statement                                                                           | New statement                                                                                                                                                                        | Source    |
+| ------------------ | --------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------- |
+| Debt               | About $12T total: $8T mortgages, $1T student loans, $3T cards and other                 | Q2 2026: $18.8T total; mortgages $13.1T; student loans $1.65T; cards $1.26T; auto $1.71T                                                                                             | [2]       |
+| Debt               | Student loans cannot be discharged and follow you until death                           | Still nondischargeable unless undue hardship. The 2022 DOJ process, updated March 2026, allows discharges in hardship cases. Current Social Security offset practice not reconfirmed | [3]       |
+| Chapters 5–7       | S&P 500 over 2,000 in 2015; Dow about 17,000–17,800; 5,000 treated as a distant ceiling | 16 Oct 2026: S&P 500 **7,659.44**; Dow **52,002.41**. The 2015 levels stay as history                                                                                                | [7]       |
+| Notes              | 2000–2009 returned 93.8% a year                                                         | Transcription error. That decade was weak to negative. Exact figure not recomputed                                                                                                   | —         |
+| Tools              | VTSAX costs 0.05%; industry average about 1%; Admiral minimum $10,000                   | VTSAX and VBTLX **0.04%** (28 Apr 2026). VTSAX minimum **$3,000**. Industry average excluding Vanguard **0.50%** (31 Dec 2025)                                                       | [6], [10] |
+| Chapters 4 and 11  | Apple is the largest U.S. company                                                       | 17 Oct 2026: Nvidia about $5.2T, Apple about $5.0T. Top ten were about 33.5% of VTSAX on 31 Aug 2026                                                                                 | [4], [5]  |
+| Chapter 8          | 2013 Vanguard study: only 18% of active funds beat the market                           | 2025 SPIVA: **79%** of active U.S. large-cap funds trailed the S&P 500                                                                                                               | [8]       |
+| Chapters 11 and 17 | Watch ETF commissions; a $10,000 minimum blocks beginners                               | Major brokers generally charge no ETF commission. VTI has no fund minimum                                                                                                            | [6]       |
+| Chapter 16         | Target-date lineup stops at 2060; fees 0.14–0.16%                                       | The ceiling is stale. Current fees were not verified. Do not quote them                                                                                                              | —         |
+| Chapters 19 and 22 | 2016 deferral $18,000; IRA $5,500 or $6,500                                             | 2026 deferral **$24,500**; IRA **$7,500**. High earners’ catch-ups must be Roth                                                                                                      | [11]      |
+| Chapters 19 and 20 | Brackets of 15% and 25%; a couple fills 15% up to about $96,000                         | 2026 brackets are 10/12/22/24/32/35/37. Joint 22% starts above **$100,800**. Joint standard deduction **$32,200**                                                                    | [12]      |
+| Chapters 20 and 30 | RMDs at 70½, or “now 73” for everyone; a miss costs 50%                                 | Age **73** if born 1951–1959; age **75** if born 1960 or later. Penalty **25%**, or **10%** if corrected. Many heirs face a 10-year rule                                             | [13]      |
+| Chapter 21         | HSA limits about $3,000 and $7,750                                                      | 2026: **$4,400** / **$8,750**, plus $1,000 at age 55                                                                                                                                 | [11]      |
+| Chapter 24         | Bogle is the living authority                                                           | Bogle died **16 January 2019**. The fund structure remains                                                                                                                           | [1]       |
+| Chapter 30         | Budget on a 2% stock yield and a 3% bond yield                                          | Stock yield nearer 1%. Bond yield was about 5% on one October 2026 page. Use the current yield                                                                                       | [4], [10] |
+| Chapter 31         | Trust fund about $2.7T; empty in 2033; about 75% payable                                | End-2025 reserves **$2.56T**. Combined depletion **2034**, about **83%** payable. OASI alone late **2032**, about **78%**                                                            | [14]      |
+| Chapter 6          | Bonds reliably cushion stock crashes                                                    | True in some crashes, including 2008. False in 2022                                                                                                                                  | [10]      |
+| Chapter 32         | Small gifts obviously reduce your tax                                                   | Many households will not itemize. Donor-advised funds and QCDs at 70½ are the current tools                                                                                          | [12]      |
 
 ### Left as still accurate
 
@@ -1103,7 +1103,7 @@ Accessed **17 October 2026**.
 
 1. Vanguard, announcement of John C. Bogle’s death, 16 January 2019.
    <https://corporate.vanguard.com/content/corporatesite/us/en/corp/who-we-are/pressroom/Press-Release-Vanguard-Announces-Passing-Of-Founder-Jack-Bogle-011619.html>
-2. Federal Reserve Bank of New York, *Household Debt and Credit*, second quarter of 2026.
+2. Federal Reserve Bank of New York, _Household Debt and Credit_, second quarter of 2026.
    <https://www.newyorkfed.org/microeconomics/hhdc/background.html>
 3. U.S. Department of Justice, U.S. Trustee Program, student-loan discharge guidance. Page updated 17 March 2026.
    <https://www.justice.gov/ust/student-loan-guidance>
@@ -1116,7 +1116,7 @@ Accessed **17 October 2026**.
 7. Market closes for 16 October 2026: Dow Jones Industrial Average on MarketWatch; S&P 500 on the Barron’s U.S. index table for the same session.
    <https://www.marketwatch.com/investing/index/djia/downloaddata>
    <https://www.barrons.com/market-data/stocks/us/indexes>
-8. S&P Dow Jones Indices, *U.S. Persistence Scorecard*, year-end 2025, including the 2025 large-cap underperformance rate.
+8. S&P Dow Jones Indices, _U.S. Persistence Scorecard_, year-end 2025, including the 2025 large-cap underperformance rate.
    <https://www.spglobal.com/spdji/en/spiva/article/us-persistence-scorecard/>
 9. Nivritee, summary of SPIVA through mid-2026. **Secondary only.** The 15-year 90.5 percent figure was not opened in S&P’s PDF.
    <https://nivritee.com/research/index-vs-active-funds-spiva>
@@ -1128,10 +1128,10 @@ Accessed **17 October 2026**.
     <https://www.irs.gov/newsroom/irs-releases-tax-inflation-adjustments-for-tax-year-2026-including-amendments-from-the-one-big-beautiful-bill>
 13. Clear Money Guide, 2026 Uniform Lifetime Table, citing IRS Publication 590-B. SECURE 2.0 ages and the 25/10 percent penalty are the statute’s rules as summarized there.
     <https://clearmoneyguide.com/rmd-table-2026/>
-14. Social Security Administration, *2026 OASDI Trustees Report*, conclusion, and the SSA press release of 9 June 2026.
+14. Social Security Administration, _2026 OASDI Trustees Report_, conclusion, and the SSA press release of 9 June 2026.
     <https://www.ssa.gov/oact/TR/2026/II_E_conclu.html>
     <https://www.ssa.gov/news/en/press/releases/2026-06-09.html>
 
 ---
 
-*This is an editorial update of a book summary. It is not tax, legal, or investment advice. Brackets, yields, and index levels move. Before you contribute or withdraw, read the current IRS page and the fund’s current fact sheet.*
+_This is an editorial update of a book summary. It is not tax, legal, or investment advice. Brackets, yields, and index levels move. Before you contribute or withdraw, read the current IRS page and the fund’s current fact sheet._

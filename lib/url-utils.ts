@@ -3,6 +3,14 @@
  */
 
 /**
+ * Canonical picture for a birthdate. Month and day have no leading zero.
+ * `/life/1971/06/28/life-in-weeks.jpg` still resolves to the same picture.
+ */
+export const lifeImagePath = (date: Date): string => {
+  return `/life/${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}/life-in-weeks.jpg`;
+};
+
+/**
  * Generates a URL for the life table or burst view page
  */
 export const generateLifeTableUrl = (

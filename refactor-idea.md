@@ -41,10 +41,10 @@ export const formSchema = z.object({
   name: z.string().optional(),
   date: z
     .string()
-    .refine((val) => !isNaN(Date.parse(val)), {
+    .refine(val => !isNaN(Date.parse(val)), {
       message: "Invalid date format",
     })
-    .refine((val) => new Date(val) <= new Date(), {
+    .refine(val => new Date(val) <= new Date(), {
       message: "Date cannot be in the future (yet!)",
     }),
 });

@@ -66,6 +66,7 @@ async function buildSitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: new Date(toIsoDateTime(life.updated)),
     changeFrequency: "yearly" as const,
     priority: 0.6,
+    images: [`${SITE_URL}/lives/${life.slug}/life-in-weeks.jpg`],
   }));
 
   return [...staticRoutes, ...postRoutes, ...lifeRoutes];

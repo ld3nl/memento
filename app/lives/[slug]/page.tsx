@@ -7,14 +7,20 @@ import { connection } from "next/server";
 import { Suspense } from "react";
 import BackButton from "../../../components/BackButton";
 import { JsonLd } from "../../../components/content/JsonLd";
+import { LifeSharePicture } from "../../../components/LifeSharePicture";
 import { LifeTable } from "../../../components/LifeTable/LifeTable";
 import { contentMetadata } from "../../../lib/content-metadata";
 import {
   absoluteUrl,
   breadcrumbJsonLd,
   graphJsonLd,
+  lifeImageObject,
 } from "../../../lib/json-ld";
-import { LIFE_OG_CONTENT_TYPE, LIFE_OG_SIZE } from "../../../lib/life-og";
+import {
+  LIFE_OG_CONTENT_TYPE,
+  LIFE_OG_SIZE,
+  speakBirthDate,
+} from "../../../lib/life-og";
 import { getLife, lifeSpans, listLives } from "../../../lib/lives";
 import {
   formatSpanRange,
@@ -192,7 +198,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     ],
     ogType: "website",
     image: {
-      url: absoluteUrl(`/lives/${life.slug}/og.jpg`),
+      url: absoluteUrl(`/lives/${life.slug}/life-in-weeks.jpg`),
       width: LIFE_OG_SIZE.width,
       height: LIFE_OG_SIZE.height,
       alt: `${life.name}, life in weeks`,
@@ -229,6 +235,13 @@ async function LifeDocument({ params }: Props) {
   const spans = lifeSpans(life);
   const chapters = life.marks.filter(mark => mark.kind === "chapter");
   const slot = stylex.props(styles.tableFit);
+  const pictureCaption = `${life.name}, born ${speakBirthDate(life.born)}. Life in weeks. Colored squares are dated chapters. Red squares are lived weeks with no chapter. Empty squares are still ahead.`;
+  const picture = lifeImageObject({
+    contentUrl: absoluteUrl(`/lives/${life.slug}/life-in-weeks.jpg`),
+    caption: pictureCaption,
+    width: LIFE_OG_SIZE.width,
+    height: LIFE_OG_SIZE.height,
+  });
 
   return (
     <div {...stylex.props(styles.shell)}>
@@ -238,6 +251,14 @@ async function LifeDocument({ params }: Props) {
             { name: "Home", path: "/" },
             { name: life.name, path: `/lives/${life.slug}` },
           ]),
+          {
+            "@type": "WebPage",
+            url: absoluteUrl(`/lives/${life.slug}`),
+            name: life.name,
+            description: life.summary,
+            primaryImageOfPage: picture,
+          },
+          picture,
         ])}
       />
       <BackButton />
@@ -300,6 +321,11 @@ async function LifeDocument({ params }: Props) {
           .
         </p>
       </section>
+      <LifeSharePicture
+        src={`/lives/${life.slug}/life-in-weeks.jpg`}
+        alt={pictureCaption}
+        caption={`Born ${speakBirthDate(life.born)} in ${life.birthplace}.`}
+      />
     </div>
   );
 }

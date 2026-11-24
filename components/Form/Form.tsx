@@ -4,6 +4,7 @@ import * as stylex from "@stylexjs/stylex";
 import { createFormHook } from "@tanstack/react-form-nextjs";
 import { useRouter } from "next/navigation";
 import { useLayoutEffect, useState } from "react";
+import { trackGenerateCalendar } from "../../lib/analytics";
 import { calculateLifeWeeks, getFormattedAge } from "../../lib/date-utils";
 import { FormStorage, readFormDataSync } from "../../lib/storage";
 import {
@@ -435,6 +436,7 @@ const Form = () => {
           }
 
           if (!date) return;
+          trackGenerateCalendar(date, Boolean(name.trim()));
           router.push(generateLifeTableUrl(date, name || undefined));
         }}
         {...stylex.props(styles.form)}

@@ -327,6 +327,10 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
     page-break-inside: avoid;
   }
 
+  .life-share-picture {
+    display: none;
+  }
+
   .life-table-fit {
     break-before: avoid;
     page-break-before: avoid;

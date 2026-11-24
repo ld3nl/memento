@@ -10,6 +10,16 @@ import { LEDGER_INKS, spansCovering } from "./week-notes";
 export const LIFE_OG_SIZE = { width: 1200, height: 675 };
 export const LIFE_OG_CONTENT_TYPE = "image/jpeg";
 
+/** Enough for the share card. A public life also has chapters. */
+export type LifePicture = {
+  name: string;
+  born: string;
+  birthplace?: string;
+  marks?: PublicLife["marks"];
+  slug?: string;
+  kicker?: string;
+};
+
 /** Same rhythm as the ledger: 8px square, 8px gap, 16px between decades. */
 const SCALE = 4;
 const CELL = SCALE;
@@ -41,12 +51,15 @@ function speakBorn(iso: string): string {
 
 /** One color per week, in the same order as the page. */
 export function paintLifeGrid(
-  life: PublicLife,
+  life: LifePicture,
   asOf: Date = new Date()
 ): string[][] {
   const dob = bornDate(life.born);
   const today = format(asOf, "yyyy-MM-dd");
-  const spans = lifeSpans(life);
+  const spans =
+    life.slug && life.marks && life.marks.length > 0
+      ? lifeSpans(life as PublicLife)
+      : [];
   const rows: string[][] = [];
 
   for (let year = 1; year <= YEARS; year++) {
@@ -175,10 +188,36 @@ export function ledgerPng(rows: string[][]): string {
   return `data:image/png;base64,${png.toString("base64")}`;
 }
 
-export function lifeOgImage(life: PublicLife, asOf: Date = new Date()) {
+export function lifeImageAlt(iso: string): string {
+  return `Life in weeks for a person born ${speakBorn(iso)}. Each square is one week on an 80-year grid. Filled squares are weeks already lived.`;
+}
+
+export function speakBirthDate(iso: string): string {
+  return speakBorn(iso);
+}
+
+/** Same card as a public life, with no chapters and no name. */
+export function dateLifeImage(born: Date, asOf: Date = new Date()) {
+  const month = String(born.getMonth() + 1).padStart(2, "0");
+  const day = String(born.getDate()).padStart(2, "0");
+  return lifeOgImage(
+    {
+      name: "Life in weeks",
+      born: `${born.getFullYear()}-${month}-${day}`,
+      kicker: "Memento mori",
+    },
+    asOf
+  );
+}
+
+export function lifeOgImage(life: LifePicture, asOf: Date = new Date()) {
   const grid = ledgerPng(paintLifeGrid(life, asOf));
-  const chapters = life.marks.filter(mark => mark.kind === "chapter");
+  const chapters = (life.marks ?? []).filter(mark => mark.kind === "chapter");
   const titleSize = life.name.length > 18 ? 52 : 68;
+  const kicker = life.kicker ?? "Lives";
+  const detail = life.birthplace
+    ? `${speakBorn(life.born)} · ${life.birthplace}`
+    : speakBorn(life.born);
 
   return new ImageResponse(
     <div
@@ -233,7 +272,7 @@ export function lifeOgImage(life: PublicLife, asOf: Date = new Date()) {
                 fontFamily: "Georgia, serif",
               }}
             >
-              Lives
+              {kicker}
             </div>
             <div
               style={{
@@ -256,58 +295,77 @@ export function lifeOgImage(life: PublicLife, asOf: Date = new Date()) {
                 fontFamily: "Georgia, serif",
               }}
             >
-              {`${speakBorn(life.born)} · ${life.birthplace}`}
+              {detail}
             </div>
+            {life.name === "Life in weeks" ? null : (
+              <div
+                style={{
+                  display: "flex",
+                  marginTop: 8,
+                  fontSize: 20,
+                  color: "#a1a1aa",
+                  fontFamily: "Georgia, serif",
+                }}
+              >
+                Life in weeks
+              </div>
+            )}
+          </div>
+          {chapters.length === 0 ? (
             <div
               style={{
                 display: "flex",
-                marginTop: 8,
-                fontSize: 20,
+                marginTop: 28,
+                maxWidth: 360,
+                fontSize: 22,
+                lineHeight: 1.4,
                 color: "#a1a1aa",
                 fontFamily: "Georgia, serif",
               }}
             >
-              Life in weeks
+              80 years. 4,160 weeks. Filled squares are already lived. The span
+              is a scale, not a prediction.
             </div>
-          </div>
-          <div style={{ display: "flex", gap: 28, marginTop: 28 }}>
-            {[chapters.slice(0, 6), chapters.slice(6)].map(column => (
-              <div
-                key={column[0]?.label ?? "chapters"}
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 8,
-                }}
-              >
-                {column.map(chapter => (
-                  <div
-                    key={chapter.label}
-                    style={{ display: "flex", alignItems: "center", gap: 10 }}
-                  >
+          ) : (
+            <div style={{ display: "flex", gap: 28, marginTop: 28 }}>
+              {[chapters.slice(0, 6), chapters.slice(6)].map(column => (
+                <div
+                  key={column[0]?.label ?? "chapters"}
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 8,
+                  }}
+                >
+                  {column.map(chapter => (
                     <div
-                      style={{
-                        width: 12,
-                        height: 12,
-                        backgroundColor: INK_DARK.get(chapter.color) ?? EMPTY,
-                        display: "flex",
-                      }}
-                    />
-                    <div
-                      style={{
-                        display: "flex",
-                        fontSize: 18,
-                        color: "#e4e4e7",
-                        fontFamily: "Georgia, serif",
-                      }}
+                      key={chapter.label}
+                      style={{ display: "flex", alignItems: "center", gap: 10 }}
                     >
-                      {chapter.label}
+                      <div
+                        style={{
+                          width: 12,
+                          height: 12,
+                          backgroundColor: INK_DARK.get(chapter.color) ?? EMPTY,
+                          display: "flex",
+                        }}
+                      />
+                      <div
+                        style={{
+                          display: "flex",
+                          fontSize: 18,
+                          color: "#e4e4e7",
+                          fontFamily: "Georgia, serif",
+                        }}
+                      >
+                        {chapter.label}
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>
-            ))}
-          </div>
+                  ))}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>,

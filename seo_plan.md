@@ -62,7 +62,7 @@ Remaining work is primarily around **analytics misconfiguration, semantic HTML f
 **Evidence:** `app/layout.tsx` line 201:
 
 ```tsx
-<GoogleTagManager gtmId="G-CYT1S2EC6W" />
+<GoogleTagManager gtmId="G-CYT1S2EC6W" />;
 ```
 
 **Issue:** `GoogleTagManager` expects a `GTM-` prefixed ID. `G-CYT1S2EC6W` is a GA4 Measurement ID.
