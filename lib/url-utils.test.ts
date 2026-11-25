@@ -2,6 +2,7 @@ import {
   birthDateFromPathSegments,
   extractNameFromUrl,
   generateLifeTableUrl,
+  lifeImageModeFromQuery,
   lifeImagePath,
   parseDateFromUrl,
 } from "./url-utils";
@@ -73,6 +74,14 @@ describe("url utilities", () => {
       expect(lifeImagePath(new Date(1971, 5, 28))).toBe(
         "/life/1971/6/28/life-in-weeks.jpg"
       );
+    });
+
+    it("asks the 7-day grid for the same file with weeks=grid", () => {
+      expect(lifeImagePath(new Date(1987, 11, 17), "birthday-grid")).toBe(
+        "/life/1987/12/17/life-in-weeks.jpg?weeks=grid"
+      );
+      expect(lifeImageModeFromQuery("grid")).toBe("birthday-grid");
+      expect(lifeImageModeFromQuery(null)).toBe("calendar");
     });
   });
 

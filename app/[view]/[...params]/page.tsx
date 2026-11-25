@@ -6,7 +6,7 @@ import { type ReactNode, Suspense } from "react";
 import BackButton from "../../../components/BackButton";
 import { BurstSceneLazy } from "../../../components/BurstScene/BurstSceneLazy";
 import { CalendarHeading } from "../../../components/CalendarHeading";
-import { LifeSharePicture } from "../../../components/LifeSharePicture";
+import { LifeCalendarSummary } from "../../../components/LifeCalendarSummary";
 import { LifeTable } from "../../../components/LifeTable/LifeTable";
 import { SwitchViewLink } from "../../../components/SwitchViewLink";
 import { calculateFullAge, calculateLifeWeeks } from "../../../lib/date-utils";
@@ -19,7 +19,6 @@ import {
   LIFE_OG_CONTENT_TYPE,
   LIFE_OG_SIZE,
   lifeImageAlt,
-  speakBirthDate,
 } from "../../../lib/life-og";
 import { SITE_URL } from "../../../lib/site";
 import {
@@ -27,8 +26,8 @@ import {
   extractNameFromUrl,
   lifeImagePath,
 } from "../../../lib/url-utils";
+import { weekCountModeFromQueryValue } from "../../../lib/week-count-mode";
 import { breakpoints } from "../../../styles/breakpoints.stylex";
-import { kicker } from "../../../styles/recipes/kicker.stylex";
 import { tokens } from "../../../styles/tokens.stylex";
 
 const styles = stylex.create({
@@ -120,86 +119,6 @@ const styles = stylex.create({
       [breakpoints.print]: "none",
     },
   },
-  summary: {
-    display: {
-      default: "block",
-      [breakpoints.print]: "none",
-    },
-    width: "100%",
-    maxWidth: "48rem",
-    marginInline: "auto",
-    marginTop: {
-      default: "4rem",
-      [breakpoints.sm]: "5rem",
-    },
-    borderTopWidth: 2,
-    borderTopStyle: "solid",
-    borderTopColor: `color-mix(in oklab, ${tokens.accent} 20%, transparent)`,
-    paddingInline: "1rem",
-    paddingTop: {
-      default: "4rem",
-      [breakpoints.sm]: "5rem",
-    },
-  },
-  stats: {
-    borderLeftWidth: 3,
-    borderLeftStyle: "solid",
-    borderLeftColor: tokens.accent,
-    paddingLeft: {
-      default: "1.5rem",
-      [breakpoints.sm]: "2rem",
-    },
-  },
-  lived: {
-    fontFamily: tokens.fontMono,
-    fontSize: {
-      default: "3rem",
-      [breakpoints.smOnly]: "3.75rem",
-      [breakpoints.lg]: "4.5rem",
-    },
-    lineHeight: 1,
-    fontWeight: 700,
-    color: tokens.accent,
-    fontVariantNumeric: "tabular-nums",
-  },
-  statLabel: {
-    marginTop: "0.75rem",
-    marginBottom: 0,
-    fontSize: {
-      default: "0.75rem",
-      [breakpoints.sm]: "0.875rem",
-    },
-  },
-  remaining: {
-    marginTop: {
-      default: "2.5rem",
-      [breakpoints.sm]: "3rem",
-    },
-    fontFamily: tokens.fontMono,
-    fontSize: {
-      default: "2.25rem",
-      [breakpoints.smOnly]: "3rem",
-      [breakpoints.lg]: "3.75rem",
-    },
-    lineHeight: 1,
-    fontWeight: 700,
-    color: tokens.primary,
-    fontVariantNumeric: "tabular-nums",
-  },
-  note: {
-    marginTop: {
-      default: "3rem",
-      [breakpoints.sm]: "4rem",
-    },
-    marginBottom: 0,
-    fontFamily: tokens.fontSans,
-    fontSize: {
-      default: "1rem",
-      [breakpoints.sm]: "1.125rem",
-    },
-    lineHeight: 1.625,
-    color: tokens.secondary,
-  },
 });
 
 function mergeClass(stylexClass: string | undefined, marker: string) {
@@ -248,12 +167,14 @@ export async function generateMetadata({
 
   const ageData = calculateFullAge(birthDate);
   const age = ageData?.years ?? 0;
-  const weeksLived = calculateLifeWeeks(birthDate)?.weeksLived ?? 0;
+  const weekMode = weekCountModeFromQueryValue(query.weeks);
+  const weeksLived =
+    calculateLifeWeeks(birthDate, new Date(), weekMode)?.weeksLived ?? 0;
   const potentialYearsLeft = Math.max(80 - age, 0);
   const viewTitle = view === "burst" ? "Burst View" : "Table View";
   const canonicalUrl = `${SITE_URL}/${view}/${urlPath}`;
   const titleName = name ? `${name} · ` : "";
-  const imagePath = lifeImagePath(birthDate);
+  const imagePath = lifeImagePath(birthDate, weekMode);
   const imageAlt = lifeImageAlt(
     `${birthDate.getFullYear()}-${String(birthDate.getMonth() + 1).padStart(2, "0")}-${String(birthDate.getDate()).padStart(2, "0")}`
   );
@@ -344,7 +265,12 @@ async function CalendarSwitcher({ params, searchParams }: Props) {
     )
   );
   const otherView: ViewMode = view === "table" ? "burst" : "table";
-  const nameQuery = name ? `?name=${encodeURIComponent(name)}` : "";
+  const linkQuery = new URLSearchParams();
+  if (name) linkQuery.set("name", name);
+  if (weekCountModeFromQueryValue(query.weeks) === "calendar") {
+    linkQuery.set("weeks", "calendar");
+  }
+  const nameQuery = linkQuery.size > 0 ? `?${linkQuery.toString()}` : "";
 
   return (
     <div {...stylex.props(styles.switcher)}>
@@ -359,7 +285,7 @@ async function CalendarSwitcher({ params, searchParams }: Props) {
   );
 }
 
-async function ViewBody({ params }: Props) {
+async function ViewBody({ params, searchParams }: Props) {
   // Request-time gate so `new Date()` in week math is legal under Cache Components.
   await connection();
   const awaitedParams = await params;
@@ -377,11 +303,9 @@ async function ViewBody({ params }: Props) {
     notFound();
   }
 
-  const lifeWeeks = calculateLifeWeeks(birthDate);
-  const weeksLived = lifeWeeks?.weeksLived ?? 0;
-  const weeksRemaining = lifeWeeks?.weeksRemaining ?? 0;
-
-  const imagePath = lifeImagePath(birthDate);
+  const query = await searchParams;
+  const weekMode = weekCountModeFromQueryValue(query.weeks);
+  const imagePath = lifeImagePath(birthDate, weekMode);
   const iso = `${birthDate.getFullYear()}-${String(birthDate.getMonth() + 1).padStart(2, "0")}-${String(birthDate.getDate()).padStart(2, "0")}`;
   const imageAlt = lifeImageAlt(iso);
   const imageUrl = `${SITE_URL}${imagePath}`;
@@ -458,37 +382,9 @@ async function ViewBody({ params }: Props) {
         </div>
       ) : null}
 
-      <section {...stylex.props(styles.summary)}>
-        <div {...stylex.props(styles.stats)}>
-          <div {...stylex.props(styles.lived)}>
-            {weeksLived.toLocaleString()}
-          </div>
-          <div {...stylex.props(kicker.base, styles.statLabel)}>
-            Weeks lived
-          </div>
-
-          {weeksRemaining > 0 && (
-            <>
-              <div {...stylex.props(styles.remaining)}>
-                {weeksRemaining.toLocaleString()}
-              </div>
-              <div {...stylex.props(kicker.base, styles.statLabel)}>
-                Weeks remaining (est.)
-              </div>
-            </>
-          )}
-        </div>
-
-        <p {...stylex.props(styles.note)}>
-          Each square is a week. The filled ones are gone. Make the empty ones
-          count.
-        </p>
-      </section>
-      <LifeSharePicture
-        src={imagePath}
-        alt={imageAlt}
-        caption={`Born ${speakBirthDate(iso)}. The picture is the same count as the grid.`}
-      />
+      <Suspense fallback={null}>
+        <LifeCalendarSummary iso={iso} />
+      </Suspense>
     </>
   );
 }

@@ -84,14 +84,16 @@ describe("Form Component", () => {
 
   it("allows checking the save checkbox", () => {
     renderForm();
-    cy.get("[data-cy=input-checkbox-save]").check().should("be.checked");
+    cy.get("[data-cy=input-checkbox-save]")
+      .click()
+      .should("have.attr", "aria-checked", "true");
   });
 
   it.skip("matches visual snapshot with all fields filled", () => {
     renderForm();
     cy.get("[data-cy=inline-name-input]").type("John Doe");
     cy.get("[data-cy=birthday-input]").type(TEST_DOB);
-    cy.get("[data-cy=input-checkbox-save]").check();
+    cy.get("[data-cy=input-checkbox-save]").click();
     cy.get("[data-cy=bday-form]").click();
     cy.compareSnapshot("Form", 0.2);
   });

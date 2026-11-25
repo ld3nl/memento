@@ -43,7 +43,7 @@ describe("Form E2E Tests", () => {
   it("screenshot with all fields filled", () => {
     cy.get("input[data-cy=inline-name-input]").type("John Doe");
     cy.get("input[data-cy=birthday-input]").type(TEST_DOB);
-    cy.get("input[data-cy=input-checkbox-save]").check();
+    cy.get("[data-cy=input-checkbox-save]").click();
 
     cy.compareSnapshot("form-filled");
   });

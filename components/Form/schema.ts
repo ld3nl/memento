@@ -2,6 +2,8 @@ import { z } from "zod";
 
 export const formSchema = z.object({
   name: z.string().optional(),
+  saveData: z.boolean(),
+  calendarWeeks: z.boolean(),
   date: z.string().superRefine((val, ctx) => {
     // First check if the field is empty
     if (!val || val.trim().length === 0) {

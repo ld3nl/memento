@@ -16,6 +16,13 @@ export function writeCalendarWeeksPreference(enabled: boolean): void {
   }
 }
 
+export function weekCountModeFromQueryValue(
+  weeks: string | string[] | undefined | null
+): LifeWeekCountMode {
+  const value = Array.isArray(weeks) ? weeks[0] : weeks;
+  return value === "calendar" ? "calendar" : DEFAULT_LIFE_WEEK_COUNT_MODE;
+}
+
 export function resolveWeekCountMode(
   searchParams: ReadonlyURLSearchParams | URLSearchParams | null
 ): LifeWeekCountMode {

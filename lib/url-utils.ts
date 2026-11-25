@@ -2,13 +2,28 @@
  * URL generation and manipulation utilities
  */
 
+import type { LifeWeekCountMode } from "./life-grid-time";
+
 /**
  * Canonical picture for a birthdate. Month and day have no leading zero.
  * `/life/1971/06/28/life-in-weeks.jpg` still resolves to the same picture.
+ * That picture lines each year up with the real birthday. The 7-day grid
+ * asks for the same file with `?weeks=grid`.
  */
-export const lifeImagePath = (date: Date): string => {
-  return `/life/${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}/life-in-weeks.jpg`;
+export const lifeImagePath = (
+  date: Date,
+  mode: LifeWeekCountMode = "calendar"
+): string => {
+  const path = `/life/${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}/life-in-weeks.jpg`;
+  return mode === "birthday-grid" ? `${path}?weeks=grid` : path;
 };
+
+/** Picture query. Anything other than `grid` is the birthday-aligned year. */
+export function lifeImageModeFromQuery(
+  weeks: string | null | undefined
+): LifeWeekCountMode {
+  return weeks === "grid" ? "birthday-grid" : "calendar";
+}
 
 /**
  * Generates a URL for the life table or burst view page

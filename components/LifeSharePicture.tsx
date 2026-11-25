@@ -1,6 +1,6 @@
 import * as stylex from "@stylexjs/stylex";
 import { IMAGE_LICENSE_PATH } from "../lib/json-ld";
-import { LIFE_OG_SIZE } from "../lib/life-og";
+import { LIFE_OG_SIZE } from "../lib/life-picture";
 import { breakpoints } from "../styles/breakpoints.stylex";
 import { tokens } from "../styles/tokens.stylex";
 

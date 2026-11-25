@@ -16,11 +16,11 @@ import {
   type LifeWeekCountMode,
 } from "../../lib/date-utils";
 import { gridWeekSpan } from "../../lib/life-grid-time";
-import { readFormDataSync } from "../../lib/storage";
-import { resolveWeekCountMode } from "../../lib/week-count-mode";
 import { generateDecadeConfig } from "../../lib/life-table-utils";
 import { describeLifeWeek, lifeWeekDays } from "../../lib/life-week";
+import { readFormDataSync } from "../../lib/storage";
 import { isValidDate, parseAndValidateDate } from "../../lib/validation";
+import { resolveWeekCountMode } from "../../lib/week-count-mode";
 import {
   addSpan,
   formatNoteHover,
@@ -93,10 +93,16 @@ export const LifeTable = ({ dob, preset, readOnly }: LifeTableProps) => {
 
   const dobDate = dob && isValidDate(dob) ? parseAndValidateDate(dob) : null;
   const searchParams = useSearchParams();
-  const weekCountMode = useMemo<LifeWeekCountMode>(
-    () => resolveWeekCountMode(searchParams),
-    [searchParams]
-  );
+  const urlMode: LifeWeekCountMode =
+    searchParams.get("weeks") === "calendar" ? "calendar" : "birthday-grid";
+  // The URL is the first paint. Saved preference applies after hydration so
+  // the grid matches the picture, which cannot see session storage.
+  const [weekCountMode, setWeekCountMode] =
+    useState<LifeWeekCountMode>(urlMode);
+  useEffect(() => {
+    // react-doctor-disable-next-line react-hooks-js/set-state-in-effect
+    setWeekCountMode(resolveWeekCountMode(searchParams));
+  }, [searchParams]);
 
   const notesApi = useMemo<WeekNotesApi>(() => {
     const lifeStart = dobDate ? format(dobDate, "yyyy-MM-dd") : null;

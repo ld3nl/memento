@@ -1,19 +1,26 @@
 import { deflateSync } from "node:zlib";
-import { format } from "date-fns";
 import { ImageResponse } from "next/og";
 import { DECADE_LENGTH, WEEKS_PER_YEAR, YEARS_IN_LIFETIME } from "./constants";
 import {
   calculateWeeksFromLastBirthday,
   calculateYearsAlive,
 } from "./date-utils";
+import {
+  DEFAULT_LIFE_WEEK_COUNT_MODE,
+  type LifeWeekCountMode,
+} from "./life-grid-time";
+import { LIFE_OG_SIZE, speakBirthDate } from "./life-picture";
 import { shouldWeekBeFilled } from "./life-table-utils";
 import { lifeWeekDays } from "./life-week";
 import { lifeSpans, type PublicLife } from "./lives";
 import { LEDGER_INKS, spansCovering } from "./week-notes";
 
-/** 16:9. Share crawlers fetch the JPEG the route makes from this. */
-export const LIFE_OG_SIZE = { width: 1200, height: 675 };
-export const LIFE_OG_CONTENT_TYPE = "image/jpeg";
+export {
+  LIFE_OG_CONTENT_TYPE,
+  LIFE_OG_SIZE,
+  lifeImageAlt,
+  speakBirthDate,
+} from "./life-picture";
 
 /** Enough for the share card. A public life also has chapters. */
 export type LifePicture = {
@@ -50,24 +57,22 @@ function bornDate(iso: string): Date {
   return new Date(year ?? 1970, (month ?? 1) - 1, day ?? 1);
 }
 
-function speakBorn(iso: string): string {
-  return format(bornDate(iso), "d MMMM yyyy");
-}
-
 /**
  * One color per week, in the same order as the life table.
- * A square is filled with the same rule as the tablet: completed life-years
- * on the birthday grid, then weeks into the current 52-week row. The week being
- * lived stays empty here; the table draws that one as a partial bar.
- * Chapter color still covers a public life.
+ * A square is filled with the same rule as the tablet: completed life-years,
+ * then weeks into the current row. The week being lived stays empty here;
+ * the table draws that one as a partial bar.
+ * `calendar` lines each row up with the real birthday. Chapter color uses
+ * the same squares.
  */
 export function paintLifeGrid(
   life: LifePicture,
-  asOf: Date = new Date()
+  asOf: Date = new Date(),
+  mode: LifeWeekCountMode = DEFAULT_LIFE_WEEK_COUNT_MODE
 ): string[][] {
   const dob = bornDate(life.born);
-  const yearsAlive = calculateYearsAlive(dob, asOf);
-  const weeksFromLastBday = calculateWeeksFromLastBirthday(dob, asOf);
+  const yearsAlive = calculateYearsAlive(dob, asOf, mode);
+  const weeksFromLastBday = calculateWeeksFromLastBirthday(dob, asOf, mode);
   const spans =
     life.slug && life.marks && life.marks.length > 0
       ? lifeSpans(life as PublicLife)
@@ -77,7 +82,7 @@ export function paintLifeGrid(
   for (let year = 1; year <= YEARS; year++) {
     const row: string[] = [];
     for (let week = 1; week <= WEEKS_PER_YEAR; week++) {
-      const days = lifeWeekDays(dob, year, week);
+      const days = lifeWeekDays(dob, year, week, mode);
       const hit = spansCovering(spans, days.startDay, days.endDay)[0];
       const lived =
         yearsAlive !== null &&
@@ -204,16 +209,12 @@ export function ledgerPng(rows: string[][]): string {
   return `data:image/png;base64,${png.toString("base64")}`;
 }
 
-export function lifeImageAlt(iso: string): string {
-  return `Life in weeks for a person born ${speakBorn(iso)}. Each square is one week on an 80-year grid. Filled squares are weeks already lived.`;
-}
-
-export function speakBirthDate(iso: string): string {
-  return speakBorn(iso);
-}
-
 /** Same card as a public life, with no chapters and no name. */
-export function dateLifeImage(born: Date, asOf: Date = new Date()) {
+export function dateLifeImage(
+  born: Date,
+  asOf: Date = new Date(),
+  mode: LifeWeekCountMode = "calendar"
+) {
   const month = String(born.getMonth() + 1).padStart(2, "0");
   const day = String(born.getDate()).padStart(2, "0");
   return lifeOgImage(
@@ -222,18 +223,23 @@ export function dateLifeImage(born: Date, asOf: Date = new Date()) {
       born: `${born.getFullYear()}-${month}-${day}`,
       kicker: "Memento mori",
     },
-    asOf
+    asOf,
+    mode
   );
 }
 
-export function lifeOgImage(life: LifePicture, asOf: Date = new Date()) {
-  const grid = ledgerPng(paintLifeGrid(life, asOf));
+export function lifeOgImage(
+  life: LifePicture,
+  asOf: Date = new Date(),
+  mode: LifeWeekCountMode = DEFAULT_LIFE_WEEK_COUNT_MODE
+) {
+  const grid = ledgerPng(paintLifeGrid(life, asOf, mode));
   const chapters = (life.marks ?? []).filter(mark => mark.kind === "chapter");
   const titleSize = life.name.length > 18 ? 52 : 68;
   const kicker = life.kicker ?? "Lives";
   const detail = life.birthplace
-    ? `${speakBorn(life.born)} · ${life.birthplace}`
-    : speakBorn(life.born);
+    ? `${speakBirthDate(life.born)} · ${life.birthplace}`
+    : speakBirthDate(life.born);
 
   return new ImageResponse(
     <div

@@ -20,10 +20,11 @@ function tableLived(
   dob: Date,
   asOf: Date,
   year: number,
-  week: number
+  week: number,
+  mode?: "birthday-grid" | "calendar"
 ): boolean {
-  const yearsAlive = calculateYearsAlive(dob, asOf);
-  const weeksFromLastBday = calculateWeeksFromLastBirthday(dob, asOf);
+  const yearsAlive = calculateYearsAlive(dob, asOf, mode);
+  const weeksFromLastBday = calculateWeeksFromLastBirthday(dob, asOf, mode);
   if (yearsAlive === null || weeksFromLastBday === null) return false;
   return shouldWeekBeFilled(yearsAlive, year, week, weeksFromLastBday);
 }
@@ -115,6 +116,27 @@ describe("life share image", () => {
     const yearsAlive = calculateYearsAlive(dob, asOf) ?? 0;
     const weeksFromLastBday = calculateWeeksFromLastBirthday(dob, asOf) ?? 0;
     expect(lived).toBe(yearsAlive * 52 + weeksFromLastBday);
+  });
+
+  it("lines 17 December 1987 up with the real birthday", () => {
+    const asOf = new Date(2026, 10, 24);
+    const dob = new Date(1987, 11, 17);
+    const grid = paintLifeGrid(
+      { born: "1987-12-17", name: "Life in weeks" },
+      asOf,
+      "calendar"
+    );
+
+    expect(grid[38]?.[47]).toBe(LIVED);
+    expect(grid[38]?.[48]).toBe(EMPTY);
+    expect(grid[39]?.[0]).toBe(EMPTY);
+
+    for (let year = 1; year <= 80; year++) {
+      for (let week = 1; week <= 52; week++) {
+        const on = tableLived(dob, asOf, year, week, "calendar");
+        expect(grid[year - 1]?.[week - 1]).toBe(on ? LIVED : EMPTY);
+      }
+    }
   });
 
   it("describes the picture without a name", () => {

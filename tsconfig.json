@@ -33,6 +33,7 @@
     "**/*.test.tsx",
     "jest.setup.ts",
     "bun.setup.ts",
-    "test/**"
+    "test/**",
+    "FormsExample/**"
   ]
 }
